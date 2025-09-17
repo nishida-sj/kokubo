@@ -82,11 +82,19 @@ jobs:
         cp -r vendor deploy-subdomain/
         cp composer.json deploy-subdomain/
 
+        # デバッグファイルもコピー
+        cp debug.php deploy-subdomain/
+        cp debug-config.php deploy-subdomain/
+
         # サブドメイン用設定ファイルをメインに
         cp config/config.subdomain.php deploy-subdomain/config/config.php
 
         # サブドメイン用.htaccessをメインに
-        cp public/.htaccess-subdomain deploy-subdomain/.htaccess
+        cp .htaccess-subdomain deploy-subdomain/.htaccess
+
+        # 必要なディレクトリを確実に作成
+        mkdir -p deploy-subdomain/storage/cache
+        mkdir -p deploy-subdomain/storage/logs
 
         # アップロードディレクトリ作成
         mkdir -p deploy-subdomain/uploads/works

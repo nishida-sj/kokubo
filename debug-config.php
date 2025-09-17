@@ -1,48 +1,49 @@
 <?php
-// 小久保植樹園 サブドメイン用設定
+// デバッグ用設定ファイル - エラー詳細を確認するため
 
-// エラーレポート設定（本番環境）
-error_reporting(0);
-ini_set('display_errors', 0);
+// エラー表示を有効化（デバッグ用）
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
 
 // 文字エンコーディング設定
 mb_language('Japanese');
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Asia/Tokyo');
 
-// 定数定義
+// 定数定義（修正版）
 define('APP_NAME', '小久保植樹園');
 define('APP_VERSION', '1.0.0');
-define('BASE_PATH', dirname(__DIR__));
-define('PUBLIC_PATH', BASE_PATH . '/public_html');
+define('BASE_PATH', __DIR__); // dirname(__DIR__) から __DIR__ に変更
+define('PUBLIC_PATH', BASE_PATH); // publicディレクトリがない構成用
 define('APP_PATH', BASE_PATH . '/app');
 define('CONFIG_PATH', BASE_PATH . '/config');
 define('STORAGE_PATH', BASE_PATH . '/storage');
-define('UPLOAD_PATH', PUBLIC_PATH . '/uploads');
+define('UPLOAD_PATH', BASE_PATH . '/uploads');
 define('CACHE_PATH', STORAGE_PATH . '/cache');
 
-// URL設定（サブドメイン用）
+// URL設定
 define('SITE_URL', 'http://kokubosyokuju.geo.jp');
 define('ASSET_URL', SITE_URL . '/assets');
 define('UPLOAD_URL', SITE_URL . '/uploads');
 
-// データベース設定（本番環境用）
+// データベース設定
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'nishidasj_kokubo'); // 実際のDB名に変更
-define('DB_USER', 'nishidasj'); // 実際のDBユーザーに変更
-define('DB_PASS', 'Nqxx'); // 実際のDBパスワードに変更
+define('DB_NAME', 'nishidasj_kokubo');
+define('DB_USER', 'nishidasj');
+define('DB_PASS', 'Nqxx');
 define('DB_CHARSET', 'utf8mb4');
 
 // セッション設定
 define('SESSION_NAME', 'kokubo_session');
-define('SESSION_LIFETIME', 3600 * 24); // 24時間
+define('SESSION_LIFETIME', 3600 * 24);
 
 // セキュリティ設定
 define('CSRF_TOKEN_NAME', 'csrf_token');
-define('PASSWORD_SALT', 'kokubo_production_salt_2024'); // 本番用に複雑な文字列に変更
+define('PASSWORD_SALT', 'kokubo_production_salt_2024');
 
 // ファイルアップロード設定
-define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024); // 5MB
+define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024);
 define('ALLOWED_IMAGE_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 define('THUMBNAIL_WIDTH', 300);
 define('THUMBNAIL_HEIGHT', 200);
@@ -64,25 +65,35 @@ define('DEFAULT_META_KEYWORDS', '伊勢市,植樹園,造園,植栽,庭木,剪定
 define('OG_IMAGE', ASSET_URL . '/img/og-image.jpg');
 
 // キャッシュ設定
-define('CACHE_ENABLED', true);
-define('CACHE_LIFETIME', 3600); // 1時間
+define('CACHE_ENABLED', false); // 一時的に無効化
+define('CACHE_LIFETIME', 3600);
 
-// デバッグ設定（本番環境）
-define('DEBUG_MODE', false);
+// デバッグ設定
+define('DEBUG_MODE', true); // デバッグモード有効
 
-// 自動読み込み
+// 自動読み込み（修正版）
 spl_autoload_register(function ($className) {
-    $classPath = APP_PATH . '/' . str_replace('\\', '/', $className) . '.php';
+    // クラス名のパス変換を簡素化
+    $classFile = str_replace('\\', '/', $className) . '.php';
+    $classPath = APP_PATH . '/' . $classFile;
+
     if (file_exists($classPath)) {
         require_once $classPath;
+        return true;
     }
+
+    // デバッグ用：読み込み失敗をログ出力
+    error_log("Class file not found: $classPath");
+    return false;
 });
 
-// セッション開始
+// セッション開始（修正版）
 if (session_status() === PHP_SESSION_NONE) {
     session_name(SESSION_NAME);
     session_set_cookie_params(SESSION_LIFETIME);
-    session_start();
+    if (!session_start()) {
+        error_log("Failed to start session");
+    }
 }
 
 // CSRFトークン生成
@@ -90,7 +101,7 @@ if (!isset($_SESSION[CSRF_TOKEN_NAME])) {
     $_SESSION[CSRF_TOKEN_NAME] = bin2hex(random_bytes(32));
 }
 
-// ヘルパー関数（同じ内容）
+// ヘルパー関数
 function site_url($path = '') {
     return SITE_URL . '/' . ltrim($path, '/');
 }
@@ -104,7 +115,7 @@ function upload_url($path = '') {
 }
 
 function h($string) {
-    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
 }
 
 function csrf_token() {
@@ -150,64 +161,5 @@ function generate_slug($text) {
     return trim($text, '-');
 }
 
-function create_thumbnail($sourcePath, $destPath, $width = THUMBNAIL_WIDTH, $height = THUMBNAIL_HEIGHT) {
-    if (!file_exists($sourcePath)) {
-        return false;
-    }
-
-    $imageInfo = getimagesize($sourcePath);
-    if (!$imageInfo) {
-        return false;
-    }
-
-    $sourceWidth = $imageInfo[0];
-    $sourceHeight = $imageInfo[1];
-    $mimeType = $imageInfo['mime'];
-
-    // ソース画像を読み込み
-    switch ($mimeType) {
-        case 'image/jpeg':
-            $sourceImage = imagecreatefromjpeg($sourcePath);
-            break;
-        case 'image/png':
-            $sourceImage = imagecreatefrompng($sourcePath);
-            break;
-        case 'image/gif':
-            $sourceImage = imagecreatefromgif($sourcePath);
-            break;
-        default:
-            return false;
-    }
-
-    // サムネイル作成
-    $thumbnail = imagecreatetruecolor($width, $height);
-
-    // 透明度を保持（PNG、GIF用）
-    if ($mimeType === 'image/png' || $mimeType === 'image/gif') {
-        imagealphablending($thumbnail, false);
-        imagesavealpha($thumbnail, true);
-        $transparent = imagecolorallocatealpha($thumbnail, 255, 255, 255, 127);
-        imagefill($thumbnail, 0, 0, $transparent);
-    }
-
-    imagecopyresampled($thumbnail, $sourceImage, 0, 0, 0, 0, $width, $height, $sourceWidth, $sourceHeight);
-
-    // 保存
-    $result = false;
-    switch ($mimeType) {
-        case 'image/jpeg':
-            $result = imagejpeg($thumbnail, $destPath, 85);
-            break;
-        case 'image/png':
-            $result = imagepng($thumbnail, $destPath);
-            break;
-        case 'image/gif':
-            $result = imagegif($thumbnail, $destPath);
-            break;
-    }
-
-    imagedestroy($sourceImage);
-    imagedestroy($thumbnail);
-
-    return $result;
-}
+echo "<!-- Debug: Config loaded successfully -->\n";
+?>

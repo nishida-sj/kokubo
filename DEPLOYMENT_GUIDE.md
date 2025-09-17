@@ -125,12 +125,29 @@ composer install --no-dev --optimize-autoloader
 
 ## 🔧 トラブルシューティング
 
+### Internal Server Error の解決手順
+
+**Step 1: デバッグモードを有効化**
+1. `http://kokubosyokuju.geo.jp/debug.php` にアクセス
+2. システム情報とエラーの詳細を確認
+
+**Step 2: 一時的にデバッグ用ファイルを使用**
+```bash
+# サーバー上で以下を実行
+cd /public_html/kokubosyokuju.geo.jp
+mv index.php index.php.backup
+mv index-debug.php index.php
+```
+
+**Step 3: 問題に応じた対処**
+
 ### よくある問題
 
 **1. 500 Internal Server Error**
 - `config/config.php` の設定を確認
 - ファイル権限を確認（755または644）
 - PHPエラーログを確認
+- デバッグファイルでエラー詳細を確認
 
 **2. データベース接続エラー**
 - データベース設定（ホスト、ユーザー、パスワード）を確認
