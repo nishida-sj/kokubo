@@ -1,0 +1,13 @@
+# 最小限の .htaccess - エラー修正版
+RewriteEngine On
+
+# 静的ファイルの処理
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [L]
+
+# ディレクトリの処理
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [L]
+
+# その他すべてのリクエストをindex.phpに転送
+RewriteRule ^(.*)$ index.php [QSA,L]
