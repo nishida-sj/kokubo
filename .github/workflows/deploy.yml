@@ -112,10 +112,9 @@ jobs:
         remote_user: ${{ secrets.DEPLOY_USER }}
         remote_key: ${{ secrets.DEPLOY_KEY }}
 
-    # 代替案: FTP deploymentの例
-    - name: FTP Deploy (Alternative)
+    # FTP Deploy (SSH不要)
+    - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
-      if: false  # この部分は実際のFTP情報が必要なため無効化
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
@@ -128,6 +127,8 @@ jobs:
           **/.env
           **/config/database.php
           **/*.log
+          **/sql/seed.sql
+          **/.github/**
 
   notification:
     needs: [test, deploy]

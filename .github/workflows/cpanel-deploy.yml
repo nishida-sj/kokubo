@@ -1,0 +1,66 @@
+name: cPanel Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Install Composer dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Create deployment package
+      run: |
+        # 本番用の最適化されたファイルのみを含める
+        mkdir deploy
+        cp -r app deploy/
+        cp -r assets deploy/
+        cp -r config deploy/
+        cp -r public deploy/
+        cp -r sql deploy/
+        cp -r vendor deploy/
+        cp composer.json deploy/
+        cp README.md deploy/
+
+        # 本番用設定ファイルのテンプレート作成
+        cp config/config.php deploy/config/config.production.php
+
+        # ZIP形式で圧縮
+        cd deploy
+        zip -r ../kokubo-nursery-deploy.zip .
+        cd ..
+
+    - name: Upload to cPanel via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.CPANEL_HOST }}
+        username: ${{ secrets.CPANEL_FTP_USER }}
+        password: ${{ secrets.CPANEL_FTP_PASS }}
+        local-dir: ./deploy/
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.env
+          **/config/config.php
+          **/sql/seed.sql
+
+    - name: Run post-deploy script (Optional)
+      run: |
+        echo "Deployment completed!"
+        echo "Please update config/config.php on the server"
+        echo "And run: composer install --no-dev"
