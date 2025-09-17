@@ -1,0 +1,77 @@
+# 小久保植樹園 サブドメイン用 .htaccess
+# kokubosyokuju.geo.jp 用設定
+
+# エラーページの設定
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# リライトエンジン有効化
+RewriteEngine On
+
+# セキュリティ設定
+# .gitや.envファイルへのアクセス拒否
+<Files ".git*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files ".env*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# 設定ファイルへの直接アクセス拒否
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "debug-config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# 管理画面への直接アクセス制御
+RewriteRule ^admin/(.*)$ admin.php?path=$1 [QSA,L]
+
+# API エンドポイント
+RewriteRule ^api/(.*)$ api.php?endpoint=$1 [QSA,L]
+
+# 静的ファイルの処理（存在する場合はそのまま提供）
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [L]
+
+# ディレクトリの処理（存在する場合はそのまま提供）
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [L]
+
+# その他すべてのリクエストをindex.phpに転送
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# キャッシュ設定
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+# Gzip圧縮
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# MIME タイプ設定
+AddType image/webp .webp
