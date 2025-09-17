@@ -13,14 +13,10 @@
 
 ### 1. サーバー側でサブドメイン作成
 
-**cPanel の場合:**
-1. cPanel > サブドメイン
-2. サブドメイン名: `kokubo`
-3. ドキュメントルート: `/public_html/subdomains/kokubo/public_html`
-
-**他のコントロールパネルの場合:**
-- サブドメイン: `kokubo.your-domain.com`
-- ドキュメントルート: サブドメイン専用ディレクトリ
+**設定完了済み:**
+- サブドメイン名: `kokubosyokuju.geo.jp`
+- URL: `http://kokubosyokuju.geo.jp/`
+- ドキュメントルート: `/public_html/kokubosyokuju.geo.jp/`
 
 ### 2. GitHub Secrets 設定
 
@@ -51,19 +47,19 @@ FLUSH PRIVILEGES;
 デプロイ後、サーバー上で `config/config.subdomain.php` を `config/config.php` にリネームし、以下を実際の値に変更:
 
 ```php
-// URL設定
-define('SITE_URL', 'https://kokubo.your-actual-domain.com');
+// URL設定（設定済み）
+define('SITE_URL', 'http://kokubosyokuju.geo.jp');
 
-// データベース設定
+// データベース設定（要変更）
 define('DB_NAME', 'actual_db_name');
 define('DB_USER', 'actual_db_user');
 define('DB_PASS', 'actual_db_password');
 
-// メール設定
-define('MAIL_FROM', 'noreply@kokubo.your-actual-domain.com');
-define('MAIL_TO', 'info@kokubo.your-actual-domain.com');
+// メール設定（設定済み）
+define('MAIL_FROM', 'noreply@kokubosyokuju.geo.jp');
+define('MAIL_TO', 'info@kokubosyokuju.geo.jp');
 
-// セキュリティ
+// セキュリティ（要変更）
 define('PASSWORD_SALT', 'your_unique_production_salt');
 ```
 
@@ -82,7 +78,7 @@ define('PASSWORD_SALT', 'your_unique_production_salt');
 
 ```bash
 # サブドメインのルートディレクトリに移動
-cd /path/to/subdomain/root
+cd /public_html/kokubosyokuju.geo.jp
 
 # データベース初期化
 mysql -u username -p database_name < sql/schema.sql
@@ -117,12 +113,12 @@ composer install --no-dev --optimize-autoloader
 ## 🧪 動作確認
 
 ### フロントエンド
-- [ ] トップページ: `https://kokubo.your-domain.com`
-- [ ] 実績一覧: `https://kokubo.your-domain.com/works`
-- [ ] お問い合わせ: `https://kokubo.your-domain.com/contact`
+- [ ] トップページ: `http://kokubosyokuju.geo.jp`
+- [ ] 実績一覧: `http://kokubosyokuju.geo.jp/works`
+- [ ] お問い合わせ: `http://kokubosyokuju.geo.jp/contact`
 
 ### 管理画面
-- [ ] ログイン: `https://kokubo.your-domain.com/admin`
+- [ ] ログイン: `http://kokubosyokuju.geo.jp/admin`
 - [ ] ダッシュボード表示
 - [ ] 実績管理機能
 - [ ] お問い合わせ管理機能

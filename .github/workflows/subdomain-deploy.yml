@@ -69,25 +69,28 @@ jobs:
 
     - name: Create deployment package
       run: |
-        # サブドメイン用のディレクトリ構造を作成
-        mkdir -p deploy-subdomain/public_html
+        # kokubosyokuju.geo.jp用のディレクトリ構造を作成
+        # 全てのファイルを直接public_htmlに配置する形式
+        mkdir -p deploy-subdomain
 
-        # アプリケーションファイルをpublic_html外に配置
+        # 全ファイルをそのまま配置（public_htmlがドキュメントルート）
         cp -r app deploy-subdomain/
+        cp -r assets deploy-subdomain/
         cp -r config deploy-subdomain/
+        cp -r public/* deploy-subdomain/
         cp -r sql deploy-subdomain/
         cp -r vendor deploy-subdomain/
         cp composer.json deploy-subdomain/
 
-        # Webルートファイルをpublic_html内に配置
-        cp -r public/* deploy-subdomain/public_html/
-        cp -r assets deploy-subdomain/public_html/
+        # サブドメイン用設定ファイルをメインに
+        cp config/config.subdomain.php deploy-subdomain/config/config.php
 
-        # サブドメイン用の設定ファイル作成
-        sed 's|BASE_PATH.*|BASE_PATH", dirname(__DIR__));|' config/config.php > deploy-subdomain/config/config.php
+        # サブドメイン用.htaccessをメインに
+        cp public/.htaccess-subdomain deploy-subdomain/.htaccess
 
-        # index.phpのパス修正（サブドメイン用）
-        sed 's|dirname(__DIR__)|dirname(dirname(__FILE__))|g' public/index.php > deploy-subdomain/public_html/index.php
+        # アップロードディレクトリ作成
+        mkdir -p deploy-subdomain/uploads/works
+        echo "# Upload directory" > deploy-subdomain/uploads/.gitkeep
 
     - name: Deploy to Subdomain via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -96,7 +99,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./deploy-subdomain/
-        server-dir: /subdomains/kokubo/
+        server-dir: /public_html/kokubosyokuju.geo.jp/
         exclude: |
           **/.git*
           **/.env
@@ -108,5 +111,5 @@ jobs:
     - name: Post-deploy notification
       run: |
         echo "🎉 Subdomain deployment completed!"
-        echo "Please check: https://kokubo.your-domain.com"
-        echo "Admin panel: https://kokubo.your-domain.com/admin"
+        echo "Please check: http://kokubosyokuju.geo.jp"
+        echo "Admin panel: http://kokubosyokuju.geo.jp/admin"

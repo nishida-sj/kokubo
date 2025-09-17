@@ -22,7 +22,7 @@ define('UPLOAD_PATH', PUBLIC_PATH . '/uploads');
 define('CACHE_PATH', STORAGE_PATH . '/cache');
 
 // URL設定（サブドメイン用）
-define('SITE_URL', 'https://kokubo.your-domain.com'); // 実際のサブドメインに変更
+define('SITE_URL', 'http://kokubosyokuju.geo.jp');
 define('ASSET_URL', SITE_URL . '/assets');
 define('UPLOAD_URL', SITE_URL . '/uploads');
 
@@ -51,10 +51,10 @@ define('THUMBNAIL_HEIGHT', 200);
 define('WORKS_PER_PAGE', 12);
 define('ADMIN_ITEMS_PER_PAGE', 20);
 
-// メール設定（実際のメールアドレスに変更）
-define('MAIL_FROM', 'noreply@kokubo.your-domain.com');
+// メール設定
+define('MAIL_FROM', 'noreply@kokubosyokuju.geo.jp');
 define('MAIL_FROM_NAME', '小久保植樹園');
-define('MAIL_TO', 'info@kokubo.your-domain.com');
+define('MAIL_TO', 'info@kokubosyokuju.geo.jp');
 define('MAIL_USE_PHPMAILER', false);
 
 // SEO設定
