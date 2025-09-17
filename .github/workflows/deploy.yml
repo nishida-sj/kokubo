@@ -1,0 +1,144 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: kokubo_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: pdo, pdo_mysql, gd, mbstring, zip, curl
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Create uploads directory
+      run: |
+        mkdir -p public/uploads/works
+        chmod 777 public/uploads/works
+
+    - name: Setup test database
+      run: |
+        mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS kokubo_test;"
+        mysql -h 127.0.0.1 -u root -proot kokubo_test < sql/schema.sql
+
+    - name: Run syntax checks
+      run: |
+        find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+
+    - name: Check file permissions
+      run: |
+        find . -type f -name "*.php" -executable -not -path "./vendor/*" | head -10 || true
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Node dependencies
+      run: |
+        if [ -f package.json ]; then
+          npm ci
+        fi
+
+    - name: Build assets
+      run: |
+        if [ -f package.json ]; then
+          npm run build || echo "No build script found"
+        fi
+
+    - name: Create deployment archive
+      run: |
+        # 本番環境に必要なファイルのみを含める
+        tar -czf deploy.tar.gz \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='node_modules' \
+          --exclude='*.log' \
+          --exclude='.env.local' \
+          --exclude='composer.json' \
+          --exclude='composer.lock' \
+          --exclude='package.json' \
+          --exclude='package-lock.json' \
+          --exclude='README.md' \
+          --exclude='sql/seed.sql' \
+          .
+
+    - name: Upload to server via rsync
+      uses: burnett01/rsync-deployments@5.2
+      if: false  # この部分は実際のサーバー情報が必要なため無効化
+      with:
+        switches: -avzr --delete --exclude='.env' --exclude='config/database.php' --exclude='uploads/'
+        path: ./
+        remote_path: ${{ secrets.DEPLOY_PATH }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+
+    # 代替案: FTP deploymentの例
+    - name: FTP Deploy (Alternative)
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      if: false  # この部分は実際のFTP情報が必要なため無効化
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.env
+          **/config/database.php
+          **/*.log
+
+  notification:
+    needs: [test, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+    - name: Notify deployment status
+      run: |
+        if [ "${{ needs.deploy.result }}" == "success" ]; then
+          echo "✅ Deployment successful!"
+        else
+          echo "❌ Deployment failed!"
+        fi

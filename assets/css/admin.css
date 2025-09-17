@@ -1,0 +1,688 @@
+/* 管理画面専用CSS */
+
+/* CSS変数定義 */
+:root {
+    /* 管理画面カラー */
+    --admin-primary: #1976D2;
+    --admin-primary-dark: #1565C0;
+    --admin-secondary: #424242;
+    --admin-success: #4CAF50;
+    --admin-warning: #FF9800;
+    --admin-error: #F44336;
+    --admin-info: #2196F3;
+
+    /* 管理画面グレーパレット */
+    --admin-bg: #F5F5F5;
+    --admin-sidebar: #263238;
+    --admin-sidebar-hover: #37474F;
+    --admin-white: #FFFFFF;
+    --admin-border: #E0E0E0;
+    --admin-text: #212121;
+    --admin-text-light: #757575;
+    --admin-text-muted: #BDBDBD;
+
+    /* レイアウト */
+    --sidebar-width: 260px;
+    --header-height: 60px;
+
+    /* その他 */
+    --admin-radius: 4px;
+    --admin-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --admin-shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+    --admin-transition: 0.2s ease;
+}
+
+/* ベーススタイル */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--admin-text);
+    background-color: var(--admin-bg);
+}
+
+/* 認証ページ（ログイン） */
+.admin-auth {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.auth-container {
+    background: var(--admin-white);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-lg);
+    overflow: hidden;
+}
+
+.auth-header {
+    padding: 40px 30px 30px;
+    text-align: center;
+    background: var(--admin-white);
+}
+
+.auth-logo {
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+}
+
+.auth-content {
+    padding: 0 30px 30px;
+}
+
+.auth-footer {
+    padding: 20px 30px;
+    text-align: center;
+    background: #FAFAFA;
+    border-top: 1px solid var(--admin-border);
+    font-size: 12px;
+    color: var(--admin-text-light);
+}
+
+/* ログインフォーム */
+.login-form__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* アラート */
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--admin-radius);
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.alert--error {
+    background-color: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #FFCDD2;
+}
+
+.alert--success {
+    background-color: #E8F5E8;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+}
+
+.alert--warning {
+    background-color: #FFF3E0;
+    color: #EF6C00;
+    border: 1px solid #FFE0B2;
+}
+
+.alert--info {
+    background-color: #E3F2FD;
+    color: #1565C0;
+    border: 1px solid #BBDEFB;
+}
+
+.alert__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.alert__list li {
+    margin-bottom: 4px;
+}
+
+.alert__list li:last-child {
+    margin-bottom: 0;
+}
+
+/* フォーム */
+.form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    color: var(--admin-text);
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #D0D0D0;
+    border-radius: var(--admin-radius);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all var(--admin-transition);
+    background-color: var(--admin-white);
+    box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+.form-input.error,
+.form-textarea.error,
+.form-select.error {
+    border-color: var(--admin-error);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-help {
+    font-size: 12px;
+    color: var(--admin-text-light);
+    margin-top: 4px;
+}
+
+/* ボタン */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--admin-radius);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--admin-transition);
+    white-space: nowrap;
+    min-height: 36px;
+    box-sizing: border-box;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn--primary {
+    background-color: var(--admin-primary);
+    color: var(--admin-white);
+}
+
+.btn--primary:hover:not(:disabled) {
+    background-color: var(--admin-primary-dark);
+}
+
+.btn--secondary {
+    background-color: var(--admin-secondary);
+    color: var(--admin-white);
+}
+
+.btn--secondary:hover:not(:disabled) {
+    background-color: #616161;
+}
+
+.btn--success {
+    background-color: var(--admin-success);
+    color: var(--admin-white);
+}
+
+.btn--success:hover:not(:disabled) {
+    background-color: #45A049;
+}
+
+.btn--warning {
+    background-color: var(--admin-warning);
+    color: var(--admin-white);
+}
+
+.btn--warning:hover:not(:disabled) {
+    background-color: #F57C00;
+}
+
+.btn--error {
+    background-color: var(--admin-error);
+    color: var(--admin-white);
+}
+
+.btn--error:hover:not(:disabled) {
+    background-color: #E53935;
+}
+
+.btn--outline {
+    background-color: transparent;
+    color: var(--admin-primary);
+    border: 1px solid var(--admin-primary);
+}
+
+.btn--outline:hover:not(:disabled) {
+    background-color: var(--admin-primary);
+    color: var(--admin-white);
+}
+
+.btn--block {
+    width: 100%;
+}
+
+.btn--small {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-height: 28px;
+}
+
+.btn--large {
+    padding: 12px 20px;
+    font-size: 16px;
+    min-height: 44px;
+}
+
+/* 送信ボタン */
+.form-submit {
+    margin-top: 24px;
+}
+
+/* ログインヘルプ */
+.login-help {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.login-help__text {
+    font-size: 12px;
+    color: var(--admin-text-light);
+    margin: 0;
+}
+
+/* 管理画面レイアウト */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* サイドバー */
+.admin-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--admin-sidebar);
+    color: var(--admin-white);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.admin-sidebar__header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar__logo {
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.admin-sidebar__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.admin-sidebar__nav {
+    padding: 20px 0;
+}
+
+.admin-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-nav__item {
+    margin-bottom: 2px;
+}
+
+.admin-nav__link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all var(--admin-transition);
+    font-size: 14px;
+}
+
+.admin-nav__link:hover,
+.admin-nav__link.is-active {
+    background-color: var(--admin-sidebar-hover);
+    color: var(--admin-white);
+}
+
+.admin-nav__icon {
+    width: 20px;
+    margin-right: 12px;
+    text-align: center;
+}
+
+/* メインコンテンツ */
+.admin-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ヘッダー */
+.admin-header {
+    height: var(--header-height);
+    background-color: var(--admin-white);
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.admin-header__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+}
+
+.admin-header__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-header__username {
+    font-size: 14px;
+    color: var(--admin-text);
+}
+
+.admin-header__logout {
+    color: var(--admin-text-light);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.admin-header__logout:hover {
+    color: var(--admin-error);
+}
+
+/* コンテンツ */
+.admin-content {
+    flex: 1;
+    padding: 24px;
+}
+
+/* カード */
+.card {
+    background: var(--admin-white);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow);
+    overflow: hidden;
+}
+
+.card__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+}
+
+.card__content {
+    padding: 24px;
+}
+
+.card__footer {
+    padding: 16px 24px;
+    background-color: #FAFAFA;
+    border-top: 1px solid var(--admin-border);
+}
+
+/* テーブル */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.table th {
+    background-color: #FAFAFA;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.table td {
+    color: var(--admin-text);
+}
+
+.table--striped tbody tr:nth-child(even) {
+    background-color: #FAFAFA;
+}
+
+.table--hover tbody tr:hover {
+    background-color: #F5F5F5;
+}
+
+/* ページネーション */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    color: var(--admin-text);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all var(--admin-transition);
+}
+
+.pagination__link:hover,
+.pagination__link.is-active {
+    background-color: var(--admin-primary);
+    color: var(--admin-white);
+    border-color: var(--admin-primary);
+}
+
+.pagination__link:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ステータス */
+.status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status--published {
+    background-color: #E8F5E8;
+    color: #2E7D32;
+}
+
+.status--draft {
+    background-color: #FFF3E0;
+    color: #EF6C00;
+}
+
+.status--featured {
+    background-color: #E3F2FD;
+    color: #1565C0;
+}
+
+/* アクションボタン */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--admin-radius);
+    cursor: pointer;
+    transition: all var(--admin-transition);
+    text-decoration: none;
+}
+
+.action-btn--edit {
+    background-color: var(--admin-info);
+    color: var(--admin-white);
+}
+
+.action-btn--edit:hover {
+    background-color: #1976D2;
+}
+
+.action-btn--delete {
+    background-color: var(--admin-error);
+    color: var(--admin-white);
+}
+
+.action-btn--delete:hover {
+    background-color: #E53935;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--admin-transition);
+    }
+
+    .admin-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .admin-header {
+        padding: 0 16px;
+    }
+
+    .admin-content {
+        padding: 16px;
+    }
+
+    .card__header,
+    .card__content,
+    .card__footer {
+        padding: 16px;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+    }
+}
+
+/* ユーティリティ */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--admin-text-muted); }
+.text-small { font-size: 12px; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 8px !important; }
+.mb-2 { margin-bottom: 16px !important; }
+.mb-3 { margin-bottom: 24px !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 8px !important; }
+.mt-2 { margin-top: 16px !important; }
+.mt-3 { margin-top: 24px !important; }
+
+.hidden { display: none !important; }
+.block { display: block !important; }
+.inline-block { display: inline-block !important; }
+
+/* ローディング */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid var(--admin-white);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
