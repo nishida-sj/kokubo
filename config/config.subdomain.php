@@ -28,9 +28,9 @@ define('UPLOAD_URL', SITE_URL . '/uploads');
 
 // データベース設定（本番環境用）
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'your_db_name'); // 実際のDB名に変更
-define('DB_USER', 'your_db_user'); // 実際のDBユーザーに変更
-define('DB_PASS', 'your_db_pass'); // 実際のDBパスワードに変更
+define('DB_NAME', 'nishidasj_kokubo'); // 実際のDB名に変更
+define('DB_USER', 'nishidasj_kokubo'); // 実際のDBユーザーに変更
+define('DB_PASS', 'NishidaSJ'); // 実際のDBパスワードに変更
 define('DB_CHARSET', 'utf8mb4');
 
 // セッション設定
