@@ -17,44 +17,18 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.1'
-        extensions: pdo, pdo_mysql, gd, mbstring, zip, curl
+        extensions: pdo, pdo_mysql, gd, mbstring
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: composer install --prefer-dist --no-progress --no-interaction
 
     - name: Run syntax checks
-      run: |
-        find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
-
-    - name: Create optimized build
-      run: |
-        # 本番用の最適化
-        composer install --no-dev --optimize-autoloader
-
-        # 不要なファイルを除外したデプロイディレクトリ作成
-        mkdir deploy
-
-        # 必要なファイルのみコピー
-        cp -r app deploy/
-        cp -r assets deploy/
-        cp -r config deploy/
-        cp -r public deploy/
-        cp -r sql deploy/
-        cp -r vendor deploy/
-        cp composer.json deploy/
-        cp README.md deploy/
-
-        # サブドメイン用の.htaccessを作成
-        echo "# サブドメイン用 .htaccess" > deploy/public/.htaccess-subdomain
-        echo "RewriteEngine On" >> deploy/public/.htaccess-subdomain
-        echo "RewriteCond %{REQUEST_FILENAME} !-f" >> deploy/public/.htaccess-subdomain
-        echo "RewriteCond %{REQUEST_FILENAME} !-d" >> deploy/public/.htaccess-subdomain
-        echo "RewriteRule ^(.*)$ index.php [QSA,L]" >> deploy/public/.htaccess-subdomain
+      run: composer run-script check-syntax
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main'
 
     steps:
     - uses: actions/checkout@v3
