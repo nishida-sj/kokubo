@@ -1,0 +1,112 @@
+name: Subdomain FTP Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: pdo, pdo_mysql, gd, mbstring, zip, curl
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run syntax checks
+      run: |
+        find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+
+    - name: Create optimized build
+      run: |
+        # 本番用の最適化
+        composer install --no-dev --optimize-autoloader
+
+        # 不要なファイルを除外したデプロイディレクトリ作成
+        mkdir deploy
+
+        # 必要なファイルのみコピー
+        cp -r app deploy/
+        cp -r assets deploy/
+        cp -r config deploy/
+        cp -r public deploy/
+        cp -r sql deploy/
+        cp -r vendor deploy/
+        cp composer.json deploy/
+        cp README.md deploy/
+
+        # サブドメイン用の.htaccessを作成
+        echo "# サブドメイン用 .htaccess" > deploy/public/.htaccess-subdomain
+        echo "RewriteEngine On" >> deploy/public/.htaccess-subdomain
+        echo "RewriteCond %{REQUEST_FILENAME} !-f" >> deploy/public/.htaccess-subdomain
+        echo "RewriteCond %{REQUEST_FILENAME} !-d" >> deploy/public/.htaccess-subdomain
+        echo "RewriteRule ^(.*)$ index.php [QSA,L]" >> deploy/public/.htaccess-subdomain
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Install production dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Create deployment package
+      run: |
+        # サブドメイン用のディレクトリ構造を作成
+        mkdir -p deploy-subdomain/public_html
+
+        # アプリケーションファイルをpublic_html外に配置
+        cp -r app deploy-subdomain/
+        cp -r config deploy-subdomain/
+        cp -r sql deploy-subdomain/
+        cp -r vendor deploy-subdomain/
+        cp composer.json deploy-subdomain/
+
+        # Webルートファイルをpublic_html内に配置
+        cp -r public/* deploy-subdomain/public_html/
+        cp -r assets deploy-subdomain/public_html/
+
+        # サブドメイン用の設定ファイル作成
+        sed 's|BASE_PATH.*|BASE_PATH", dirname(__DIR__));|' config/config.php > deploy-subdomain/config/config.php
+
+        # index.phpのパス修正（サブドメイン用）
+        sed 's|dirname(__DIR__)|dirname(dirname(__FILE__))|g' public/index.php > deploy-subdomain/public_html/index.php
+
+    - name: Deploy to Subdomain via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deploy-subdomain/
+        server-dir: /subdomains/kokubo/
+        exclude: |
+          **/.git*
+          **/.env
+          **/node_modules/**
+          **/*.log
+          **/sql/seed.sql
+          **/.github/**
+
+    - name: Post-deploy notification
+      run: |
+        echo "🎉 Subdomain deployment completed!"
+        echo "Please check: https://kokubo.your-domain.com"
+        echo "Admin panel: https://kokubo.your-domain.com/admin"

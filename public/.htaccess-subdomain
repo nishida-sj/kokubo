@@ -1,0 +1,87 @@
+# サブドメイン用 .htaccess
+# Apache configuration for subdomain deployment
+
+# セキュリティ設定
+ServerTokens Prod
+ServerSignature Off
+
+# 文字エンコーディング
+AddDefaultCharset UTF-8
+
+# MIME設定
+AddType application/x-httpd-php .php
+
+# ディレクトリリスティングを無効化
+Options -Indexes
+
+# URL書き換え設定
+RewriteEngine On
+
+# HTTPSリダイレクト（本番環境で有効化）
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# index.phpを隠す
+RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# 存在しないファイル・ディレクトリの場合index.phpにリダイレクト
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# セキュリティ: 設定ファイルへのアクセスを拒否
+<Files "config.php">
+    Require all denied
+</Files>
+
+<Files "*.env">
+    Require all denied
+</Files>
+
+# セキュリティ: SQLファイルへのアクセスを拒否
+<FilesMatch "\.(sql|log)$">
+    Require all denied
+</FilesMatch>
+
+# セキュリティ: Gitファイルへのアクセスを拒否
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# キャッシュ設定
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+
+    # Images
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+
+    # Fonts
+    ExpiresByType font/woff "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 month"
+</IfModule>
+
+# Gzip圧縮
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Error Pages
+ErrorDocument 404 /404.php
