@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         /* ヘッダー */
         .header {
-            background: rgba(128, 128, 128, 0.3);
+            background: rgba(80, 80, 80, 0.6);
             position: fixed;
             width: 100%;
             top: 0;
@@ -64,9 +64,9 @@ class HomeController extends Controller
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 20px 100px;
+            max-width: none;
+            margin: 0;
         }
 
         .logo {
@@ -76,7 +76,7 @@ class HomeController extends Controller
             color: #fff;
             font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-weight: 500;
-            font-size: 28px;
+            font-size: 32px;
         }
 
         .logo .logo-icon {
@@ -87,7 +87,7 @@ class HomeController extends Controller
         .nav {
             display: flex;
             list-style: none;
-            gap: 40px;
+            gap: 50px;
             align-items: center;
         }
 
@@ -95,7 +95,7 @@ class HomeController extends Controller
             text-decoration: none;
             color: #fff;
             font-weight: 500;
-            font-size: 16px;
+            font-size: 18px;
             transition: color 0.3s ease;
             position: relative;
         }
@@ -596,6 +596,8 @@ class HomeController extends Controller
             <nav class="nav">
                 <a href="/">ホーム</a>
                 <a href="/works">施工実績</a>
+                <a href="/company">会社案内</a>
+                <a href="/recruit">採用情報</a>
                 <a href="/contact">お問い合わせ</a>
             </nav>
         </div>

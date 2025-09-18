@@ -34,6 +34,8 @@ class ContactController extends Controller
         <div class="nav">
             <a href="/">ホーム</a>
             <a href="/works">施工実績</a>
+            <a href="/company">会社案内</a>
+            <a href="/recruit">採用情報</a>
             <a href="/contact">お問い合わせ</a>
         </div>
 
