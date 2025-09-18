@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kokubo-construction.com/sitemap.xml
+
+# 管理画面などのクロール禁止
+Disallow: /admin/
+Disallow: /config/
+Disallow: /app/
+Disallow: /sql/
+
+# 一時ファイルやキャッシュファイル
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: *.log
+Disallow: *.sql
+
+# 開発・テスト用ファイル
+Disallow: /test/
+Disallow: /tests/
+Disallow: /dev/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /composer.json
+Disallow: /composer.lock
+Disallow: /package.json
+Disallow: /package-lock.json
+
+# よくクロールされるが不要なファイル
+Disallow: /favicon.ico
+Disallow: /apple-touch-icon.png

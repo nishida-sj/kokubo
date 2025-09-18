@@ -6,7 +6,7 @@
 <section class="hero">
     <div class="hero__background">
         <div class="hero__image">
-            <img src="<?= asset_url('img/hero-bg.jpg') ?>" alt="小久保工務店の施工事例" class="hero__image-img">
+            <img src="<?= asset_url('img/item/top.jpg') ?>" alt="小久保植樹園の施工事例" class="hero__image-img">
         </div>
         <div class="hero__overlay"></div>
     </div>
@@ -124,42 +124,67 @@
 <section class="services" id="services">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title" data-animation="fadeInUp">提供サービス</h2>
+            <h2 class="section-title" data-animation="fadeInUp">事業内容</h2>
             <p class="section-description" data-animation="fadeInUp">
-                新築からリフォームまで、住まいに関するあらゆるご要望にお応えします。
+                植栽から造園、お手入れまで、緑に関するあらゆるご要望にお応えします。
             </p>
         </div>
 
         <div class="services__grid">
-            <?php if (!empty($categories)): ?>
-                <?php foreach ($categories as $index => $category): ?>
-                    <div class="services__item" data-animation="fadeInUp" style="animation-delay: <?= $index * 0.1 ?>s">
-                        <div class="services__item-image">
-                            <img src="<?= asset_url('img/service-' . ($index + 1) . '.jpg') ?>" alt="<?= h($category['name']) ?>" class="services__item-img">
-                            <div class="services__item-overlay">
-                                <span class="services__item-count"><?= $category['works_count'] ?>件の実績</span>
-                            </div>
-                        </div>
-                        <div class="services__item-content">
-                            <h3 class="services__item-title"><?= h($category['name']) ?></h3>
-                            <p class="services__item-description">
-                                <?php
-                                $descriptions = [
-                                    '新築住宅' => 'お客様のライフスタイルに合わせた理想の住まいを一から設計・施工いたします。',
-                                    'リフォーム' => '住まいの悩みを解決し、より快適で機能的な空間に生まれ変わらせます。',
-                                    '店舗・事務所' => 'ビジネスの成功をサポートする、機能的で魅力的な商業施設を提供します。',
-                                    '増改築' => '家族構成の変化に合わせて、既存の住まいを効率的に拡張・改修します。'
-                                ];
-                                echo h($descriptions[$category['name']] ?? '');
-                                ?>
-                            </p>
-                            <a href="<?= site_url('works?category=' . $category['slug']) ?>" class="services__item-link">
-                                実績を見る <span>→</span>
-                            </a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <div class="services__item" data-animation="fadeInUp">
+                <div class="service-icon">🌱</div>
+                <div class="services__item-content">
+                    <h3 class="services__item-title">植栽・造園</h3>
+                    <ul class="services__item-list">
+                        <li>植木の植栽</li>
+                        <li>芝生の施工</li>
+                        <li>庭石・景石・灯篭の設置・撤去</li>
+                        <li>緑化対策</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="services__item" data-animation="fadeInUp" style="animation-delay: 0.1s">
+                <div class="service-icon">✂️</div>
+                <div class="services__item-content">
+                    <h3 class="services__item-title">お手入れ・管理</h3>
+                    <ul class="services__item-list">
+                        <li>植木の剪定（お手入れ）</li>
+                        <li>庭木・生垣の刈込み</li>
+                        <li>芝刈り（草刈り）</li>
+                        <li>草取り</li>
+                        <li>保養所等の年間管理</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="services__item" data-animation="fadeInUp" style="animation-delay: 0.2s">
+                <div class="service-icon">🛡️</div>
+                <div class="services__item-content">
+                    <h3 class="services__item-title">防除・特殊作業</h3>
+                    <ul class="services__item-list">
+                        <li>植木の消毒</li>
+                        <li>防草対策（防草シート設置）</li>
+                        <li>ハチの巣駆除</li>
+                        <li>立木の伐採</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="services__item" data-animation="fadeInUp" style="animation-delay: 0.3s">
+                <div class="service-icon">🚛</div>
+                <div class="services__item-content">
+                    <h3 class="services__item-title">施工・その他</h3>
+                    <ul class="services__item-list">
+                        <li>植木の移植</li>
+                        <li>山砂・砂利の施工・運搬</li>
+                        <li>駐車場の施工</li>
+                        <li>遊具の設置</li>
+                        <li>お墓の管理</li>
+                        <li>門松の施工</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </section>
