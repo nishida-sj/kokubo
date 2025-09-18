@@ -35,7 +35,6 @@ class ContactController extends Controller
             <a href="/">ホーム</a>
             <a href="/works">施工実績</a>
             <a href="/contact">お問い合わせ</a>
-            <a href="/admin">管理画面</a>
         </div>
 
         <div class="contact-info">

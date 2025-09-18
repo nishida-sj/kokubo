@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         /* ヘッダー */
         .header {
-            background: #fff;
+            background: rgba(128, 128, 128, 0.3);
             position: fixed;
             width: 100%;
             top: 0;
@@ -73,7 +73,7 @@ class HomeController extends Controller
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #19448e;
+            color: #fff;
             font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-weight: 500;
             font-size: 28px;
@@ -93,7 +93,7 @@ class HomeController extends Controller
 
         .nav a {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             font-weight: 500;
             font-size: 16px;
             transition: color 0.3s ease;
@@ -101,7 +101,7 @@ class HomeController extends Controller
         }
 
         .nav a:hover {
-            color: #19448e;
+            color: #ccc;
         }
 
         .nav a::after {
@@ -127,7 +127,7 @@ class HomeController extends Controller
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1600 900\'%3E%3Cdefs%3E%3ClinearGradient id=\'landscapeGrad\' x1=\'0\' y1=\'0\' x2=\'1\' y2=\'0.7\'%3E%3Cstop offset=\'0%\' style=\'stop-color:%23228b22;stop-opacity:1\' /%3E%3Cstop offset=\'30%\' style=\'stop-color:%2332cd32;stop-opacity:1\' /%3E%3Cstop offset=\'70%\' style=\'stop-color:%2387ceeb;stop-opacity:1\' /%3E%3Cstop offset=\'100%\' style=\'stop-color:%234169e1;stop-opacity:1\' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=\'1600\' height=\'900\' fill=\'url(%23landscapeGrad)\'/%3E%3Cpath d=\'M0,400 Q400,300 800,350 T1600,300 L1600,900 L0,900 Z\' fill=\'%23228b22\' opacity=\'0.8\'/%3E%3Cpath d=\'M0,500 Q300,420 600,450 T1200,400 Q1400,380 1600,420 L1600,900 L0,900 Z\' fill=\'%232e7d32\' opacity=\'0.6\'/%3E%3Cellipse cx=\'200\' cy=\'350\' rx=\'40\' ry=\'80\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3Cellipse cx=\'400\' cy=\'300\' rx=\'30\' ry=\'60\' fill=\'%233e8b3e\' opacity=\'0.7\'/%3E%3Cellipse cx=\'600\' cy=\'380\' rx=\'35\' ry=\'70\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3Cellipse cx=\'1000\' cy=\'320\' rx=\'45\' ry=\'90\' fill=\'%233e8b3e\' opacity=\'0.7\'/%3E%3Cellipse cx=\'1200\' cy=\'360\' rx=\'38\' ry=\'76\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3C/svg%3E");
+            background-image: url("/assets/img/item/top.jpg");
             background-size: cover;
             background-position: center;
             color: white;
@@ -591,14 +591,12 @@ class HomeController extends Controller
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                <span class="logo-icon">🌿</span>
                 小久保植樹園
             </a>
             <nav class="nav">
                 <a href="/">ホーム</a>
                 <a href="/works">施工実績</a>
                 <a href="/contact">お問い合わせ</a>
-                <a href="/admin">管理画面</a>
             </nav>
         </div>
     </header>
@@ -641,28 +639,28 @@ class HomeController extends Controller
     <!-- サービス -->
     <section class="section services">
         <div class="container">
-            <h2 class="section-title">事業案内</h2>
-            <p class="section-subtitle">植栽から管理まで、緑に関するあらゆるニーズにお応えします</p>
+            <h2 class="section-title">事業内容</h2>
+            <p class="section-subtitle">植栽から造園、お手入れまで、緑に関するあらゆるご要望にお応えします</p>
             <div class="services-grid">
                 <div class="service-card">
-                    <span class="service-icon">🏡</span>
-                    <h3>庭園設計</h3>
-                    <p>お客様のご要望やライフスタイルに合わせた庭園の設計・施工を行います。和風・洋風問わず、美しく機能的な庭園をお作りします。土地の特性を活かした設計で、長く愛される空間をご提案いたします。</p>
-                </div>
-                <div class="service-card">
                     <span class="service-icon">🌱</span>
-                    <h3>植栽工事</h3>
-                    <p>住宅やマンション、公共施設の植栽工事を承ります。適切な植物選びから施工まで一貫して対応。気候や土壌条件を考慮し、その場所に最適な樹種をご提案し、美しい緑空間を創造します。</p>
-                </div>
-                <div class="service-card">
-                    <span class="service-icon">🌿</span>
-                    <h3>樹木管理</h3>
-                    <p>定期的な剪定・管理で美しい緑を維持します。樹木の健康状態をチェックし、適切なケアを提供。病害虫の防除や施肥管理も行い、樹木が長期間健康で美しい状態を保てるようサポートします。</p>
+                    <h3>植栽・造園</h3>
+                    <p>植木の植栽、芝生の施工、庭石・景石・灯篭の設置・撤去、緑化対策など、美しい緑空間の創造を行います。</p>
                 </div>
                 <div class="service-card">
                     <span class="service-icon">✂️</span>
-                    <h3>剪定作業</h3>
-                    <p>樹種に応じた適切な剪定で健康な樹木を育てます。美しい樹形づくりもお任せください。時期や方法を見極め、樹木本来の美しさを引き出しながら、安全性も確保した剪定を行います。</p>
+                    <h3>お手入れ・管理</h3>
+                    <p>植木の剪定（お手入れ）、庭木・生垣の刈込み、芝刈り（草刈り）、草取り、保養所等の年間管理を承ります。</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">🛡️</span>
+                    <h3>防除・特殊作業</h3>
+                    <p>植木の消毒、防草対策（防草シート設置）、ハチの巣駆除、立木の伐採など専門的な作業に対応します。</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-icon">🚛</span>
+                    <h3>施工・その他</h3>
+                    <p>植木の移植、山砂・砂利の施工・運搬、駐車場の施工、遊具の設置、お墓の管理、門松の施工まで幅広く対応。</p>
                 </div>
             </div>
         </div>

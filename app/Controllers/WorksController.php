@@ -280,14 +280,12 @@ class WorksController extends Controller
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                <span class="logo-icon">🌿</span>
                 小久保植樹園
             </a>
             <nav class="nav">
                 <a href="/">ホーム</a>
                 <a href="/works">施工実績</a>
                 <a href="/contact">お問い合わせ</a>
-                <a href="/admin">管理画面</a>
             </nav>
         </div>
     </header>
@@ -304,9 +302,8 @@ class WorksController extends Controller
             if (empty($works)) {
                 $html .= '<div style="text-align: center; padding: 60px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
                     <div style="font-size: 60px; margin-bottom: 20px;">🌿</div>
-                    <h3 style="color: #19448e; margin-bottom: 15px;">実績データがありません</h3>
-                    <p style="color: #666;">管理画面から実績を追加してください。</p>
-                    <a href="/admin" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #19448e; color: white; text-decoration: none; border-radius: 25px; font-weight: 500;">管理画面へ</a>
+                    <h3 style="color: #19448e; margin-bottom: 15px;">実績データを準備中です</h3>
+                    <p style="color: #666;">これまでの施工実績を整理中です。しばらくお待ちください。</p>
                 </div>';
             } else {
                 $html .= '<div class="works-grid">';
