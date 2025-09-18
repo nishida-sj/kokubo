@@ -30,7 +30,7 @@ class HomeController extends Controller
     <!-- フォント -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hiragino+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* 小久保植樹園 メインスタイル - 参考サイト準拠 */
@@ -43,7 +43,7 @@ class HomeController extends Controller
         }
 
         body {
-            font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro", "Yu Gothic", "游ゴシック", "Meiryo", sans-serif;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "Times New Roman", serif;
             line-height: 1.7;
             color: #333;
             overflow-x: hidden;
@@ -74,7 +74,8 @@ class HomeController extends Controller
             align-items: center;
             text-decoration: none;
             color: #19448e;
-            font-weight: bold;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+            font-weight: 500;
             font-size: 28px;
         }
 
@@ -163,11 +164,12 @@ class HomeController extends Controller
         }
 
         .hero-text h1 {
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-size: 48px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 24px;
             line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
         }
 
         .hero-text .subtitle {
@@ -188,12 +190,14 @@ class HomeController extends Controller
             position: relative;
             writing-mode: vertical-rl;
             text-orientation: mixed;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-size: 60px;
-            font-weight: 300;
-            letter-spacing: 8px;
-            opacity: 0.9;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 400;
+            letter-spacing: 12px;
+            opacity: 0.95;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
             margin-left: 40px;
+            color: #ffffff;
         }
 
         .hero-btn {
@@ -228,8 +232,9 @@ class HomeController extends Controller
 
         .section-title {
             text-align: center;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-size: 42px;
-            font-weight: 700;
+            font-weight: 600;
             color: #19448e;
             margin-bottom: 20px;
             position: relative;
@@ -559,10 +564,11 @@ class HomeController extends Controller
             .hero-company {
                 writing-mode: horizontal-tb;
                 text-orientation: unset;
-                font-size: 24px;
+                font-size: 28px;
                 margin-left: 0;
                 margin-top: 20px;
-                letter-spacing: 2px;
+                letter-spacing: 4px;
+                font-weight: 500;
             }
 
             .concept-content {
