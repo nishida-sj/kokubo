@@ -17,6 +17,18 @@ class CompanyController extends Controller
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Typekit -->
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'fiw6ghz',
+          scriptTimeout: 3000,
+          async: true
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -33,7 +45,7 @@ class CompanyController extends Controller
 
         /* ヘッダー */
         .header {
-            background: rgba(80, 80, 80, 0.6);
+            background: rgba(80, 80, 80, 0.4);
             position: fixed;
             width: 100%;
             top: 0;
@@ -56,7 +68,7 @@ class CompanyController extends Controller
             align-items: center;
             text-decoration: none;
             color: #fff;
-            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+            font-family: "fiw6ghz", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             font-weight: 500;
             font-size: 32px;
         }
