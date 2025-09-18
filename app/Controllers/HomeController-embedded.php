@@ -25,17 +25,9 @@ class HomeController extends Controller
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小久保植樹園 | 伊勢市の植樹・造園専門業者</title>
     <meta name="description" content="伊勢市の植樹園。植栽工事・庭園設計・樹木管理を手がける地域密着の造園業者です。緑豊かな空間づくりをお手伝いします。">
-    <meta name="keywords" content="伊勢市,植樹園,造園,植栽,庭木,剪定,小久保植樹園">
-
-    <!-- フォント -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hiragino+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* 小久保植樹園 メインスタイル - 参考サイト準拠 */
-
-        /* リセット・ベース */
         * {
             margin: 0;
             padding: 0;
@@ -126,74 +118,39 @@ class HomeController extends Controller
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1600 900\'%3E%3Cdefs%3E%3ClinearGradient id=\'landscapeGrad\' x1=\'0\' y1=\'0\' x2=\'1\' y2=\'0.7\'%3E%3Cstop offset=\'0%\' style=\'stop-color:%23228b22;stop-opacity:1\' /%3E%3Cstop offset=\'30%\' style=\'stop-color:%2332cd32;stop-opacity:1\' /%3E%3Cstop offset=\'70%\' style=\'stop-color:%2387ceeb;stop-opacity:1\' /%3E%3Cstop offset=\'100%\' style=\'stop-color:%234169e1;stop-opacity:1\' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=\'1600\' height=\'900\' fill=\'url(%23landscapeGrad)\'/%3E%3Cpath d=\'M0,400 Q400,300 800,350 T1600,300 L1600,900 L0,900 Z\' fill=\'%23228b22\' opacity=\'0.8\'/%3E%3Cpath d=\'M0,500 Q300,420 600,450 T1200,400 Q1400,380 1600,420 L1600,900 L0,900 Z\' fill=\'%232e7d32\' opacity=\'0.6\'/%3E%3Cellipse cx=\'200\' cy=\'350\' rx=\'40\' ry=\'80\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3Cellipse cx=\'400\' cy=\'300\' rx=\'30\' ry=\'60\' fill=\'%233e8b3e\' opacity=\'0.7\'/%3E%3Cellipse cx=\'600\' cy=\'380\' rx=\'35\' ry=\'70\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3Cellipse cx=\'1000\' cy=\'320\' rx=\'45\' ry=\'90\' fill=\'%233e8b3e\' opacity=\'0.7\'/%3E%3Cellipse cx=\'1200\' cy=\'360\' rx=\'38\' ry=\'76\' fill=\'%232e7d32\' opacity=\'0.7\'/%3E%3C/svg%3E");
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #19448e 0%, #2c5aa0 50%, #4a90e2 100%);
             color: white;
-            text-align: left;
+            text-align: center;
             overflow: hidden;
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(25, 68, 142, 0.7) 0%, rgba(44, 90, 160, 0.6) 50%, rgba(74, 144, 226, 0.5) 100%);
-            z-index: 1;
         }
 
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
-            width: 100%;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 800px;
             animation: fadeInUp 1s ease-out;
         }
 
-        .hero-text {
-            flex: 1;
-            max-width: 600px;
-        }
-
-        .hero-text h1 {
-            font-size: 48px;
+        .hero-content h1 {
+            font-size: 56px;
             font-weight: 700;
             margin-bottom: 24px;
             line-height: 1.2;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .hero-text .subtitle {
-            font-size: 20px;
+        .hero-content .subtitle {
+            font-size: 24px;
             margin-bottom: 16px;
             opacity: 0.95;
             font-weight: 300;
         }
 
-        .hero-text .description {
-            font-size: 16px;
+        .hero-content .description {
+            font-size: 18px;
             margin-bottom: 40px;
             opacity: 0.9;
             line-height: 1.6;
-        }
-
-        .hero-company {
-            position: relative;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 60px;
-            font-weight: 300;
-            letter-spacing: 8px;
-            opacity: 0.9;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin-left: 40px;
         }
 
         .hero-btn {
@@ -543,26 +500,12 @@ class HomeController extends Controller
                 display: none;
             }
 
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
+            .hero-content h1 {
+                font-size: 36px;
             }
 
-            .hero-text h1 {
-                font-size: 32px;
-            }
-
-            .hero-text .subtitle {
-                font-size: 18px;
-            }
-
-            .hero-company {
-                writing-mode: horizontal-tb;
-                text-orientation: unset;
-                font-size: 24px;
-                margin-left: 0;
-                margin-top: 20px;
-                letter-spacing: 2px;
+            .hero-content .subtitle {
+                font-size: 20px;
             }
 
             .concept-content {
@@ -576,6 +519,11 @@ class HomeController extends Controller
 
             .contact-info {
                 grid-template-columns: 1fr;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -600,15 +548,10 @@ class HomeController extends Controller
     <!-- メインビジュアル -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-text">
-                <h1>緑豊かな空間づくり</h1>
-                <p class="subtitle">信頼と技術で築く美しい庭園</p>
-                <p class="description">伊勢市の植樹・造園専門業者として、お客様の想いを形にします。<br>四季を通じて美しい景観を演出する空間づくりを心がけています。</p>
-                <a href="/contact" class="hero-btn">お問い合わせ</a>
-            </div>
-            <div class="hero-company">
-                小久保植樹園
-            </div>
+            <h1>緑豊かな空間づくり</h1>
+            <p class="subtitle">信頼と技術で築く美しい庭園</p>
+            <p class="description">伊勢市の植樹・造園専門業者として、お客様の想いを形にします。<br>四季を通じて美しい景観を演出する空間づくりを心がけています。</p>
+            <a href="/contact" class="hero-btn">お問い合わせ</a>
         </div>
     </section>
 
@@ -746,48 +689,12 @@ class HomeController extends Controller
                 <p>〒516-0000 三重県伊勢市○○町○○番地</p>
                 <p>TEL: 0596-00-0000 | Email: info@kokubosyokuju.geo.jp</p>
                 <p>営業時間: 平日 8:00-18:00 / 土曜 8:00-17:00</p>
-                <div class="copyright">
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.7);">
                     <p>© 2024 小久保植樹園. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // スムーススクロール
-        document.querySelectorAll(\'a[href^="#"]\').forEach(anchor => {
-            anchor.addEventListener(\'click\', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute(\'href\')).scrollIntoView({
-                    behavior: \'smooth\'
-                });
-            });
-        });
-
-        // フェードインアニメーション
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: \'0px 0px -50px 0px\'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = \'1\';
-                    entry.target.style.transform = \'translateY(0)\';
-                }
-            });
-        }, observerOptions);
-
-        // 各セクションにフェードイン効果を適用
-        document.querySelectorAll(\'.section\').forEach(section => {
-            section.style.opacity = \'0\';
-            section.style.transform = \'translateY(30px)\';
-            section.style.transition = \'opacity 0.6s ease, transform 0.6s ease\';
-            observer.observe(section);
-        });
-    </script>
 </body>
 </html>';
 
