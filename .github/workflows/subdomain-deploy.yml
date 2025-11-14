@@ -74,6 +74,53 @@ jobs:
         mkdir -p deploy-subdomain/uploads/works
         echo "# Upload directory" > deploy-subdomain/uploads/.gitkeep
 
+        # デプロイパッケージの詳細検証
+        echo "========================================="
+        echo "📦 Deployment Package Verification"
+        echo "========================================="
+
+        # 必須ファイルの存在確認
+        echo "🔍 Checking critical files..."
+        CRITICAL_FILES=(
+          "deploy-subdomain/index.php"
+          "deploy-subdomain/.htaccess"
+          "deploy-subdomain/app/Router.php"
+          "deploy-subdomain/app/Controllers/HomeController.php"
+          "deploy-subdomain/config/config.php"
+        )
+
+        for file in "${CRITICAL_FILES[@]}"; do
+          if [ -f "$file" ]; then
+            echo "✅ $file"
+          else
+            echo "❌ MISSING: $file"
+            exit 1
+          fi
+        done
+
+        # ディレクトリ構造の確認
+        echo ""
+        echo "📁 Directory structure:"
+        ls -la deploy-subdomain/
+
+        echo ""
+        echo "📁 Controllers directory:"
+        ls -la deploy-subdomain/app/Controllers/
+
+        echo ""
+        echo "📁 Admin Controllers (if exists):"
+        if [ -d "deploy-subdomain/app/Controllers/Admin" ]; then
+          ls -la deploy-subdomain/app/Controllers/Admin/
+        else
+          echo "⚠️  Admin directory not found (expected for rollback)"
+        fi
+
+        # ファイル数の確認
+        echo ""
+        echo "📊 Package statistics:"
+        echo "Total files: $(find deploy-subdomain -type f | wc -l)"
+        echo "Total size: $(du -sh deploy-subdomain | cut -f1)"
+
     - name: Deploy to Subdomain via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
@@ -82,6 +129,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./deploy-subdomain/
         server-dir: /public_html/kokubosyokuju.geo.jp/
+        log-level: verbose
         exclude: |
           **/.git*
           **/.env
