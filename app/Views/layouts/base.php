@@ -87,18 +87,16 @@
     <!-- Main Content -->
     <main class="main">
         <?php
-        // ページコンテンツを出力
-        if (isset($content)) {
-            echo $content;
-        } elseif (isset($page) && !empty($page)) {
+        // ページコンテンツをインクルード
+        $pageFile = null;
+        if (isset($page) && !empty($page)) {
             $pageFile = APP_PATH . '/Views/pages/' . $page . '.php';
-            if (file_exists($pageFile)) {
-                include $pageFile;
-            } else {
-                echo '<section class="error"><div class="container"><h1>ページが見つかりません</h1></div></section>';
-            }
-        } elseif (isset($contentFile) && !empty($contentFile) && file_exists($contentFile)) {
-            include $contentFile;
+        } elseif (isset($contentFile) && !empty($contentFile)) {
+            $pageFile = $contentFile;
+        }
+
+        if ($pageFile && file_exists($pageFile)) {
+            include $pageFile;
         } else {
             echo '<section class="error"><div class="container"><h1>ページが見つかりません</h1></div></section>';
         }
