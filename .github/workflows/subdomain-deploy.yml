@@ -132,6 +132,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./deploy-subdomain/
         server-dir: /public_html/kokubosyokuju.geo.jp/
+        state-name: .ftp-deploy-sync-state-v2.json
         log-level: verbose
         exclude: |
           **/.git*
@@ -140,6 +141,9 @@ jobs:
           **/*.log
           **/sql/seed.sql
           **/.github/**
+          **/uploads/**
+          **/storage/logs/**
+          **/storage/cache/**
 
     - name: Post-deploy notification
       run: |
