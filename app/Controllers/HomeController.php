@@ -406,25 +406,47 @@ class HomeController extends Controller
             color: #555;
         }
 
-        .concept-visual {
-            text-align: center;
-            padding: 60px;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        .concept-images {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            gap: 20px;
+        }
+
+        .concept-image-main {
             border-radius: 20px;
-            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .concept-visual .main-icon {
-            font-size: 120px;
-            color: #19448e;
-            margin-bottom: 20px;
+        .concept-image-main img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
             display: block;
+            transition: transform 0.5s ease;
         }
 
-        .concept-visual h4 {
-            font-size: 24px;
-            color: #19448e;
-            font-weight: 600;
+        .concept-image-main:hover img {
+            transform: scale(1.05);
+        }
+
+        .concept-image-sub {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .concept-image-sub img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .concept-image-sub img:hover {
+            transform: translateY(-5px);
         }
 
         /* サービスセクション */
@@ -437,6 +459,8 @@ class HomeController extends Controller
 
         .service-card {
             background: #fff;
+            background-size: cover;
+            background-position: center;
             padding: 50px 30px;
             border-radius: 15px;
             text-align: center;
@@ -454,6 +478,11 @@ class HomeController extends Controller
             width: 100%;
             height: 4px;
             background: linear-gradient(90deg, #19448e, #4a90e2);
+        }
+
+        .service-icon-wrapper {
+            position: relative;
+            z-index: 1;
         }
 
         .service-card:hover {
@@ -743,6 +772,14 @@ class HomeController extends Controller
                 gap: 40px;
             }
 
+            .concept-image-main img {
+                height: 300px;
+            }
+
+            .concept-image-sub img {
+                height: 150px;
+            }
+
             .section-title {
                 font-size: 32px;
             }
@@ -891,9 +928,14 @@ class HomeController extends Controller
                     <p>私たちは単に木を植えるだけでなく、その土地の特性を活かし、四季を通じて美しい景観を演出する空間づくりを心がけています。お客様の暮らしに寄り添い、緑豊かな環境をお作りします。</p>
                     <p>確かな技術と豊富な経験により、お客様にご満足いただける高品質な造園サービスをご提供いたします。</p>
                 </div>
-                <div class="concept-visual">
-                    <span class="main-icon">🌳</span>
-                    <h4>自然との調和</h4>
+                <div class="concept-images">
+                    <div class="concept-image-main">
+                        <img src="assets/img/works/3.jpg" alt="和風庭園の施工例">
+                    </div>
+                    <div class="concept-image-sub">
+                        <img src="assets/img/works/24.jpg" alt="美しい花々">
+                        <img src="assets/img/works/26.jpg" alt="植樹園の風景">
+                    </div>
                 </div>
             </div>
         </div>
@@ -905,23 +947,31 @@ class HomeController extends Controller
             <h2 class="section-title">事業内容</h2>
             <p class="section-subtitle">植栽から造園、お手入れまで、緑に関するあらゆるご要望にお応えします</p>
             <div class="services-grid">
-                <div class="service-card">
-                    <span class="service-icon">🌱</span>
+                <div class="service-card" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(\'assets/img/works/1.jpg\');">
+                    <div class="service-icon-wrapper">
+                        <span class="service-icon">🌱</span>
+                    </div>
                     <h3>植栽・造園</h3>
                     <p>植木の植栽、芝生の施工、庭石・景石・灯篭の設置・撤去、緑化対策など、美しい緑空間の創造を行います。</p>
                 </div>
-                <div class="service-card">
-                    <span class="service-icon">✂️</span>
+                <div class="service-card" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(\'assets/img/works/13.jpg\');">
+                    <div class="service-icon-wrapper">
+                        <span class="service-icon">✂️</span>
+                    </div>
                     <h3>お手入れ・管理</h3>
                     <p>植木の剪定（お手入れ）、庭木・生垣の刈込み、芝刈り（草刈り）、草取り、保養所等の年間管理を承ります。</p>
                 </div>
-                <div class="service-card">
-                    <span class="service-icon">🛡️</span>
+                <div class="service-card" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(\'assets/img/works/30.jpg\');">
+                    <div class="service-icon-wrapper">
+                        <span class="service-icon">🛡️</span>
+                    </div>
                     <h3>防除・特殊作業</h3>
                     <p>植木の消毒、防草対策（防草シート設置）、ハチの巣駆除、立木の伐採など専門的な作業に対応します。</p>
                 </div>
-                <div class="service-card">
-                    <span class="service-icon">🚛</span>
+                <div class="service-card" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.95)), url(\'assets/img/works/27.jpg\');">
+                    <div class="service-icon-wrapper">
+                        <span class="service-icon">🚛</span>
+                    </div>
                     <h3>施工・その他</h3>
                     <p>植木の移植、山砂・砂利の施工・運搬、駐車場の施工、遊具の設置、お墓の管理、門松の施工まで幅広く対応。</p>
                 </div>
