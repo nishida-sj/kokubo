@@ -74,6 +74,16 @@ jobs:
         mkdir -p deploy-subdomain/uploads/works
         echo "# Upload directory" > deploy-subdomain/uploads/.gitkeep
 
+        # 検証: Adminディレクトリが含まれているか確認
+        echo "📁 Verifying deployment package contents..."
+        if [ -d "deploy-subdomain/app/Controllers/Admin" ]; then
+          echo "✅ Admin directory found"
+          ls -la deploy-subdomain/app/Controllers/Admin/
+        else
+          echo "❌ ERROR: Admin directory not found!"
+          exit 1
+        fi
+
     - name: Deploy to Subdomain via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
@@ -82,6 +92,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./deploy-subdomain/
         server-dir: /public_html/kokubosyokuju.geo.jp/
+        dangerous-clean-slate: true
         exclude: |
           **/.git*
           **/.env
