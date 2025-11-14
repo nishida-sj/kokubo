@@ -66,6 +66,9 @@ jobs:
         # サブドメイン用.htaccessをメインに
         cp .htaccess-subdomain deploy-subdomain/.htaccess
 
+        # サブドメイン用index.phpをメインに（正しいパスを使用）
+        cp index-subdomain.php deploy-subdomain/index.php
+
         # 必要なディレクトリを確実に作成
         mkdir -p deploy-subdomain/storage/cache
         mkdir -p deploy-subdomain/storage/logs
