@@ -41,7 +41,8 @@
         <div class="header__container">
             <div class="header__logo">
                 <a href="<?= site_url() ?>">
-                    <img src="<?= asset_url('img/logo.png') ?>" alt="<?= h(APP_NAME) ?>" class="header__logo-img">
+                    <span class="header__logo-text sponly"><?= h(APP_NAME) ?></span>
+                    <img src="<?= asset_url('img/logo.png') ?>" alt="<?= h(APP_NAME) ?>" class="header__logo-img pconly">
                 </a>
             </div>
 

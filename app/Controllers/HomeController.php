@@ -18,6 +18,66 @@ class HomeController extends Controller
                 LIMIT 6
             ");
 
+            // データベースにデータがない場合はダミーデータを使用
+            if (empty($featuredWorks)) {
+                $featuredWorks = [
+                    [
+                        'slug' => 'modern-garden-1',
+                        'title' => 'モダン住宅の外構植栽',
+                        'description' => '砂利とシンボルツリーを配置したシンプルでモダンな外構デザイン。お手入れしやすく美しい空間を実現しました。',
+                        'main_image' => 'assets/img/works/1.jpg',
+                        'category_name' => '住宅外構',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ],
+                    [
+                        'slug' => 'japanese-garden',
+                        'title' => '和風庭園の植栽',
+                        'description' => '赤いモミジと庭石を配置した趣のある和風庭園。四季折々の美しさを楽しめる設計です。',
+                        'main_image' => 'assets/img/works/3.jpg',
+                        'category_name' => '和風庭園',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ],
+                    [
+                        'slug' => 'lawn-installation',
+                        'title' => '人工芝の施工',
+                        'description' => '美しい緑の芝生を施工。一年中青々とした美しい庭を維持できます。',
+                        'main_image' => 'assets/img/works/17.jpg',
+                        'category_name' => '芝生施工',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ],
+                    [
+                        'slug' => 'stone-wall-garden',
+                        'title' => '石壁と植栽の調和',
+                        'description' => 'モダンな石壁に低木とグリーンを配置。メンテナンスしやすく美しい外構です。',
+                        'main_image' => 'assets/img/works/10.jpg',
+                        'category_name' => '外構デザイン',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ],
+                    [
+                        'slug' => 'entrance-planting',
+                        'title' => '玄関周りの植栽デザイン',
+                        'description' => '玄関を彩る植栽デザイン。来客を温かく迎える緑の空間を演出しました。',
+                        'main_image' => 'assets/img/works/22.jpg',
+                        'category_name' => '玄関植栽',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ],
+                    [
+                        'slug' => 'fence-planting',
+                        'title' => 'フェンス沿いの植栽',
+                        'description' => 'フェンス沿いにシンボルツリーと低木を配置。プライバシーを守りながら緑豊かな空間に。',
+                        'main_image' => 'assets/img/works/11.jpg',
+                        'category_name' => 'フェンス植栽',
+                        'location' => '伊勢市',
+                        'created_at' => date('Y-m-d')
+                    ]
+                ];
+            }
+
             $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -130,6 +190,51 @@ class HomeController extends Controller
 
         .nav a:hover::after {
             width: 100%;
+        }
+
+        /* ハンバーガーメニューボタン */
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .menu-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* レスポンシブ表示制御 */
+        .sponly {
+            display: none;
+        }
+
+        .pconly {
+            display: block;
         }
 
         /* メインビジュアル */
@@ -556,8 +661,58 @@ class HomeController extends Controller
 
         /* レスポンシブデザイン */
         @media (max-width: 768px) {
+            /* ヘッダー調整 */
+            .header-container {
+                padding: 15px 20px;
+            }
+
+            /* ナビゲーション - モバイル用オーバーレイ */
             .nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(25, 68, 142, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+
+            .nav.is-open {
+                transform: translateX(0);
+            }
+
+            .nav a {
+                font-size: 20px;
+                font-weight: 600;
+                padding: 15px 0;
+                color: #fff;
+            }
+
+            /* ハンバーガーメニューボタンを表示 */
+            .menu-btn {
+                display: flex;
+            }
+
+            /* レスポンシブ表示制御 */
+            .sponly {
+                display: block;
+            }
+
+            .pconly {
                 display: none;
+            }
+
+            /* メニューが開いている時の body のスクロール制御 */
+            body.menu-open {
+                overflow: hidden;
             }
 
             .hero-content {
@@ -602,16 +757,21 @@ class HomeController extends Controller
     <!-- ヘッダー -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
+            <a href="/" class="logo pconly">
                 小久保植樹園
             </a>
-            <nav class="nav">
+            <nav class="nav" id="nav">
                 <a href="/">ホーム</a>
                 <a href="/works">施工実績</a>
                 <a href="/company">会社案内</a>
                 <a href="/recruit">採用情報</a>
                 <a href="/contact">お問い合わせ</a>
             </nav>
+            <button class="menu-btn" id="menuBtn">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </button>
         </div>
     </header>
 
@@ -773,6 +933,27 @@ class HomeController extends Controller
 
     <!-- JavaScript -->
     <script>
+        // ハンバーガーメニュー
+        const menuBtn = document.getElementById(\'menuBtn\');
+        const nav = document.getElementById(\'nav\');
+
+        if (menuBtn && nav) {
+            menuBtn.addEventListener(\'click\', function() {
+                menuBtn.classList.toggle(\'is-active\');
+                nav.classList.toggle(\'is-open\');
+                document.body.classList.toggle(\'menu-open\');
+            });
+
+            // ナビゲーションリンクをクリックしたらメニューを閉じる
+            nav.querySelectorAll(\'a\').forEach(link => {
+                link.addEventListener(\'click\', function() {
+                    menuBtn.classList.remove(\'is-active\');
+                    nav.classList.remove(\'is-open\');
+                    document.body.classList.remove(\'menu-open\');
+                });
+            });
+        }
+
         // スムーススクロール
         document.querySelectorAll(\'a[href^="#"]\').forEach(anchor => {
             anchor.addEventListener(\'click\', function (e) {

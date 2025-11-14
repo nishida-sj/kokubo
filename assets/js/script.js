@@ -47,9 +47,11 @@
 
     // メニューボタンの処理
     function toggleMobileMenu() {
-        menuBtn.classList.toggle('is-active');
-        nav.classList.toggle('is-open');
-        document.body.classList.toggle('menu-open');
+        if (menuBtn && nav) {
+            menuBtn.classList.toggle('is-active');
+            nav.classList.toggle('is-open');
+            document.body.classList.toggle('menu-open');
+        }
     }
 
     // スムーススクロール
