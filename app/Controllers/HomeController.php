@@ -751,6 +751,95 @@ class HomeController extends Controller
                 grid-template-columns: 1fr;
             }
         }
+
+        /* 施工ギャラリーセクション */
+        .gallery {
+            padding: 80px 0;
+            background-color: #fafafa;
+        }
+
+        .gallery__grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .gallery__grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery__grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery__grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        .gallery__item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .gallery__item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .gallery__item-image {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+
+        .gallery__item-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery__item:hover .gallery__item-img {
+            transform: scale(1.1);
+        }
+
+        .gallery__item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+            display: flex;
+            align-items: flex-end;
+            padding: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery__item:hover .gallery__item-overlay {
+            opacity: 1;
+        }
+
+        .gallery__item-title {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -884,6 +973,51 @@ class HomeController extends Controller
             </div>
             <div style="text-align: center; margin-top: 40px;">
                 <a href="/works" class="hero-btn">施工実績一覧を見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 施工ギャラリー -->
+    <section class="section gallery" id="gallery">
+        <div class="container">
+            <h2 class="section-title">施工ギャラリー</h2>
+            <p class="section-subtitle">これまでに手がけた様々な施工事例をご覧いただけます</p>
+            <div class="gallery__grid">';
+
+            $galleryImages = [
+                ['img' => '1.jpg', 'title' => 'モダン外構'],
+                ['img' => '2.jpg', 'title' => '花壇植栽'],
+                ['img' => '3.jpg', 'title' => '和風庭園'],
+                ['img' => '4.jpg', 'title' => 'シンボルツリー'],
+                ['img' => '6.jpg', 'title' => 'エントランス'],
+                ['img' => '7.jpg', 'title' => '木目外壁'],
+                ['img' => '9.jpg', 'title' => '石材プランター'],
+                ['img' => '10.jpg', 'title' => '石壁植栽'],
+                ['img' => '11.jpg', 'title' => 'フェンス植栽'],
+                ['img' => '13.jpg', 'title' => '庭石配置'],
+                ['img' => '14.jpg', 'title' => '黒石と低木'],
+                ['img' => '15.jpg', 'title' => '桜の花'],
+                ['img' => '16.jpg', 'title' => '梅の花'],
+                ['img' => '17.jpg', 'title' => '芝生施工'],
+                ['img' => '18.jpg', 'title' => '玄関植栽'],
+                ['img' => '19.jpg', 'title' => 'レンガ花壇'],
+                ['img' => '22.jpg', 'title' => '玄関デザイン'],
+                ['img' => '24.jpg', 'title' => 'サルスベリ'],
+            ];
+
+            foreach ($galleryImages as $item) {
+                $html .= '
+                <div class="gallery__item">
+                    <div class="gallery__item-image">
+                        <img src="assets/img/works/' . htmlspecialchars($item['img']) . '" alt="' . htmlspecialchars($item['title']) . '" class="gallery__item-img">
+                        <div class="gallery__item-overlay">
+                            <span class="gallery__item-title">' . htmlspecialchars($item['title']) . '</span>
+                        </div>
+                    </div>
+                </div>';
+            }
+
+            $html .= '
             </div>
         </div>
     </section>
