@@ -37,6 +37,11 @@ RewriteRule ^admin/(.*)$ admin.php?path=$1 [QSA,L]
 # API エンドポイント
 RewriteRule ^api/(.*)$ api.php?endpoint=$1 [QSA,L]
 
+# PHPファイルの直接実行（デバッグ用を含む）
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} \.php$
+RewriteRule ^.*$ - [L]
+
 # 静的ファイルの処理（存在する場合はそのまま提供）
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^.*$ - [L]
