@@ -1,9 +1,9 @@
 <?php
 // 小久保植樹園 サブドメイン用設定
 
-// エラーレポート設定（本番環境）
-error_reporting(0);
-ini_set('display_errors', 0);
+// エラーレポート設定（デバッグ用に一時的に有効化）
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // 文字エンコーディング設定
 mb_language('Japanese');
@@ -67,8 +67,8 @@ define('OG_IMAGE', ASSET_URL . '/img/og-image.jpg');
 define('CACHE_ENABLED', true);
 define('CACHE_LIFETIME', 3600); // 1時間
 
-// デバッグ設定（本番環境）
-define('DEBUG_MODE', false);
+// デバッグ設定（エラー調査のため一時的に有効化）
+define('DEBUG_MODE', true);
 
 // 自動読み込み
 spl_autoload_register(function ($className) {
