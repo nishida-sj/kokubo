@@ -72,9 +72,25 @@ define('DEBUG_MODE', true);
 
 // 自動読み込み
 spl_autoload_register(function ($className) {
+    // 名前空間を含むクラス名の場合
     $classPath = APP_PATH . '/' . str_replace('\\', '/', $className) . '.php';
     if (file_exists($classPath)) {
         require_once $classPath;
+        return;
+    }
+
+    // Helpers内のクラスを探す
+    $helperPath = APP_PATH . '/Helpers/' . $className . '.php';
+    if (file_exists($helperPath)) {
+        require_once $helperPath;
+        return;
+    }
+
+    // Controllers内のクラスを探す
+    $controllerPath = APP_PATH . '/Controllers/' . $className . '.php';
+    if (file_exists($controllerPath)) {
+        require_once $controllerPath;
+        return;
     }
 });
 
