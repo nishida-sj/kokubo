@@ -60,7 +60,7 @@ class Admin_WorksController
         $categories = $db->fetchAll("SELECT * FROM categories ORDER BY sort_order ASC, name ASC");
 
         $data = [
-            'page' => 'admin/works/index',
+            'page' => 'admin/pages/works/index',
             'title' => '施工実績管理',
             'works' => $pagination['data'],
             'pagination' => $pagination,
@@ -90,7 +90,7 @@ class Admin_WorksController
         $tags = $db->fetchAll("SELECT * FROM tags ORDER BY name ASC");
 
         $data = [
-            'page' => 'admin/works/create',
+            'page' => 'admin/pages/works/create',
             'title' => '実績追加',
             'categories' => $categories,
             'tags' => $tags
@@ -237,7 +237,7 @@ class Admin_WorksController
         $tags = $db->fetchAll("SELECT * FROM tags ORDER BY name ASC");
 
         $data = [
-            'page' => 'admin/works/create',
+            'page' => 'admin/pages/works/create',
             'title' => '実績追加',
             'categories' => $categories,
             'tags' => $tags,
@@ -279,7 +279,7 @@ class Admin_WorksController
         ", ['work_id' => $id]);
 
         $data = [
-            'page' => 'admin/works/edit',
+            'page' => 'admin/pages/works/edit',
             'title' => '実績編集',
             'work' => $work,
             'categories' => $categories,
@@ -422,7 +422,7 @@ class Admin_WorksController
         $workImages = $db->fetchAll("SELECT * FROM work_images WHERE work_id = :work_id ORDER BY sort_order ASC", ['work_id' => $id]);
 
         $dataView = [
-            'page' => 'admin/works/edit',
+            'page' => 'admin/pages/works/edit',
             'title' => '実績編集',
             'work' => array_merge($work, $data),
             'categories' => $categories,

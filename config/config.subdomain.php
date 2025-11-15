@@ -22,7 +22,7 @@ define('UPLOAD_PATH', PUBLIC_PATH . '/uploads');
 define('CACHE_PATH', STORAGE_PATH . '/cache');
 
 // URL設定（サブドメイン用）
-define('SITE_URL', 'http://kokubosyokuju.geo.jp');
+define('SITE_URL', 'https://kokubosyokuju.geo.jp');
 define('ASSET_URL', SITE_URL . '/assets');
 define('UPLOAD_URL', SITE_URL . '/uploads');
 
