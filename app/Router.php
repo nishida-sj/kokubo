@@ -46,10 +46,15 @@ class Router
         // 管理画面のコントローラーパス調整
         if (strpos($controllerName, 'Admin/') === 0) {
             $controllerPath = APP_PATH . '/Controllers/' . $controllerName . '.php';
-            $className = str_replace('/', '\\', $controllerName);
+
+            // 複数のクラス名形式を試す
+            $possibleClassNames = [
+                str_replace('/', '_', $controllerName),  // Admin_WorksController
+                str_replace('/', '\\', $controllerName), // Admin\WorksController
+            ];
         } else {
             $controllerPath = APP_PATH . '/Controllers/' . $controllerName . '.php';
-            $className = $controllerName;
+            $possibleClassNames = [$controllerName];
         }
 
         if (!file_exists($controllerPath)) {
@@ -58,8 +63,17 @@ class Router
 
         require_once $controllerPath;
 
-        if (!class_exists($className)) {
-            throw new Exception("Class not found: {$className}");
+        // 複数のクラス名形式を試す
+        $className = null;
+        foreach ($possibleClassNames as $possibleName) {
+            if (class_exists($possibleName, false)) {
+                $className = $possibleName;
+                break;
+            }
+        }
+
+        if (!$className) {
+            throw new Exception("Class not found. Tried: " . implode(', ', $possibleClassNames));
         }
 
         $controllerInstance = new $className();
