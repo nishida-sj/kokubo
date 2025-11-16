@@ -342,13 +342,14 @@
                     window.location.href = e.target.href;
                 }
             }
+        });
 
-            // フォーム送信
-            if (e.target.matches('form button[type="submit"]')) {
-                const form = e.target.closest('form');
-                if (form && !form.dataset.noLoading) {
-                    handleFormSubmit(form);
-                }
+        // フォーム送信時のローディング表示
+        document.addEventListener('submit', (e) => {
+            const form = e.target;
+            if (form && !form.dataset.noLoading) {
+                handleFormSubmit(form);
+                // フォームは通常通り送信される（e.preventDefault()は呼ばない）
             }
         });
 
