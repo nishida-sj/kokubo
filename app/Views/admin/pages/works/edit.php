@@ -166,10 +166,17 @@
                 </div>
                 <div class="card__content">
                     <?php if (!empty($work['main_image'])): ?>
+                        <?php
+                        // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
+                        $mainImagePath = $work['main_image'];
+                        if ($mainImagePath && strpos($mainImagePath, '/uploads/') === false && strpos($mainImagePath, '/') === 0) {
+                            $mainImagePath = '/uploads' . $mainImagePath;
+                        }
+                        ?>
                         <div class="current-image mb-3">
                             <label class="form-label">現在のメイン画像</label>
                             <div class="image-preview">
-                                <img src="<?= site_url($work['main_image']) ?>"
+                                <img src="<?= site_url($mainImagePath) ?>"
                                      alt="<?= h($work['title']) ?>"
                                      class="image-preview__img">
                             </div>
@@ -204,8 +211,15 @@
                     <div class="card__content">
                         <div class="image-gallery">
                             <?php foreach ($workImages as $image): ?>
+                                <?php
+                                // 画像パスの自動修正
+                                $imagePath = $image['path'];
+                                if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                                    $imagePath = '/uploads' . $imagePath;
+                                }
+                                ?>
                                 <div class="image-gallery__item" data-image-id="<?= $image['id'] ?>">
-                                    <img src="<?= site_url($image['path']) ?>"
+                                    <img src="<?= site_url($imagePath) ?>"
                                          alt="<?= h($image['alt']) ?>"
                                          class="image-gallery__img">
                                     <div class="image-gallery__info">
