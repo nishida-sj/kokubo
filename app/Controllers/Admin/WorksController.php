@@ -101,9 +101,15 @@ class Admin_WorksController
 
     public function store()
     {
+        // デバッグ: リクエスト到達確認
+        error_log('WorksController::store() called');
+        error_log('REQUEST_METHOD: ' . $_SERVER['REQUEST_METHOD']);
+        error_log('POST data: ' . print_r($_POST, true));
+
         Auth::requireLogin();
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            error_log('Not POST request, redirecting');
             redirect('admin/works');
             return;
         }
@@ -112,6 +118,7 @@ class Admin_WorksController
         $errors = [];
 
         try {
+            error_log('Verifying CSRF token');
             Csrf::requireToken();
 
             // 入力データ取得
@@ -171,10 +178,13 @@ class Admin_WorksController
 
                 try {
                     // 実績を保存
+                    error_log('Inserting work into database');
                     $workId = $db->insert('works', $data);
+                    error_log('Work inserted with ID: ' . $workId);
 
                     // タグを保存
                     if (!empty($_POST['tags'])) {
+                        error_log('Saving tags');
                         $tagIds = array_filter(array_map('intval', $_POST['tags']));
                         foreach ($tagIds as $tagId) {
                             $db->insert('work_tags', [
@@ -186,6 +196,7 @@ class Admin_WorksController
 
                     // 追加画像アップロード
                     if (!empty($_FILES['images']['name'][0])) {
+                        error_log('Uploading additional images');
                         for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
                             if ($_FILES['images']['error'][$i] === UPLOAD_ERR_OK) {
                                 // ファイル配列を再構築
@@ -218,6 +229,8 @@ class Admin_WorksController
                     }
 
                     $db->commit();
+                    error_log('Transaction committed successfully');
+                    error_log('Redirecting to admin/works');
                     redirect('admin/works');
                     return;
 
@@ -229,6 +242,7 @@ class Admin_WorksController
 
         } catch (Exception $e) {
             error_log('Work create error: ' . $e->getMessage());
+            error_log('Stack trace: ' . $e->getTraceAsString());
             $errors['general'] = ['保存中にエラーが発生しました。'];
         }
 

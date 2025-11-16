@@ -111,7 +111,7 @@
     </main>
 
     <!-- JavaScript -->
-    <script src="<?= asset_url('js/admin.js') ?>"></script>
+    <script src="<?= asset_url('js/admin.js') ?>?v=<?= time() ?>"></script>
 
     <?php if (isset($additionalScripts)): ?>
         <?= $additionalScripts ?>

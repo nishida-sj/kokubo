@@ -32,7 +32,7 @@
     </div>
 <?php endif; ?>
 
-<form action="<?= site_url('admin/works/store') ?>" method="POST" enctype="multipart/form-data" class="work-form">
+<form action="<?= site_url('admin/works/store') ?>" method="POST" enctype="multipart/form-data" class="work-form" data-no-loading>
     <?= Csrf::field() ?>
 
     <div class="form-layout">
