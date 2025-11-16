@@ -203,9 +203,9 @@ require_once __DIR__ . '/../config/config.php';
             }
 
             // uploadsディレクトリチェック
-            $uploadsDirExists = is_dir(PUBLIC_PATH . '/uploads');
-            $uploadsWorksExists = is_dir(PUBLIC_PATH . '/uploads/works');
-            $uploadsThumbsExists = is_dir(PUBLIC_PATH . '/uploads/works/thumbs');
+            $uploadsDirExists = is_dir(UPLOAD_PATH);
+            $uploadsWorksExists = is_dir(UPLOAD_PATH . '/works');
+            $uploadsThumbsExists = is_dir(UPLOAD_PATH . '/works/thumbs');
 
             // ファイルシステムチェック
             $requiredFiles = [

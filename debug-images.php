@@ -37,12 +37,31 @@ echo "upload_url('works/test.jpg'): " . upload_url('works/test.jpg') . "\n";
 
     <h2>2. uploadsディレクトリの確認</h2>
     <pre><?php
-$uploadsDir = PUBLIC_PATH . '/uploads';
+echo "=== パス設定確認 ===\n";
+echo "BASE_PATH: " . BASE_PATH . "\n";
+echo "PUBLIC_PATH: " . PUBLIC_PATH . "\n";
+echo "UPLOAD_PATH: " . UPLOAD_PATH . "\n\n";
+
+$uploadsDir = UPLOAD_PATH;
 echo "Uploadsディレクトリパス: " . $uploadsDir . "\n";
 echo "存在: " . (is_dir($uploadsDir) ? "✅ Yes" : "❌ No") . "\n";
 
+if (!is_dir($uploadsDir)) {
+    // 他のパターンも試す
+    echo "\n❌ uploadsディレクトリが見つかりません。他のパスを確認中...\n";
+    $alternatives = [
+        __DIR__ . '/uploads',
+        PUBLIC_PATH . '/uploads',
+        BASE_PATH . '/public/uploads',
+        '/virtual/nishidasj/public_html/kokubosyokuju.geo.jp/uploads'
+    ];
+    foreach ($alternatives as $altPath) {
+        echo "  試行: " . $altPath . " - " . (is_dir($altPath) ? "✅ 存在" : "❌ なし") . "\n";
+    }
+}
+
 if (is_dir($uploadsDir)) {
-    echo "\nサブディレクトリ:\n";
+    echo "\n✅ サブディレクトリ:\n";
     $items = scandir($uploadsDir);
     foreach ($items as $item) {
         if ($item !== '.' && $item !== '..') {
@@ -55,6 +74,16 @@ if (is_dir($uploadsDir)) {
                     return $f !== '.' && $f !== '..' && is_file($path . '/' . $f);
                 }));
                 echo "    ファイル数: " . $fileCount . "\n";
+
+                // ファイルリストも表示
+                if ($fileCount > 0 && $fileCount < 20) {
+                    foreach ($files as $file) {
+                        if ($file !== '.' && $file !== '..' && is_file($path . '/' . $file)) {
+                            $size = filesize($path . '/' . $file);
+                            echo "      • " . $file . " (" . number_format($size) . " bytes)\n";
+                        }
+                    }
+                }
             } else {
                 echo " (ファイル)\n";
             }
@@ -120,20 +149,55 @@ if (is_dir($uploadsDir)) {
 
     <h2>4. uploadsディレクトリの実際のファイル</h2>
     <pre><?php
-$worksDir = PUBLIC_PATH . '/uploads/works';
+$worksDir = UPLOAD_PATH . '/works';
+echo "チェック中のパス: " . $worksDir . "\n\n";
+
 if (is_dir($worksDir)) {
     echo "✅ /uploads/works ディレクトリが存在します\n\n";
     echo "ファイル一覧:\n";
     $files = scandir($worksDir);
+    $imageFiles = [];
     foreach ($files as $file) {
         if ($file !== '.' && $file !== '..' && is_file($worksDir . '/' . $file)) {
             $size = filesize($worksDir . '/' . $file);
             echo "  - " . $file . " (" . number_format($size) . " bytes)\n";
+            $imageFiles[] = $file;
         }
+    }
+
+    if (empty($imageFiles)) {
+        echo "\n⚠️ 画像ファイルがありません。管理画面から画像をアップロードしてください。\n";
+    }
+
+    // サムネイルディレクトリも確認
+    $thumbsDir = $worksDir . '/thumbs';
+    echo "\n";
+    if (is_dir($thumbsDir)) {
+        echo "✅ /uploads/works/thumbs ディレクトリが存在します\n";
+        $thumbFiles = scandir($thumbsDir);
+        $thumbCount = 0;
+        foreach ($thumbFiles as $file) {
+            if ($file !== '.' && $file !== '..' && is_file($thumbsDir . '/' . $file)) {
+                $thumbCount++;
+            }
+        }
+        echo "サムネイル数: " . $thumbCount . "\n";
+    } else {
+        echo "❌ /uploads/works/thumbs ディレクトリが存在しません\n";
     }
 } else {
     echo "❌ /uploads/works ディレクトリが存在しません\n";
     echo "パス: " . $worksDir . "\n";
+
+    // 代替パスを確認
+    echo "\n他のパターンを確認:\n";
+    $altPaths = [
+        __DIR__ . '/uploads/works',
+        BASE_PATH . '/public/uploads/works',
+    ];
+    foreach ($altPaths as $altPath) {
+        echo "  - " . $altPath . ": " . (is_dir($altPath) ? "✅ 存在" : "❌ なし") . "\n";
+    }
 }
     ?></pre>
 

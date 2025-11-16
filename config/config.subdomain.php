@@ -14,11 +14,11 @@ date_default_timezone_set('Asia/Tokyo');
 define('APP_NAME', '小久保植樹園');
 define('APP_VERSION', '1.0.0');
 define('BASE_PATH', dirname(__DIR__));
-define('PUBLIC_PATH', BASE_PATH . '/public_html');
+define('PUBLIC_PATH', BASE_PATH); // サブドメインデプロイでは全ファイルがルートに配置される
 define('APP_PATH', BASE_PATH . '/app');
 define('CONFIG_PATH', BASE_PATH . '/config');
 define('STORAGE_PATH', BASE_PATH . '/storage');
-define('UPLOAD_PATH', PUBLIC_PATH . '/uploads');
+define('UPLOAD_PATH', BASE_PATH . '/uploads'); // PUBLIC_PATH . '/uploads' から変更
 define('CACHE_PATH', STORAGE_PATH . '/cache');
 
 // URL設定（サブドメイン用）
