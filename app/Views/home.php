@@ -202,11 +202,20 @@
         <?php if (!empty($featuredWorks)): ?>
             <div class="works__grid">
                 <?php foreach ($featuredWorks as $index => $work): ?>
+                    <?php
+                    // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
+                    $imagePath = $work['main_image'];
+                    if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                        $imagePath = '/uploads' . $imagePath;
+                    }
+                    ?>
                     <article class="works__item" data-animation="fadeInUp" style="animation-delay: <?= $index * 0.1 ?>s">
                         <a href="<?= site_url('works/' . $work['slug']) ?>" class="works__item-link">
                             <div class="works__item-image">
-                                <img src="<?= $work['main_image'] ? site_url($work['main_image']) : asset_url('img/no-image.jpg') ?>"
-                                     alt="<?= h($work['title']) ?>" class="works__item-img">
+                                <img src="<?= $imagePath ? site_url($imagePath) : asset_url('img/no-image.jpg') ?>"
+                                     alt="<?= h($work['title']) ?>"
+                                     class="works__item-img"
+                                     loading="lazy">
                                 <div class="works__item-category">
                                     <?= h($work['category_name']) ?>
                                 </div>
@@ -226,6 +235,12 @@
                         </a>
                     </article>
                 <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="works__empty" style="text-align: center; padding: 60px 20px;">
+                <div style="font-size: 60px; margin-bottom: 20px;">🌿</div>
+                <h3 style="color: var(--c-text); margin-bottom: 15px; font-size: var(--fs-xl);">施工実績を準備中です</h3>
+                <p style="color: var(--c-text-light); font-size: var(--fs-base);">現在、施工実績のデータを整理中です。しばらくお待ちください。</p>
             </div>
         <?php endif; ?>
 

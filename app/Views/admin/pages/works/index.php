@@ -120,7 +120,14 @@
                                 <td>
                                     <div class="work-thumb">
                                         <?php if (!empty($work['main_image'])): ?>
-                                            <img src="<?= site_url($work['main_image']) ?>"
+                                            <?php
+                                            // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
+                                            $imagePath = $work['main_image'];
+                                            if (strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                                                $imagePath = '/uploads' . $imagePath;
+                                            }
+                                            ?>
+                                            <img src="<?= site_url($imagePath) ?>"
                                                  alt="<?= h($work['title']) ?>"
                                                  class="work-thumb__img">
                                         <?php else: ?>

@@ -144,9 +144,23 @@ class WorksController extends Controller
 
         .works-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
             margin-top: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .works-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 35px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .works-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 40px;
+            }
         }
 
         .work-card {
@@ -164,14 +178,44 @@ class WorksController extends Controller
 
         .work-image {
             height: 250px;
-            background: linear-gradient(135deg, #19448e 0%, #4a90e2 100%);
+            background: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .work-card:hover .work-image img {
+            transform: scale(1.05);
+        }
+
+        .work-image-placeholder {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #19448e 0%, #4a90e2 100%);
             color: white;
             font-size: 60px;
-            position: relative;
-            overflow: hidden;
+        }
+
+        .work-category-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(25, 68, 142, 0.9);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 1;
         }
 
         .work-content {
@@ -181,26 +225,20 @@ class WorksController extends Controller
         .work-title {
             font-size: 20px;
             color: #19448e;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .work-category {
-            color: #666;
-            font-size: 14px;
             margin-bottom: 16px;
-            font-weight: 500;
-            padding: 4px 12px;
-            background: #f0f0f0;
-            border-radius: 12px;
-            display: inline-block;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         .work-description {
             color: #555;
-            line-height: 1.6;
+            line-height: 1.7;
             font-size: 15px;
             margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .work-location {
@@ -322,7 +360,13 @@ class WorksController extends Controller
             } else {
                 $html .= '<div class="works-grid">';
                 foreach ($works as $work) {
-                    // カテゴリー別のアイコンを設定
+                    // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
+                    $imagePath = $work['main_image'];
+                    if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                        $imagePath = '/uploads' . $imagePath;
+                    }
+
+                    // カテゴリー別のアイコンを設定（画像がない場合のフォールバック）
                     $icon = '🌳';
                     if (strpos($work['category_name'], '植栽') !== false) $icon = '🌱';
                     if (strpos($work['category_name'], '剪定') !== false) $icon = '✂️';
@@ -331,10 +375,18 @@ class WorksController extends Controller
 
                     $html .= '
                     <div class="work-card">
-                        <div class="work-image">' . $icon . '</div>
+                        <div class="work-image">';
+
+                    if ($imagePath) {
+                        $html .= '<img src="' . h($imagePath) . '" alt="' . h($work['title']) . '" loading="lazy">';
+                    } else {
+                        $html .= '<div class="work-image-placeholder">' . $icon . '</div>';
+                    }
+
+                    $html .= '<div class="work-category-badge">📋 ' . h($work['category_name']) . '</div>
+                        </div>
                         <div class="work-content">
                             <div class="work-title">' . h($work['title']) . '</div>
-                            <div class="work-category">📋 ' . h($work['category_name']) . '</div>
                             <div class="work-description">' . h($work['description']) . '</div>';
 
                     if ($work['location']) {
