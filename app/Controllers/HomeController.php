@@ -989,9 +989,34 @@ class HomeController extends Controller
 
             if (!empty($featuredWorks)) {
                 foreach ($featuredWorks as $work) {
+                    // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
+                    $imagePath = $work['main_image'] ?? '';
+                    if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                        $imagePath = '/uploads' . $imagePath;
+                    }
+
+                    // カテゴリー別のアイコンを設定（画像がない場合のフォールバック）
+                    $icon = '🌳';
+                    if (isset($work['category_name'])) {
+                        if (strpos($work['category_name'], '植栽') !== false) $icon = '🌱';
+                        if (strpos($work['category_name'], '剪定') !== false) $icon = '✂️';
+                        if (strpos($work['category_name'], '造園') !== false) $icon = '🏡';
+                        if (strpos($work['category_name'], '管理') !== false) $icon = '🌿';
+                    }
+
                     $html .= '
                     <div class="work-card">
-                        <div class="work-image">🌳 ' . h($work['category_name']) . '</div>
+                        <div class="work-image">';
+
+                    if ($imagePath) {
+                        $fullImageUrl = 'https://kokubosyokuju.geo.jp' . h($imagePath);
+                        $html .= '<img src="' . $fullImageUrl . '" alt="' . h($work['title']) . '" style="width: 100%; height: 100%; object-fit: cover;">';
+                    } else {
+                        $html .= '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px;">' . $icon . '</div>';
+                    }
+
+                    $html .= '
+                        </div>
                         <div class="work-content">
                             <h3>' . h($work['title']) . '</h3>
                             <div class="work-category">📋 ' . h($work['category_name']) . '</div>
