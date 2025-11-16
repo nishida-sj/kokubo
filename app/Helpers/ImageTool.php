@@ -33,21 +33,42 @@ class ImageTool
         $thumbnailPath = $uploadPath . '/thumbs';
 
         if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
+            if (!mkdir($uploadPath, 0755, true)) {
+                throw new Exception('アップロードディレクトリの作成に失敗しました: ' . $uploadPath);
+            }
+        }
+
+        if (!is_writable($uploadPath)) {
+            throw new Exception('アップロードディレクトリに書き込み権限がありません: ' . $uploadPath . ' (パーミッション: ' . substr(sprintf('%o', fileperms($uploadPath)), -4) . ')');
         }
 
         if ($generateThumbnail && !is_dir($thumbnailPath)) {
-            mkdir($thumbnailPath, 0755, true);
+            if (!mkdir($thumbnailPath, 0755, true)) {
+                throw new Exception('サムネイルディレクトリの作成に失敗しました: ' . $thumbnailPath);
+            }
         }
 
         // ファイル名生成（重複回避）
         $filename = self::generateUniqueFilename($uploadPath, $extension);
         $filePath = $uploadPath . '/' . $filename;
 
+        // デバッグログ
+        error_log('[ImageTool] Attempting to upload file: ' . $file['tmp_name'] . ' -> ' . $filePath);
+
         // ファイル移動
         if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-            throw new Exception('ファイルの保存に失敗しました。');
+            $error = error_get_last();
+            throw new Exception('ファイルの保存に失敗しました。対象パス: ' . $filePath .
+                              ' | tmp_name: ' . $file['tmp_name'] .
+                              ' | エラー: ' . ($error ? $error['message'] : 'なし'));
         }
+
+        // 保存されたことを確認
+        if (!file_exists($filePath)) {
+            throw new Exception('ファイルは移動されましたが、保存先に存在しません: ' . $filePath);
+        }
+
+        error_log('[ImageTool] File uploaded successfully: ' . $filePath . ' (' . filesize($filePath) . ' bytes)');
 
         $result = [
             'filename' => $filename,
