@@ -73,9 +73,17 @@ jobs:
         mkdir -p deploy-subdomain/storage/cache
         mkdir -p deploy-subdomain/storage/logs
 
-        # アップロードディレクトリ作成
-        mkdir -p deploy-subdomain/uploads/works
-        echo "# Upload directory" > deploy-subdomain/uploads/.gitkeep
+        # アップロードディレクトリ構造をコピー（.gitkeepのみ、画像ファイルは除外）
+        mkdir -p deploy-subdomain/uploads/works/thumbs
+        if [ -f "public/uploads/.gitkeep" ]; then
+          cp public/uploads/.gitkeep deploy-subdomain/uploads/
+        fi
+        if [ -f "public/uploads/works/.gitkeep" ]; then
+          cp public/uploads/works/.gitkeep deploy-subdomain/uploads/works/
+        fi
+        if [ -f "public/uploads/works/thumbs/.gitkeep" ]; then
+          cp public/uploads/works/thumbs/.gitkeep deploy-subdomain/uploads/works/thumbs/
+        fi
 
         # デプロイパッケージの詳細検証
         echo "========================================="
@@ -136,12 +144,17 @@ jobs:
         log-level: verbose
         exclude: |
           **/.git*
+          !**/.gitkeep
           **/.env
           **/node_modules/**
           **/*.log
           **/sql/seed.sql
           **/.github/**
-          **/uploads/**
+          **/uploads/**/*.jpg
+          **/uploads/**/*.jpeg
+          **/uploads/**/*.png
+          **/uploads/**/*.gif
+          **/uploads/**/*.webp
           **/storage/logs/**
           **/storage/cache/**
 

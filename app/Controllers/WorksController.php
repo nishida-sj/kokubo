@@ -378,7 +378,8 @@ class WorksController extends Controller
                         <div class="work-image">';
 
                     if ($imagePath) {
-                        $html .= '<img src="' . h($imagePath) . '" alt="' . h($work['title']) . '" loading="lazy">';
+                        $fullImageUrl = 'https://kokubosyokuju.geo.jp' . $imagePath;
+                        $html .= '<img src="' . h($fullImageUrl) . '" alt="' . h($work['title']) . '" loading="lazy">';
                     } else {
                         $html .= '<div class="work-image-placeholder">' . $icon . '</div>';
                     }
