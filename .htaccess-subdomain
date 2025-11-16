@@ -31,11 +31,8 @@ RewriteEngine On
     Deny from all
 </Files>
 
-# 管理画面への直接アクセス制御
-RewriteRule ^admin/(.*)$ admin.php?path=$1 [QSA,L]
-
-# API エンドポイント
-RewriteRule ^api/(.*)$ api.php?endpoint=$1 [QSA,L]
+# 管理画面とAPIは通常のルーティングで処理
+# （admin.php, api.phpは使用しない）
 
 # PHPファイルの直接実行（デバッグ用を含む）
 RewriteCond %{REQUEST_FILENAME} -f
