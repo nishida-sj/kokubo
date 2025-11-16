@@ -51,7 +51,7 @@ class ImageTool
 
         $result = [
             'filename' => $filename,
-            'path' => '/' . $uploadDir . '/' . $filename,
+            'path' => '/uploads/' . $uploadDir . '/' . $filename,
             'full_path' => $filePath,
             'size' => $file['size'],
             'width' => $imageInfo[0],
@@ -65,7 +65,7 @@ class ImageTool
             $thumbnailFullPath = $thumbnailPath . '/' . $thumbnailFilename;
 
             if (self::createThumbnail($filePath, $thumbnailFullPath)) {
-                $result['thumbnail_path'] = '/' . $uploadDir . '/thumbs/' . $thumbnailFilename;
+                $result['thumbnail_path'] = '/uploads/' . $uploadDir . '/thumbs/' . $thumbnailFilename;
                 $result['thumbnail_full_path'] = $thumbnailFullPath;
             }
         }

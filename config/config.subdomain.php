@@ -160,10 +160,19 @@ function truncate_text($text, $length = 100, $suffix = '...') {
 }
 
 function generate_slug($text) {
-    $text = mb_strtolower($text);
-    $text = preg_replace('/[^a-z0-9\-_]/', '-', $text);
-    $text = preg_replace('/-+/', '-', $text);
-    return trim($text, '-');
+    // まず英数字とハイフンのみに変換を試みる
+    $slug = mb_strtolower($text);
+    $slug = preg_replace('/[^a-z0-9\-_]/', '-', $slug);
+    $slug = preg_replace('/-+/', '-', $slug);
+    $slug = trim($slug, '-');
+
+    // スラッグが空または短すぎる場合（日本語タイトルの場合など）
+    // タイムスタンプベースのスラッグを生成
+    if (strlen($slug) < 3) {
+        $slug = 'work-' . date('YmdHis') . '-' . substr(md5($text), 0, 6);
+    }
+
+    return $slug;
 }
 
 function create_thumbnail($sourcePath, $destPath, $width = THUMBNAIL_WIDTH, $height = THUMBNAIL_HEIGHT) {
