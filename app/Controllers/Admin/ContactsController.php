@@ -50,7 +50,7 @@ class Admin_ContactsController
         $pagination = $db->getPagination($sql, $params, $page, ADMIN_ITEMS_PER_PAGE);
 
         $data = [
-            'page' => 'admin/contacts/index',
+            'page' => 'admin/pages/contacts/index',
             'title' => 'お問い合わせ管理',
             'contacts' => $pagination['data'],
             'pagination' => $pagination,
@@ -85,7 +85,7 @@ class Admin_ContactsController
         }
 
         $data = [
-            'page' => 'admin/contacts/show',
+            'page' => 'admin/pages/contacts/show',
             'title' => 'お問い合わせ詳細',
             'contact' => $contact
         ];
@@ -107,7 +107,7 @@ class Admin_ContactsController
         }
 
         $data = [
-            'page' => 'admin/contacts/reply',
+            'page' => 'admin/pages/contacts/reply',
             'title' => 'お問い合わせ返信',
             'contact' => $contact
         ];
@@ -222,7 +222,7 @@ class Admin_ContactsController
 
         // エラー時は返信ページを再表示
         $data = [
-            'page' => 'admin/contacts/reply',
+            'page' => 'admin/pages/contacts/reply',
             'title' => 'お問い合わせ返信',
             'contact' => $contact,
             'errors' => $errors,
