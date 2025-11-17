@@ -576,7 +576,7 @@ class WorksController extends Controller
             font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
             line-height: 1.8;
             color: #333;
-            background: #f8f9fa;
+            background: #e8f5e9;
         }
 
         /* ヘッダー */
@@ -941,8 +941,17 @@ class WorksController extends Controller
 
     <div class="main-content">
         <div class="container">
+            <!-- パンくずリスト -->
+            <div style="margin-top: 20px; margin-bottom: 15px;">
+                <div style="font-size: 14px; color: #666;">
+                    <a href="/" style="color: #19448e; text-decoration: none;">ホーム</a> /
+                    <a href="/works" style="color: #19448e; text-decoration: none;">施工実績</a> /
+                    <span style="color: #333;">' . h($work['title']) . '</span>
+                </div>
+            </div>
+
             <!-- タイトル -->
-            <div class="work-header" style="margin-top: 100px; margin-bottom: 30px; text-align: center;">
+            <div class="work-header" style="margin-bottom: 30px; text-align: center;">
                 <h1 class="work-title">' . h($work['title']) . '</h1>
             </div>
 
