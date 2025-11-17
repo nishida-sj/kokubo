@@ -1,18 +1,21 @@
 <?php
 
-class Admin_RecruitController extends Controller
+namespace Admin;
+
+class RecruitController extends \Controller
 {
     public function __construct()
     {
         // 認証チェック
-        if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-            redirect('admin/login');
+        if (!is_admin_logged_in()) {
+            header('Location: /admin');
+            exit;
         }
     }
 
     public function index()
     {
-        $db = Db::getInstance();
+        $db = \Db::getInstance();
 
         // 採用情報設定を取得
         $settingsData = $db->fetchAll("SELECT `key`, `value` FROM recruit_settings");
@@ -361,7 +364,7 @@ class Admin_RecruitController extends Controller
             redirect('admin/recruit');
         }
 
-        $db = Db::getInstance();
+        $db = \Db::getInstance();
 
         try {
             $db->beginTransaction();
