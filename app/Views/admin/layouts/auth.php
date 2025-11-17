@@ -19,8 +19,8 @@
     <div class="auth-wrapper">
         <div class="auth-container">
             <div class="auth-header">
-                <img src="<?= asset_url('img/logo.png') ?>" alt="<?= h(APP_NAME) ?>" class="auth-logo">
-                <h1 class="auth-title">管理画面</h1>
+                <h1 class="auth-title"><?= h(APP_NAME) ?></h1>
+                <p class="auth-subtitle">管理画面</p>
             </div>
 
             <div class="auth-content">
