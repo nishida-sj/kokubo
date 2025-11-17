@@ -35,6 +35,7 @@ try {
         'admin/contacts/{id}/delete' => 'Admin/ContactsController@delete',
         'admin/contacts/{id}' => 'Admin/ContactsController@show',
         'admin/settings' => 'Admin/SettingsController@index',
+        'admin/settings/update' => 'Admin/SettingsController@update',
     ]);
 
     // リクエスト処理
