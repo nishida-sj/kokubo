@@ -130,6 +130,46 @@ class SubController extends Controller
             background: #8b7355;
         }
 
+        /* ハンバーガーメニューボタン */
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .menu-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-btn.is-active .menu-line {
+            background: #fff;
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.is-active .menu-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
         /* メインビジュアル */
         .hero {
             height: 100vh;
@@ -518,8 +558,9 @@ class SubController extends Controller
 
         /* レスポンシブ */
         @media (max-width: 1024px) {
-            .header-left .nav,
-            .header-right .nav {
+            .header-left,
+            .header-right .nav,
+            .header-icon {
                 display: none;
             }
 
@@ -528,8 +569,49 @@ class SubController extends Controller
                 transform: none;
             }
 
-            .header-icon {
+            .menu-btn {
+                display: flex;
                 margin-left: auto;
+            }
+
+            .header-right {
+                justify-content: flex-end;
+            }
+
+            /* モバイルメニューオーバーレイ */
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(44, 24, 16, 0.95);
+                backdrop-filter: blur(10px);
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .nav-overlay.is-open {
+                display: flex;
+                opacity: 1;
+            }
+
+            .nav-overlay a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 20px;
+                font-weight: 600;
+                padding: 15px 0;
+            }
+
+            body.menu-open {
+                overflow: hidden;
             }
         }
 
@@ -600,9 +682,23 @@ class SubController extends Controller
                     <a href="/contact">お問い合わせ</a>
                 </nav>
                 <a href="#" class="header-icon">f</a>
+                <button class="menu-btn" id="menuBtn">
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- モバイルナビゲーション -->
+    <nav class="nav-overlay" id="navOverlay">
+        <a href="/">ホーム</a>
+        <a href="/works">施工実績</a>
+        <a href="/company">会社案内</a>
+        <a href="/recruit">採用情報</a>
+        <a href="/contact">お問い合わせ</a>
+    </nav>
 
     <!-- メインビジュアル -->
     <section class="hero">
@@ -739,18 +835,12 @@ class SubController extends Controller
             <h2 class="section-title">お問い合わせ</h2>
             <p style="font-size: 18px; margin-bottom: 40px;">緑に関するご相談は、お気軽にお問い合わせください</p>
 
-            <div class="contact-info-grid">
+            <div style="max-width: 600px; margin: 0 auto 40px;">
                 <div class="contact-card">
                     <h3>📞 お電話でのご相談</h3>
                     <strong>' . $companyTel . '</strong>
                     <p>' . $companyBusinessHours . '</p>
                     <p>日曜・祝日は休業</p>
-                </div>
-                <div class="contact-card">
-                    <h3>✉️ メールでのご相談</h3>
-                    <strong>' . $companyEmail . '</strong>
-                    <p>24時間受付</p>
-                    <p>（返信は営業時間内）</p>
                 </div>
             </div>
 
@@ -770,6 +860,27 @@ class SubController extends Controller
             </div>
         </div>
     </footer>
+
+    <script>
+        // ハンバーガーメニュー
+        const menuBtn = document.getElementById("menuBtn");
+        const navOverlay = document.getElementById("navOverlay");
+
+        menuBtn.addEventListener("click", function() {
+            menuBtn.classList.toggle("is-active");
+            navOverlay.classList.toggle("is-open");
+            document.body.classList.toggle("menu-open");
+        });
+
+        // オーバーレイ内のリンクをクリックしたらメニューを閉じる
+        navOverlay.querySelectorAll("a").forEach(function(link) {
+            link.addEventListener("click", function() {
+                menuBtn.classList.remove("is-active");
+                navOverlay.classList.remove("is-open");
+                document.body.classList.remove("menu-open");
+            });
+        });
+    </script>
 </body>
 </html>';
 
