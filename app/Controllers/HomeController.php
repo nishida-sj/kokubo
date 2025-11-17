@@ -529,6 +529,7 @@ class HomeController extends Controller
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
         .work-card:hover {
@@ -1005,8 +1006,9 @@ class HomeController extends Controller
                     }
 
                     $html .= '
-                    <div class="work-card">
-                        <div class="work-image">';
+                    <a href="/works/' . h($work['slug']) . '" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="work-card">
+                            <div class="work-image">';
 
                     if ($imagePath) {
                         $fullImageUrl = 'https://kokubosyokuju.geo.jp' . h($imagePath);
@@ -1016,13 +1018,14 @@ class HomeController extends Controller
                     }
 
                     $html .= '
+                            </div>
+                            <div class="work-content">
+                                <h3>' . h($work['title']) . '</h3>
+                                <div class="work-category">📋 ' . h($work['category_name']) . '</div>
+                                <p>' . h(mb_substr($work['description'], 0, 80)) . '...</p>
+                            </div>
                         </div>
-                        <div class="work-content">
-                            <h3>' . h($work['title']) . '</h3>
-                            <div class="work-category">📋 ' . h($work['category_name']) . '</div>
-                            <p>' . h(mb_substr($work['description'], 0, 80)) . '...</p>
-                        </div>
-                    </div>';
+                    </a>';
                 }
             } else {
                 // ダミーデータ表示
