@@ -960,7 +960,7 @@ class WorksController extends Controller
 
             if ($mainImagePath) {
                 $fullImageUrl = 'https://kokubosyokuju.geo.jp' . $mainImagePath;
-                $html .= '<img src="' . h($fullImageUrl) . '" alt="' . h($work['title']) . '" style="width: 100%; height: auto; display: block; border-radius: 8px;">';
+                $html .= '<img id="main-work-image" src="' . h($fullImageUrl) . '" alt="' . h($work['title']) . '" style="width: 100%; height: auto; display: block; border-radius: 8px; transition: opacity 0.3s ease;">';
             } else {
                 $icon = '🌳';
                 if (strpos($work['category_name'], '植栽') !== false) $icon = '🌱';
@@ -968,7 +968,7 @@ class WorksController extends Controller
                 if (strpos($work['category_name'], '造園') !== false) $icon = '🏡';
                 if (strpos($work['category_name'], '管理') !== false) $icon = '🌿';
 
-                $html .= '<div class="hero-image-placeholder" style="width: 100%; height: 400px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 80px; border-radius: 8px;">' . $icon . '</div>';
+                $html .= '<div id="main-work-image" class="hero-image-placeholder" style="width: 100%; height: 400px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 80px; border-radius: 8px;">' . $icon . '</div>';
             }
 
             $html .= '
@@ -978,7 +978,20 @@ class WorksController extends Controller
 
             if (!empty($additionalImages)) {
                 $html .= '
-            <div class="thumbnail-gallery" style="display: flex; gap: 10px; margin-bottom: 40px; overflow-x: auto;">';
+            <div class="thumbnail-gallery" style="display: flex; gap: 10px; margin-bottom: 40px; overflow-x: auto; padding: 5px 0;">';
+
+                // メイン画像もサムネイルに追加
+                if ($mainImagePath) {
+                    $fullImageUrl = 'https://kokubosyokuju.geo.jp' . $mainImagePath;
+                    $html .= '
+                <div class="thumbnail-item" style="flex: 0 0 auto; width: 150px; height: 100px; position: relative;">
+                    <img src="' . h($fullImageUrl) . '"
+                         alt="' . h($work['title']) . '"
+                         class="thumbnail-img active"
+                         onclick="changeMainImage(this.src)"
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer; border: 3px solid #19448e; transition: all 0.3s ease;">
+                </div>';
+                }
 
                 foreach ($additionalImages as $img) {
                     $imgPath = $img['path'];
@@ -989,8 +1002,12 @@ class WorksController extends Controller
                     if ($imgPath) {
                         $imgUrl = 'https://kokubosyokuju.geo.jp' . $imgPath;
                         $html .= '
-                <div style="flex: 0 0 auto; width: 150px; height: 100px;">
-                    <img src="' . h($imgUrl) . '" alt="' . h($work['title']) . '" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer;">
+                <div class="thumbnail-item" style="flex: 0 0 auto; width: 150px; height: 100px; position: relative;">
+                    <img src="' . h($imgUrl) . '"
+                         alt="' . h($work['title']) . '"
+                         class="thumbnail-img"
+                         onclick="changeMainImage(this.src)"
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer; border: 3px solid transparent; transition: all 0.3s ease;">
                 </div>';
                     }
                 }
@@ -1058,6 +1075,49 @@ class WorksController extends Controller
             </div>
         </div>
     </div>
+
+    <!-- 画像切り替えスクリプト -->
+    <script>
+    function changeMainImage(imageSrc) {
+        const mainImage = document.getElementById(\'main-work-image\');
+        const thumbnails = document.querySelectorAll(\'.thumbnail-img\');
+
+        // メイン画像を切り替え（フェード効果）
+        mainImage.style.opacity = \'0\';
+        setTimeout(function() {
+            mainImage.src = imageSrc;
+            mainImage.style.opacity = \'1\';
+        }, 300);
+
+        // サムネイルのアクティブ状態を切り替え
+        thumbnails.forEach(function(thumb) {
+            if (thumb.src === imageSrc) {
+                thumb.classList.add(\'active\');
+                thumb.style.borderColor = \'#19448e\';
+            } else {
+                thumb.classList.remove(\'active\');
+                thumb.style.borderColor = \'transparent\';
+            }
+        });
+    }
+
+    // サムネイルのホバー効果
+    document.addEventListener(\'DOMContentLoaded\', function() {
+        const thumbnails = document.querySelectorAll(\'.thumbnail-img\');
+        thumbnails.forEach(function(thumb) {
+            thumb.addEventListener(\'mouseenter\', function() {
+                if (!this.classList.contains(\'active\')) {
+                    this.style.borderColor = \'#4a90e2\';
+                }
+            });
+            thumb.addEventListener(\'mouseleave\', function() {
+                if (!this.classList.contains(\'active\')) {
+                    this.style.borderColor = \'transparent\';
+                }
+            });
+        });
+    });
+    </script>
 
     <!-- フッター -->
     <footer class="footer">
