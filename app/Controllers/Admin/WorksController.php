@@ -413,6 +413,58 @@ class Admin_WorksController
                         }
                     }
 
+                    // 追加画像のアップロード処理
+                    if (isset($_FILES['additional_images']) && !empty($_FILES['additional_images']['name'][0])) {
+                        // 現在の画像数を確認
+                        $currentCount = $db->fetch("SELECT COUNT(*) as count FROM work_images WHERE work_id = :work_id", ['work_id' => $id]);
+                        $currentCount = (int)($currentCount['count'] ?? 0);
+
+                        // 最大3枚まで
+                        $maxImages = 3;
+                        $remainingSlots = $maxImages - $currentCount;
+
+                        if ($remainingSlots > 0) {
+                            $uploadedCount = 0;
+                            foreach ($_FILES['additional_images']['name'] as $key => $filename) {
+                                if ($uploadedCount >= $remainingSlots) {
+                                    break;
+                                }
+
+                                if ($_FILES['additional_images']['error'][$key] === UPLOAD_ERR_OK) {
+                                    try {
+                                        // 一時的に$_FILESを単一ファイル形式に変換
+                                        $tempFile = [
+                                            'name' => $_FILES['additional_images']['name'][$key],
+                                            'type' => $_FILES['additional_images']['type'][$key],
+                                            'tmp_name' => $_FILES['additional_images']['tmp_name'][$key],
+                                            'error' => $_FILES['additional_images']['error'][$key],
+                                            'size' => $_FILES['additional_images']['size'][$key]
+                                        ];
+
+                                        $_FILES['temp_additional_image'] = $tempFile;
+                                        $uploadResult = ImageTool::upload('temp_additional_image', 'works', true);
+
+                                        // work_imagesテーブルに保存
+                                        $db->insert('work_images', [
+                                            'work_id' => $id,
+                                            'path' => $uploadResult['path'],
+                                            'path_thumb' => $uploadResult['thumb_path'] ?? null,
+                                            'alt' => $work['title'],
+                                            'sort_order' => $currentCount + $uploadedCount,
+                                            'is_before' => 0
+                                        ]);
+
+                                        $uploadedCount++;
+                                        unset($_FILES['temp_additional_image']);
+                                    } catch (Exception $e) {
+                                        error_log('Additional image upload error: ' . $e->getMessage());
+                                        // エラーが発生してもスキップして続行
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     $db->commit();
                     redirect('admin/works');
                     return;
@@ -493,6 +545,61 @@ class Admin_WorksController
         }
 
         redirect('admin/works');
+    }
+
+    public function deleteImage($workId, $imageId)
+    {
+        Auth::requireLogin();
+
+        header('Content-Type: application/json');
+
+        $db = Db::getInstance();
+
+        try {
+            // CSRF トークン検証
+            $headers = getallheaders();
+            $csrfToken = $headers['X-CSRF-Token'] ?? '';
+
+            if (!Csrf::verifyToken($csrfToken)) {
+                echo json_encode(['success' => false, 'message' => '不正なリクエストです']);
+                return;
+            }
+
+            // 画像存在確認
+            $image = $db->fetch("
+                SELECT * FROM work_images
+                WHERE id = :id AND work_id = :work_id
+            ", ['id' => $imageId, 'work_id' => $workId]);
+
+            if (!$image) {
+                echo json_encode(['success' => false, 'message' => '画像が見つかりません']);
+                return;
+            }
+
+            $db->beginTransaction();
+
+            // データベースから削除
+            $db->delete('work_images', 'id = :id', ['id' => $imageId]);
+
+            // ファイル削除
+            if (!empty($image['path'])) {
+                ImageTool::deleteFile(PUBLIC_PATH . $image['path']);
+            }
+            if (!empty($image['path_thumb'])) {
+                ImageTool::deleteFile(PUBLIC_PATH . $image['path_thumb']);
+            }
+
+            $db->commit();
+
+            echo json_encode(['success' => true, 'message' => '画像を削除しました']);
+
+        } catch (Exception $e) {
+            if (isset($db)) {
+                $db->rollBack();
+            }
+            error_log('Image delete error: ' . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => '削除中にエラーが発生しました']);
+        }
     }
 
     private function renderAdmin($data)

@@ -26,6 +26,12 @@ try {
         'admin/logout' => 'Admin/LoginController@logout',
         'admin/dashboard' => 'Admin/DashboardController@index',
         'admin/works' => 'Admin/WorksController@index',
+        'admin/works/create' => 'Admin/WorksController@create',
+        'admin/works/store' => 'Admin/WorksController@store',
+        'admin/works/{id}/edit' => 'Admin/WorksController@edit',
+        'admin/works/{id}/update' => 'Admin/WorksController@update',
+        'admin/works/{id}/delete' => 'Admin/WorksController@delete',
+        'admin/works/{workId}/delete-image/{imageId}' => 'Admin/WorksController@deleteImage',
         'admin/contacts' => 'Admin/ContactsController@index',
         'admin/settings' => 'Admin/SettingsController@index',
     ]);

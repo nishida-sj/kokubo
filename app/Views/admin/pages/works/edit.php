@@ -203,45 +203,73 @@
             </div>
 
             <!-- 追加画像管理 -->
-            <?php if (!empty($workImages)): ?>
-                <div class="card mb-3">
-                    <div class="card__header">
-                        <h3 class="card__title">追加画像</h3>
-                    </div>
-                    <div class="card__content">
-                        <div class="image-gallery">
-                            <?php foreach ($workImages as $image): ?>
-                                <?php
-                                // 画像パスの自動修正
-                                $imagePath = $image['path'];
-                                if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
-                                    $imagePath = '/uploads' . $imagePath;
-                                }
-                                ?>
-                                <div class="image-gallery__item" data-image-id="<?= $image['id'] ?>">
-                                    <img src="<?= site_url($imagePath) ?>"
-                                         alt="<?= h($image['alt']) ?>"
-                                         class="image-gallery__img">
-                                    <div class="image-gallery__info">
-                                        <p class="image-gallery__alt"><?= h($image['alt']) ?></p>
-                                        <?php if ($image['is_before']): ?>
-                                            <span class="badge badge--info">施工前</span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <button type="button"
-                                            class="image-gallery__delete btn btn--danger btn--small"
-                                            data-image-id="<?= $image['id'] ?>">
-                                        削除
-                                    </button>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="form-help">
-                            追加画像の削除は個別に行えます。削除ボタンをクリックしてください。
-                        </div>
-                    </div>
+            <div class="card mb-3">
+                <div class="card__header">
+                    <h3 class="card__title">追加画像（最大3枚）</h3>
                 </div>
-            <?php endif; ?>
+                <div class="card__content">
+                    <?php if (!empty($workImages)): ?>
+                        <div class="mb-3">
+                            <label class="form-label">登録済み画像</label>
+                            <div class="image-gallery">
+                                <?php foreach ($workImages as $image): ?>
+                                    <?php
+                                    // 画像パスの自動修正
+                                    $imagePath = $image['path'];
+                                    if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
+                                        $imagePath = '/uploads' . $imagePath;
+                                    }
+                                    ?>
+                                    <div class="image-gallery__item" data-image-id="<?= $image['id'] ?>">
+                                        <img src="<?= site_url($imagePath) ?>"
+                                             alt="<?= h($image['alt']) ?>"
+                                             class="image-gallery__img">
+                                        <div class="image-gallery__info">
+                                            <p class="image-gallery__alt"><?= h($image['alt']) ?></p>
+                                        </div>
+                                        <button type="button"
+                                                class="image-gallery__delete btn btn--danger btn--small"
+                                                onclick="deleteWorkImage(<?= $image['id'] ?>, <?= $work['id'] ?>)">
+                                            削除
+                                        </button>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php
+                    // 現在の画像数
+                    $currentImageCount = !empty($workImages) ? count($workImages) : 0;
+                    $remainingSlots = 3 - $currentImageCount;
+                    ?>
+
+                    <?php if ($remainingSlots > 0): ?>
+                        <div class="form-help mb-3">
+                            あと<?= $remainingSlots ?>枚追加できます
+                        </div>
+
+                        <?php for ($i = 1; $i <= $remainingSlots; $i++): ?>
+                            <div class="form-group">
+                                <label for="additional_image_<?= $i ?>" class="form-label">追加画像 <?= $i ?></label>
+                                <input type="file"
+                                       id="additional_image_<?= $i ?>"
+                                       name="additional_images[]"
+                                       accept="image/*"
+                                       class="form-input">
+                            </div>
+                        <?php endfor; ?>
+
+                        <div class="form-help">
+                            JPEGまたはPNG形式、各5MB以下
+                        </div>
+                    <?php else: ?>
+                        <div class="alert alert--info">
+                            追加画像は最大3枚です。新しい画像を追加するには、既存の画像を削除してください。
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
 
             <!-- SEO設定 -->
             <div class="card">
@@ -598,3 +626,40 @@ input[type="file"]:focus {
     box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 </style>
+
+<script>
+// 画像削除関数
+function deleteWorkImage(imageId, workId) {
+    if (!confirm('この画像を削除してもよろしいですか？')) {
+        return;
+    }
+
+    // 削除APIを呼び出し
+    fetch('<?= site_url('admin/works') ?>/' + workId + '/delete-image/' + imageId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': '<?= Csrf::getToken() ?>'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 画像要素を削除
+            const imageElement = document.querySelector('[data-image-id="' + imageId + '"]');
+            if (imageElement) {
+                imageElement.remove();
+            }
+
+            // ページをリロードして画像数を更新
+            location.reload();
+        } else {
+            alert('削除に失敗しました: ' + (data.message || '不明なエラー'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('削除中にエラーが発生しました');
+    });
+}
+</script>
