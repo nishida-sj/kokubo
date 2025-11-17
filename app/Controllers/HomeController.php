@@ -4,6 +4,14 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // 設定値を取得
+        $companyName = h(setting('company_name', '小久保植樹園'));
+        $companyTel = h(setting('company_tel', '0596-00-0000'));
+        $companyPostalCode = h(setting('company_postal_code', '516-0000'));
+        $companyAddress = h(setting('company_address', '三重県伊勢市'));
+        $companyEmail = h(setting('company_email', 'info@kokubosyokuju.geo.jp'));
+        $companyBusinessHours = h(setting('company_business_hours', '平日 8:00-18:00 / 土曜 8:00-17:00'));
+
         try {
             // データベースから実績を取得
             $db = Db::getInstance();
@@ -886,7 +894,7 @@ class HomeController extends Controller
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo pconly">
-                小久保植樹園
+                ' . $companyName . '
             </a>
             <nav class="nav" id="nav">
                 <a href="/">ホーム</a>
@@ -913,7 +921,7 @@ class HomeController extends Controller
                 <a href="/contact" class="hero-btn">お問い合わせ</a>
             </div>
             <div class="hero-company">
-                小久保植樹園
+                ' . $companyName . '
             </div>
         </div>
     </section>
@@ -1110,20 +1118,20 @@ class HomeController extends Controller
                 <div class="contact-info">
                     <div class="contact-item">
                         <h3>📞 お電話でのご相談</h3>
-                        <p><strong>0596-00-0000</strong></p>
-                        <p>平日 8:00-18:00<br>土曜 8:00-17:00</p>
+                        <p><strong>' . $companyTel . '</strong></p>
+                        <p>' . $companyBusinessHours . '</p>
                         <p>日曜・祝日は休業</p>
                     </div>
                     <div class="contact-item">
                         <h3>✉️ メールでのご相談</h3>
-                        <p><strong>info@kokubosyokuju.geo.jp</strong></p>
+                        <p><strong>' . $companyEmail . '</strong></p>
                         <p>24時間受付<br>（返信は営業時間内）</p>
                         <p>お気軽にご相談ください</p>
                     </div>
                 </div>
                 <div class="contact-buttons">
                     <a href="/contact" class="contact-btn">お問い合わせフォーム</a>
-                    <a href="tel:0596-00-0000" class="contact-btn">📞 電話で相談</a>
+                    <a href="tel:' . $companyTel . '" class="contact-btn">📞 電話で相談</a>
                 </div>
             </div>
         </div>
@@ -1133,12 +1141,12 @@ class HomeController extends Controller
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <h3>小久保植樹園</h3>
-                <p>〒516-0000 三重県伊勢市○○町○○番地</p>
-                <p>TEL: 0596-00-0000 | Email: info@kokubosyokuju.geo.jp</p>
-                <p>営業時間: 平日 8:00-18:00 / 土曜 8:00-17:00</p>
+                <h3>' . $companyName . '</h3>
+                <p>〒' . $companyPostalCode . ' ' . $companyAddress . '</p>
+                <p>TEL: ' . $companyTel . ' | Email: ' . $companyEmail . '</p>
+                <p>営業時間: ' . $companyBusinessHours . '</p>
                 <div class="copyright">
-                    <p>© 2024 小久保植樹園. All rights reserved.</p>
+                    <p>© ' . date('Y') . ' ' . $companyName . '. All rights reserved.</p>
                 </div>
             </div>
         </div>
