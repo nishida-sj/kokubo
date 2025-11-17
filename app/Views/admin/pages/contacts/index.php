@@ -147,13 +147,11 @@
                                            title="詳細表示">
                                             👁
                                         </a>
-                                        <?php if (!$contact['is_replied']): ?>
-                                            <a href="<?= site_url('admin/contacts/' . $contact['id'] . '/reply') ?>"
-                                               class="action-btn action-btn--reply"
-                                               title="返信">
-                                                📧
-                                            </a>
-                                        <?php endif; ?>
+                                        <a href="mailto:<?= h($contact['email']) ?>?subject=Re: <?= urlencode($contact['subject']) ?>&body=<?= urlencode($contact['name'] . ' 様' . "\n\n" . 'この度は、お問い合わせいただきありがとうございます。' . "\n\n" . '■ お問い合わせ内容' . "\n" . $contact['message'] . "\n\n" . '■ 回答内容' . "\n\n") ?>"
+                                           class="action-btn action-btn--reply"
+                                           title="メール返信">
+                                            📧
+                                        </a>
                                         <?php if (!$contact['is_read']): ?>
                                             <a href="<?= site_url('admin/contacts/' . $contact['id'] . '/mark-read') ?>"
                                                class="action-btn action-btn--mark-read"
