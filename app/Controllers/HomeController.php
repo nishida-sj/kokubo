@@ -131,73 +131,80 @@ class HomeController extends Controller
 
         /* ヘッダー */
         .header {
-            background: rgba(80, 80, 80, 0.4);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 100px;
-            max-width: none;
-            margin: 0;
         }
 
-        .logo {
+        .header-left {
             display: flex;
+            gap: 35px;
             align-items: center;
-            text-decoration: none;
-            color: #fff;
-            font-family: "fiw6ghz", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
-            font-weight: 500;
-            font-size: 32px;
         }
 
-        .logo .logo-icon {
-            font-size: 36px;
-            margin-right: 10px;
+        .logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c1810;
+            letter-spacing: 3px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 35px;
+            align-items: center;
         }
 
         .nav {
             display: flex;
+            gap: 35px;
             list-style: none;
-            gap: 50px;
-            align-items: center;
         }
 
         .nav a {
+            color: #333;
             text-decoration: none;
-            color: #fff;
-            font-weight: 500;
-            font-size: 18px;
-            transition: color 0.3s ease;
-            position: relative;
+            font-size: 16px;
+            font-weight: 400;
+            transition: color 0.3s;
         }
 
         .nav a:hover {
-            color: #ccc;
+            color: #8b7355;
         }
 
-        .nav a::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background-color: #19448e;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
+        .header-icon {
+            width: 35px;
+            height: 35px;
+            background: #2c1810;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background 0.3s;
         }
 
-        .nav a:hover::after {
-            width: 100%;
+        .header-icon:hover {
+            background: #8b7355;
         }
 
         /* ハンバーガーメニューボタン */
@@ -218,10 +225,14 @@ class HomeController extends Controller
             display: block;
             width: 25px;
             height: 3px;
-            background: #fff;
+            background: #333;
             margin: 3px 0;
             transition: all 0.3s ease;
             transform-origin: center;
+        }
+
+        .menu-btn.is-active .menu-line {
+            background: #fff;
         }
 
         .menu-btn.is-active .menu-line:nth-child(1) {
@@ -699,6 +710,27 @@ class HomeController extends Controller
         }
 
         /* レスポンシブデザイン */
+        @media (max-width: 1024px) {
+            .header-left .nav,
+            .header-right .nav {
+                display: none;
+            }
+
+            .logo-center {
+                position: static;
+                transform: none;
+            }
+
+            .header-icon {
+                margin-left: auto;
+            }
+
+            /* ハンバーガーメニューボタンを表示 */
+            .menu-btn {
+                display: flex;
+            }
+        }
+
         @media (max-width: 768px) {
             /* ヘッダー調整 */
             .header-container {
@@ -706,7 +738,8 @@ class HomeController extends Controller
             }
 
             /* ナビゲーション - モバイル用オーバーレイ */
-            .nav {
+            .header-left .nav,
+            .header-right .nav {
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -733,11 +766,6 @@ class HomeController extends Controller
                 font-weight: 600;
                 padding: 15px 0;
                 color: #fff;
-            }
-
-            /* ハンバーガーメニューボタンを表示 */
-            .menu-btn {
-                display: flex;
             }
 
             /* レスポンシブ表示制御 */
@@ -893,16 +921,23 @@ class HomeController extends Controller
     <!-- ヘッダー -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo pconly">
-                ' . $companyName . '
-            </a>
-            <nav class="nav" id="nav">
-                <a href="/">ホーム</a>
-                <a href="/works">施工実績</a>
-                <a href="/company">会社案内</a>
-                <a href="/recruit">採用情報</a>
-                <a href="/contact">お問い合わせ</a>
-            </nav>
+            <div class="header-left">
+                <nav class="nav">
+                    <a href="/">ホーム</a>
+                    <a href="/works">施工実績</a>
+                    <a href="/company">会社案内</a>
+                </nav>
+            </div>
+
+            <a href="/" class="logo-center">' . $companyName . '</a>
+
+            <div class="header-right">
+                <nav class="nav">
+                    <a href="/recruit">採用情報</a>
+                    <a href="/contact">お問い合わせ</a>
+                </nav>
+                <a href="#" class="header-icon">f</a>
+            </div>
             <button class="menu-btn" id="menuBtn">
                 <span class="menu-line"></span>
                 <span class="menu-line"></span>
