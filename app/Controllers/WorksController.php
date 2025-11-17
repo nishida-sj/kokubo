@@ -631,6 +631,25 @@ class WorksController extends Controller
             <p style="margin-top: 20px; opacity: 0.8;">© 2024 小久保植樹園. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const nav = document.querySelector(".header-right .nav");
+
+        menuBtn.addEventListener("click", function() {
+            menuBtn.classList.toggle("is-active");
+            nav.classList.toggle("is-open");
+            document.body.classList.toggle("menu-open");
+        });
+
+        nav.querySelectorAll("a").forEach(function(link) {
+            link.addEventListener("click", function() {
+                menuBtn.classList.remove("is-active");
+                nav.classList.remove("is-open");
+                document.body.classList.remove("menu-open");
+            });
+        });
+    </script>
 </body>
 </html>';
 
@@ -1057,14 +1076,28 @@ class WorksController extends Controller
     <!-- ヘッダー -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">小久保植樹園</a>
-            <nav class="nav">
-                <a href="/">ホーム</a>
-                <a href="/works">施工実績</a>
-                <a href="/company">会社案内</a>
-                <a href="/recruit">採用情報</a>
-                <a href="/contact">お問い合わせ</a>
-            </nav>
+            <div class="header-left">
+                <nav class="nav">
+                    <a href="/">ホーム</a>
+                    <a href="/works">施工実績</a>
+                    <a href="/company">会社案内</a>
+                </nav>
+            </div>
+
+            <a href="/" class="logo-center">小久保植樹園</a>
+
+            <div class="header-right">
+                <nav class="nav">
+                    <a href="/recruit">採用情報</a>
+                    <a href="/contact">お問い合わせ</a>
+                </nav>
+                <a href="#" class="header-icon">f</a>
+                <button class="menu-btn" id="menuBtn">
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -1257,6 +1290,25 @@ class WorksController extends Controller
             <p style="margin-top: 20px; opacity: 0.8;">© 2024 小久保植樹園. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const nav = document.querySelector(".header-right .nav");
+
+        menuBtn.addEventListener("click", function() {
+            menuBtn.classList.toggle("is-active");
+            nav.classList.toggle("is-open");
+            document.body.classList.toggle("menu-open");
+        });
+
+        nav.querySelectorAll("a").forEach(function(link) {
+            link.addEventListener("click", function() {
+                menuBtn.classList.remove("is-active");
+                nav.classList.remove("is-open");
+                document.body.classList.remove("menu-open");
+            });
+        });
+    </script>
 </body>
 </html>';
 
