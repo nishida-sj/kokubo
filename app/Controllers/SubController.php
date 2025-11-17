@@ -13,6 +13,18 @@ class SubController extends Controller
         $companyBusinessHours = h(setting('company_business_hours', '平日 8:00-18:00 / 土曜 8:00-17:00'));
         $siteDescription = h(setting('site_description', '伊勢市の植樹園。植栽工事・庭園設計・樹木管理を手がける地域密着の造園業者です。'));
 
+        // データベースから施工実績を取得
+        $db = Db::getInstance();
+        $works = $db->fetchAll("
+            SELECT w.*, c.name as category_name,
+                   (SELECT image_path FROM work_images WHERE work_id = w.id ORDER BY display_order LIMIT 1) as main_image
+            FROM works w
+            LEFT JOIN categories c ON w.category_id = c.id
+            WHERE w.is_published = 1
+            ORDER BY w.created_at DESC
+            LIMIT 6
+        ");
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -48,7 +60,7 @@ class SubController extends Controller
             top: 0;
             z-index: 1000;
             background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .header-container {
@@ -92,7 +104,7 @@ class SubController extends Controller
         .nav a {
             color: #333;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             transition: color 0.3s;
         }
@@ -180,30 +192,6 @@ class SubController extends Controller
             padding: 60px 40px;
             margin-right: 80px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .hero-decoration {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50% 0 0 0;
-            border-top: 3px solid #2c1810;
-            border-left: 3px solid #2c1810;
-        }
-
-        .hero-decoration::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            border-top: 2px solid #8b7355;
-            border-left: 2px solid #8b7355;
-            border-radius: 50% 0 0 0;
         }
 
         .hero-text {
@@ -391,6 +379,7 @@ class SubController extends Controller
             border-radius: 4px;
             cursor: pointer;
             aspect-ratio: 1;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .work-item img {
@@ -401,29 +390,37 @@ class SubController extends Controller
         }
 
         .work-item:hover img {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
-        .work-overlay {
+        .work-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c1810;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+        }
+
+        .work-title {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.4));
+            padding: 25px 20px 20px;
             color: white;
-            transform: translateY(100%);
-            transition: transform 0.3s;
         }
 
-        .work-item:hover .work-overlay {
-            transform: translateY(0);
-        }
-
-        .work-overlay h4 {
+        .work-title h4 {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin: 0;
         }
 
         /* お問い合わせセクション */
@@ -616,7 +613,6 @@ class SubController extends Controller
             <div class="hero-slide"></div>
         </div>
         <div class="hero-text-wrapper">
-            <div class="hero-decoration"></div>
             <div class="hero-text">
                 <p class="hero-subtitle">緑豊かな</p>
                 <h1 class="hero-title">美しい庭造</h1>
@@ -696,43 +692,31 @@ class SubController extends Controller
         <div class="container">
             <h2 class="section-title">施工実績</h2>
 
-            <div class="works-grid">
-                <div class="work-item">
-                    <img src="/picture/2.jpg" alt="施工実績1">
-                    <div class="work-overlay">
-                        <h4>花壇植栽</h4>
+            <div class="works-grid">';
+
+        foreach ($works as $work) {
+            $imageUrl = $work['main_image'] ? h($work['main_image']) : '/picture/2.jpg';
+            $title = h($work['title']);
+            $category = h($work['category_name'] ?? '');
+            $slug = h($work['slug']);
+
+            $html .= '
+                <a href="/works/' . $slug . '" class="work-item">
+                    <img src="' . $imageUrl . '" alt="' . $title . '">';
+
+            if ($category) {
+                $html .= '
+                    <div class="work-category">' . $category . '</div>';
+            }
+
+            $html .= '
+                    <div class="work-title">
+                        <h4>' . $title . '</h4>
                     </div>
-                </div>
-                <div class="work-item">
-                    <img src="/picture/10.jpg" alt="施工実績2">
-                    <div class="work-overlay">
-                        <h4>石壁と植栽</h4>
-                    </div>
-                </div>
-                <div class="work-item">
-                    <img src="/picture/11.jpg" alt="施工実績3">
-                    <div class="work-overlay">
-                        <h4>フェンス植栽</h4>
-                    </div>
-                </div>
-                <div class="work-item">
-                    <img src="/picture/17.jpg" alt="施工実績4">
-                    <div class="work-overlay">
-                        <h4>芝生施工</h4>
-                    </div>
-                </div>
-                <div class="work-item">
-                    <img src="/picture/22.jpg" alt="施工実績5">
-                    <div class="work-overlay">
-                        <h4>玄関デザイン</h4>
-                    </div>
-                </div>
-                <div class="work-item">
-                    <img src="/picture/24.jpg" alt="施工実績6">
-                    <div class="work-overlay">
-                        <h4>花木管理</h4>
-                    </div>
-                </div>
+                </a>';
+        }
+
+        $html .= '
             </div>
 
             <div style="text-align: center; margin-top: 50px;">
