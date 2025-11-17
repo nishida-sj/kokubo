@@ -109,10 +109,8 @@ class ContactController extends Controller
 
         /* お問い合わせ情報カード */
         .contact-info-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
+            max-width: 400px;
+            margin: 0 auto 60px auto;
         }
 
         .info-card {
@@ -271,10 +269,6 @@ class ContactController extends Controller
             .form-card {
                 padding: 30px 20px;
             }
-
-            .contact-info-cards {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -311,26 +305,6 @@ class ContactController extends Controller
                         営業時間：平日 8:00-18:00<br>
                         土曜 8:00-17:00<br>
                         定休日：日曜・祝日
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="info-card-icon">✉️</div>
-                    <h3 class="info-card-title">メールでのお問い合わせ</h3>
-                    <div class="info-card-highlight" style="font-size: 18px;">info@kokubosyokuju.geo.jp</div>
-                    <div class="info-card-content">
-                        24時間受付<br>
-                        （返信は営業時間内に行います）
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="info-card-icon">📍</div>
-                    <h3 class="info-card-title">所在地</h3>
-                    <div class="info-card-content">
-                        〒516-0000<br>
-                        三重県伊勢市<br>
-                        お気軽にご来訪ください
                     </div>
                 </div>
             </div>
@@ -410,7 +384,7 @@ class ContactController extends Controller
             }
 
             // データベースに保存
-            $db = Database::getInstance();
+            $db = Db::getInstance();
             $db->insert('contacts', [
                 'name' => $name,
                 'email' => $email,
