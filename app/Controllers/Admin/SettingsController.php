@@ -134,7 +134,20 @@ class Admin_SettingsController
 
         } catch (Exception $e) {
             error_log('Settings update error: ' . $e->getMessage());
-            $errors['general'] = ['設定の更新中にエラーが発生しました。'];
+
+            // エラーの詳細を表示（開発環境では詳細、本番では一般的なメッセージ）
+            if (defined('DEBUG_MODE') && DEBUG_MODE) {
+                $errors['general'] = [
+                    '設定の更新中にエラーが発生しました。',
+                    'エラー詳細: ' . $e->getMessage(),
+                    'ファイル: ' . $e->getFile() . ':' . $e->getLine()
+                ];
+            } else {
+                $errors['general'] = [
+                    '設定の更新中にエラーが発生しました。',
+                    'エラー: ' . $e->getMessage()
+                ];
+            }
         }
 
         // エラー時は設定ページを再表示
