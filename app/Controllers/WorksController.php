@@ -940,12 +940,18 @@ class WorksController extends Controller
     </header>
 
     <div class="main-content">
-        <!-- メイン画像 -->
-        <div class="hero-image">';
+        <div class="container">
+            <!-- タイトル -->
+            <div class="work-header" style="margin-top: 100px; margin-bottom: 30px; text-align: center;">
+                <h1 class="work-title">' . h($work['title']) . '</h1>
+            </div>
+
+            <!-- メイン画像 -->
+            <div class="hero-image" style="margin-bottom: 20px;">';
 
             if ($mainImagePath) {
                 $fullImageUrl = 'https://kokubosyokuju.geo.jp' . $mainImagePath;
-                $html .= '<img src="' . h($fullImageUrl) . '" alt="' . h($work['title']) . '">';
+                $html .= '<img src="' . h($fullImageUrl) . '" alt="' . h($work['title']) . '" style="width: 100%; height: auto; display: block; border-radius: 8px;">';
             } else {
                 $icon = '🌳';
                 if (strpos($work['category_name'], '植栽') !== false) $icon = '🌱';
@@ -953,143 +959,89 @@ class WorksController extends Controller
                 if (strpos($work['category_name'], '造園') !== false) $icon = '🏡';
                 if (strpos($work['category_name'], '管理') !== false) $icon = '🌿';
 
-                $html .= '<div class="hero-image-placeholder">' . $icon . '</div>';
+                $html .= '<div class="hero-image-placeholder" style="width: 100%; height: 400px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 80px; border-radius: 8px;">' . $icon . '</div>';
             }
 
             $html .= '
-        </div>
-
-        <!-- パンくずリスト -->
-        <div class="breadcrumb">
-            <div class="breadcrumb-container">
-                <a href="/">ホーム</a> / <a href="/works">施工実績</a> / <span>' . h($work['title']) . '</span>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="work-header">
-                <h1 class="work-title">' . h($work['title']) . '</h1>
+            <!-- サムネイルギャラリー（追加画像） -->';
 
-                <div class="work-meta">
-                    <div class="meta-item">
-                        <div class="meta-label">カテゴリ</div>
-                        <div class="meta-value">
-                            <span class="category-badge">📋 ' . h($work['category_name']) . '</span>
-                        </div>
+            if (!empty($additionalImages)) {
+                $html .= '
+            <div class="thumbnail-gallery" style="display: flex; gap: 10px; margin-bottom: 40px; overflow-x: auto;">';
+
+                foreach ($additionalImages as $img) {
+                    $imgPath = $img['path'];
+                    if ($imgPath && strpos($imgPath, '/uploads/') === false && strpos($imgPath, '/') === 0) {
+                        $imgPath = '/uploads' . $imgPath;
+                    }
+
+                    if ($imgPath) {
+                        $imgUrl = 'https://kokubosyokuju.geo.jp' . $imgPath;
+                        $html .= '
+                <div style="flex: 0 0 auto; width: 150px; height: 100px;">
+                    <img src="' . h($imgUrl) . '" alt="' . h($work['title']) . '" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer;">
+                </div>';
+                    }
+                }
+
+                $html .= '
+            </div>';
+            }
+
+            $html .= '
+            <!-- メタ情報とコンテンツ -->
+            <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 40px;">
+                <div style="display: flex; gap: 30px; margin-bottom: 30px; flex-wrap: wrap; border-bottom: 1px solid #e0e0e0; padding-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">カテゴリ</div>
+                        <div style="font-size: 16px; font-weight: 500;">📋 ' . h($work['category_name']) . '</div>
                     </div>';
 
             if ($work['location']) {
                 $html .= '
-                    <div class="meta-item">
-                        <div class="meta-label">施工お問</div>
-                        <div class="meta-value">📍 ' . h($work['location']) . '</div>
+                    <div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">施工場所</div>
+                        <div style="font-size: 16px; font-weight: 500;">📍 ' . h($work['location']) . '</div>
                     </div>';
             }
 
             if (!empty($work['construction_period'])) {
                 $html .= '
-                    <div class="meta-item">
-                        <div class="meta-label">工期</div>
-                        <div class="meta-value">📅 ' . h($work['construction_period']) . '</div>
+                    <div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">工期</div>
+                        <div style="font-size: 16px; font-weight: 500;">📅 ' . h($work['construction_period']) . '</div>
                     </div>';
             }
 
             $html .= '
+                    <div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">登録日</div>
+                        <div style="font-size: 16px; font-weight: 500;">' . h(date('Y年', strtotime($work['created_at']))) . '</div>
+                    </div>
                 </div>';
 
             if (!empty($tags)) {
                 $html .= '
-                <div class="tags">';
+                <div style="margin-bottom: 30px;">
+                    <div style="font-size: 14px; color: #666; margin-bottom: 10px;">タグ</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">';
                 foreach ($tags as $tag) {
-                    $html .= '<span class="tag">🏷️ ' . h($tag['name']) . '</span>';
+                    $html .= '<span style="background: #e3f2fd; color: #1976d2; padding: 5px 15px; border-radius: 15px; font-size: 14px;">🏷️ ' . h($tag['name']) . '</span>';
                 }
-                $html .= '</div>';
+                $html .= '
+                    </div>
+                </div>';
             }
 
             $html .= '
-            </div>
-
-            <div class="work-content">
-                <div class="work-description">
-                    ' . nl2br(h($work['description'])) . '
-                </div>
-
-                <aside class="work-sidebar">
-                    <div class="sidebar-section">
-                        <h3 class="sidebar-title">実績情報</h3>
-                        <div class="sidebar-info">
-                            <div class="sidebar-info-item">
-                                <span>📋</span>
-                                <span>' . h($work['category_name']) . '</span>
-                            </div>';
-
-            if ($work['location']) {
-                $html .= '
-                            <div class="sidebar-info-item">
-                                <span>📍</span>
-                                <span>' . h($work['location']) . '</span>
-                            </div>';
-            }
-
-            if (!empty($work['construction_period'])) {
-                $html .= '
-                            <div class="sidebar-info-item">
-                                <span>📅</span>
-                                <span>' . h($work['construction_period']) . '</span>
-                            </div>';
-            }
-
-            $html .= '
-                            <div class="sidebar-info-item">
-                                <span>✅</span>
-                                <span>登録日: ' . h(date('Y年n月j日', strtotime($work['created_at']))) . '</span>
-                            </div>
-                        </div>
-                    </div>';
-
-            if (!empty($tags)) {
-                $html .= '
-                    <div class="sidebar-section">
-                        <h3 class="sidebar-title">タグ</h3>
-                        <div class="tags">';
-                foreach ($tags as $tag) {
-                    $html .= '<span class="tag">' . h($tag['name']) . '</span>';
-                }
-                $html .= '
-                        </div>
-                    </div>';
-            }
-
-            $html .= '
-                </aside>
-            </div>';
-
-            // 追加画像ギャラリー
-            if (!empty($additionalImages)) {
-                $html .= '
-            <div class="gallery">
-                <h2 class="gallery-title">📷 追加画像</h2>
-                <div class="gallery-grid">';
-
-                foreach ($additionalImages as $image) {
-                    $imagePath = $image['path'];
-                    if ($imagePath && strpos($imagePath, '/uploads/') === false && strpos($imagePath, '/') === 0) {
-                        $imagePath = '/uploads' . $imagePath;
-                    }
-
-                    if ($imagePath) {
-                        $fullImageUrl = 'https://kokubosyokuju.geo.jp' . $imagePath;
-                        $html .= '
-                    <div class="gallery-item">
-                        <img src="' . h($fullImageUrl) . '" alt="' . h($image['alt'] ?: $work['title']) . '" loading="lazy">
-                    </div>';
-                    }
-                }
-
-                $html .= '
+                <div>
+                    <div style="line-height: 2; color: #333; font-size: 15px;">
+                        ' . nl2br(h($work['description'])) . '
+                    </div>
                 </div>
             </div>';
-            }
 
             $html .= '
             <div style="text-align: center;">
