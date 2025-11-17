@@ -11,7 +11,8 @@
       "Bash(php -l:*)",
       "Bash(git revert:*)",
       "Bash(git ls-tree:*)",
-      "WebFetch(domain:kokubosyokuju.geo.jp)"
+      "WebFetch(domain:kokubosyokuju.geo.jp)",
+      "Bash(gh run list:*)"
     ],
     "deny": [],
     "ask": []

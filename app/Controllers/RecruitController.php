@@ -4,6 +4,18 @@ class RecruitController extends Controller
 {
     public function index()
     {
+        // データベースから採用情報設定を取得
+        $db = Db::getInstance();
+        $settingsData = $db->fetchAll("SELECT `key`, `value` FROM recruit_settings");
+        $s = [];
+        foreach ($settingsData as $row) {
+            $s[$row['key']] = $row['value'];
+        }
+
+        // デフォルト値
+        $pageTitle = h($s['page_title'] ?? '🌱 採用情報');
+        $pageSubtitle = h($s['page_subtitle'] ?? '緑豊かな環境づくりを一緒に担う仲間を募集しています');
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -357,8 +369,8 @@ class RecruitController extends Controller
     <div class="main-content">
         <!-- ページヘッダー -->
         <section class="page-header">
-            <h1 class="page-title">🌱 採用情報</h1>
-            <p class="page-subtitle">緑豊かな環境づくりを一緒に担う仲間を募集しています</p>
+            <h1 class="page-title">' . $pageTitle . '</h1>
+            <p class="page-subtitle">' . $pageSubtitle . '</p>
         </section>
 
         <div class="container">
@@ -366,84 +378,95 @@ class RecruitController extends Controller
             <section class="section">
                 <h2 class="section-title">募集職種</h2>
 
-                <div class="job-positions">
+                <div class="job-positions">';
+
+        // 職種1
+        if (($s['job1_enabled'] ?? '1') == '1') {
+            $html .= '
                     <div class="job-card">
                         <h3 class="job-title">
-                            <span>🌳</span>
-                            植栽・造園スタッフ
+                            <span>' . h($s['job1_icon'] ?? '🌳') . '</span>
+                            ' . h($s['job1_title'] ?? '植栽・造園スタッフ') . '
                         </h3>
-                        <p>植栽工事や庭園の設計・施工を担当していただきます。未経験の方も先輩スタッフが丁寧に指導いたします。</p>
+                        <p>' . h($s['job1_description'] ?? '') . '</p>
 
                         <div class="job-details">
                             <div>
                                 <div class="detail-item">
                                     <div class="detail-label">雇用形態</div>
-                                    <div class="detail-value">正社員</div>
+                                    <div class="detail-value">' . h($s['job1_employment_type'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">給与</div>
-                                    <div class="detail-value">月給 22万円〜35万円（経験・能力による）</div>
+                                    <div class="detail-value">' . h($s['job1_salary'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">勤務時間</div>
-                                    <div class="detail-value">8:00〜17:00（休憩1時間）</div>
+                                    <div class="detail-value">' . h($s['job1_work_hours'] ?? '') . '</div>
                                 </div>
                             </div>
                             <div>
                                 <div class="detail-item">
                                     <div class="detail-label">休日</div>
-                                    <div class="detail-value">日曜・祝日・年末年始</div>
+                                    <div class="detail-value">' . h($s['job1_holidays'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">資格</div>
-                                    <div class="detail-value">普通自動車免許（必須）</div>
+                                    <div class="detail-value">' . h($s['job1_qualifications'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">経験</div>
-                                    <div class="detail-value">未経験者歓迎</div>
+                                    <div class="detail-value">' . h($s['job1_experience'] ?? '') . '</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>';
+        }
 
+        // 職種2
+        if (($s['job2_enabled'] ?? '1') == '1') {
+            $html .= '
                     <div class="job-card">
                         <h3 class="job-title">
-                            <span>✂️</span>
-                            庭木管理スタッフ
+                            <span>' . h($s['job2_icon'] ?? '✂️') . '</span>
+                            ' . h($s['job2_title'] ?? '庭木管理スタッフ') . '
                         </h3>
-                        <p>個人宅や企業施設の庭木剪定・管理業務を担当していただきます。技術をしっかりと身につけることができます。</p>
+                        <p>' . h($s['job2_description'] ?? '') . '</p>
 
                         <div class="job-details">
                             <div>
                                 <div class="detail-item">
                                     <div class="detail-label">雇用形態</div>
-                                    <div class="detail-value">正社員・パート</div>
+                                    <div class="detail-value">' . h($s['job2_employment_type'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">給与</div>
-                                    <div class="detail-value">時給 1,200円〜1,800円</div>
+                                    <div class="detail-value">' . h($s['job2_salary'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">勤務時間</div>
-                                    <div class="detail-value">8:00〜17:00（時間相談可）</div>
+                                    <div class="detail-value">' . h($s['job2_work_hours'] ?? '') . '</div>
                                 </div>
                             </div>
                             <div>
                                 <div class="detail-item">
                                     <div class="detail-label">休日</div>
-                                    <div class="detail-value">日曜・祝日（シフト制）</div>
+                                    <div class="detail-value">' . h($s['job2_holidays'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">資格</div>
-                                    <div class="detail-value">普通自動車免許（必須）</div>
+                                    <div class="detail-value">' . h($s['job2_qualifications'] ?? '') . '</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">経験</div>
-                                    <div class="detail-value">経験者優遇・未経験者歓迎</div>
+                                    <div class="detail-value">' . h($s['job2_experience'] ?? '') . '</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>';
+        }
+
+        $html .= '
                 </div>
             </section>
 
@@ -451,37 +474,28 @@ class RecruitController extends Controller
             <section class="section">
                 <h2 class="section-title">福利厚生</h2>
                 <div class="section-content">
-                    <div class="benefits-grid">
+                    <div class="benefits-grid">';
+
+        // 福利厚生を動的に生成
+        $benefits = $s['benefits'] ?? '';
+        $benefitIcons = ['🏥', '📚', '🚗', '🏆', '👨‍👩‍👧‍👦', '🎉', '💰', '🎁'];
+        $benefitLines = array_filter(explode("\n", $benefits));
+        $iconIndex = 0;
+        foreach ($benefitLines as $line) {
+            $parts = explode('|', $line, 2);
+            if (count($parts) == 2) {
+                $icon = $benefitIcons[$iconIndex % count($benefitIcons)];
+                $html .= '
                         <div class="benefit-card">
-                            <span class="benefit-icon">🏥</span>
-                            <h3 class="benefit-title">社会保険完備</h3>
-                            <p class="benefit-description">健康保険・厚生年金・雇用保険・労災保険に加入</p>
-                        </div>
-                        <div class="benefit-card">
-                            <span class="benefit-icon">📚</span>
-                            <h3 class="benefit-title">研修制度</h3>
-                            <p class="benefit-description">先輩スタッフによる丁寧な技術指導と外部研修参加支援</p>
-                        </div>
-                        <div class="benefit-card">
-                            <span class="benefit-icon">🚗</span>
-                            <h3 class="benefit-title">交通費支給</h3>
-                            <p class="benefit-description">通勤手当・現場への交通費を全額支給</p>
-                        </div>
-                        <div class="benefit-card">
-                            <span class="benefit-icon">🏆</span>
-                            <h3 class="benefit-title">資格取得支援</h3>
-                            <p class="benefit-description">造園技能士等の資格取得費用を会社が負担</p>
-                        </div>
-                        <div class="benefit-card">
-                            <span class="benefit-icon">👨‍👩‍👧‍👦</span>
-                            <h3 class="benefit-title">家族手当</h3>
-                            <p class="benefit-description">扶養家族がいる場合の手当支給</p>
-                        </div>
-                        <div class="benefit-card">
-                            <span class="benefit-icon">🎉</span>
-                            <h3 class="benefit-title">各種手当</h3>
-                            <p class="benefit-description">皆勤手当・賞与年2回・昇給年1回</p>
-                        </div>
+                            <span class="benefit-icon">' . $icon . '</span>
+                            <h3 class="benefit-title">' . h(trim($parts[0])) . '</h3>
+                            <p class="benefit-description">' . h(trim($parts[1])) . '</p>
+                        </div>';
+                $iconIndex++;
+            }
+        }
+
+        $html .= '
                     </div>
                 </div>
             </section>
@@ -490,25 +504,29 @@ class RecruitController extends Controller
             <section class="section">
                 <h2 class="section-title">求める人物像</h2>
                 <div class="section-content">
-                    <ul class="requirements-list">
-                        <li><strong>自然や植物が好きな方</strong><br>緑に囲まれた環境で働きたい方を歓迎します</li>
-                        <li><strong>体力に自信がある方</strong><br>屋外での作業が中心となります</li>
-                        <li><strong>責任感のある方</strong><br>お客様の大切な庭木を扱う責任ある仕事です</li>
-                        <li><strong>チームワークを大切にする方</strong><br>スタッフ同士で協力して作業を進めます</li>
-                        <li><strong>向上心のある方</strong><br>技術習得に積極的に取り組める方</li>
-                        <li><strong>地域に貢献したい方</strong><br>伊勢の美しい環境づくりに参加しませんか</li>
+                    <ul class="requirements-list">';
+
+        // 求める人物像を動的に生成
+        $requirements = $s['requirements'] ?? '';
+        $requirementLines = array_filter(explode("\n", $requirements));
+        foreach ($requirementLines as $line) {
+            $parts = explode('|', $line, 2);
+            if (count($parts) == 2) {
+                $html .= '
+                        <li><strong>' . h(trim($parts[0])) . '</strong><br>' . h(trim($parts[1])) . '</li>';
+            }
+        }
+
+        $html .= '
                     </ul>
                 </div>
             </section>
 
             <!-- 応募について -->
             <div class="cta-section">
-                <h2 class="cta-title">🌿 一緒に働きませんか？</h2>
-                <p class="cta-description">
-                    緑豊かな環境づくりを通じて、地域社会に貢献する仕事です。<br>
-                    未経験の方も歓迎します。まずはお気軽にお問い合わせください。
-                </p>
-                <a href="/contact" class="cta-button">採用に関するお問い合わせ</a>
+                <h2 class="cta-title">' . h($s['cta_title'] ?? '🌿 一緒に働きませんか？') . '</h2>
+                <p class="cta-description">' . nl2br(h($s['cta_description'] ?? '')) . '</p>
+                <a href="' . h($s['cta_button_url'] ?? '/contact') . '" class="cta-button">' . h($s['cta_button_text'] ?? '採用に関するお問い合わせ') . '</a>
             </div>
         </div>
     </div>

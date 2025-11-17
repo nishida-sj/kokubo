@@ -39,6 +39,8 @@ try {
         'admin/contacts/{id}' => 'Admin/ContactsController@show',
         'admin/settings' => 'Admin/SettingsController@index',
         'admin/settings/update' => 'Admin/SettingsController@update',
+        'admin/recruit' => 'Admin/RecruitController@index',
+        'admin/recruit/update' => 'Admin/RecruitController@update',
     ]);
 
     // リクエスト処理
