@@ -92,9 +92,15 @@ CREATE TABLE `contacts` (
   `ip_address` varchar(45) COMMENT 'IPアドレス',
   `user_agent` text COMMENT 'ユーザーエージェント',
   `is_read` tinyint(1) DEFAULT 0 COMMENT '既読フラグ',
+  `is_replied` tinyint(1) DEFAULT 0 COMMENT '返信済みフラグ',
+  `reply_subject` varchar(200) COMMENT '返信件名',
+  `reply_message` text COMMENT '返信内容',
+  `reply_sent_at` timestamp NULL COMMENT '返信送信日時',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `is_read` (`is_read`),
+  KEY `is_replied` (`is_replied`),
   KEY `created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='お問い合わせ';
 
