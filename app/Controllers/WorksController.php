@@ -15,6 +15,29 @@ class WorksController extends Controller
                 ORDER BY w.created_at DESC
             ");
 
+            // すべてのタグを取得
+            $tags = $db->fetchAll("SELECT * FROM tags ORDER BY name ASC");
+
+            // 各実績に紐づくタグを取得
+            $workTags = [];
+            foreach ($works as &$work) {
+                $workTagsData = $db->fetchAll("
+                    SELECT t.id, t.name
+                    FROM work_tags wt
+                    JOIN tags t ON wt.tag_id = t.id
+                    WHERE wt.work_id = ?
+                    ORDER BY t.name ASC
+                ", [$work['id']]);
+
+                $work['tags'] = $workTagsData;
+
+                // タグIDの配列も保持（フィルタリング用）
+                $work['tag_ids'] = array_map(function($tag) {
+                    return $tag['id'];
+                }, $workTagsData);
+            }
+            unset($work);
+
             $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -249,45 +272,51 @@ class WorksController extends Controller
             gap: 5px;
         }
 
-        .stats-section {
-            margin-top: 60px;
-            padding: 40px;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 20px;
+        /* タグフィルター */
+        .tag-filters {
+            margin-bottom: 40px;
             text-align: center;
         }
 
-        .stats-title {
-            font-size: 24px;
+        .tag-filters-title {
+            font-size: 20px;
             color: #19448e;
             margin-bottom: 20px;
             font-weight: 600;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
+        .tag-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
         }
 
-        .stat-item {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
+        .tag-button {
+            background: #fff;
             color: #19448e;
-            display: block;
+            border: 2px solid #19448e;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
         }
 
-        .stat-label {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
+        .tag-button:hover {
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .tag-button.active {
+            background: #19448e;
+            color: white;
+        }
+
+        .work-card[data-hidden="true"] {
+            display: none;
         }
 
         /* フッター */
@@ -358,6 +387,23 @@ class WorksController extends Controller
                     <p style="color: #666;">これまでの施工実績を整理中です。しばらくお待ちください。</p>
                 </div>';
             } else {
+                // タグフィルターボタン
+                if (!empty($tags)) {
+                    $html .= '
+                    <div class="tag-filters">
+                        <h3 class="tag-filters-title">🏷️ タグで絞り込む</h3>
+                        <div class="tag-buttons">
+                            <button class="tag-button active" data-tag-id="all">すべて</button>';
+
+                    foreach ($tags as $tag) {
+                        $html .= '<button class="tag-button" data-tag-id="' . h($tag['id']) . '">' . h($tag['name']) . '</button>';
+                    }
+
+                    $html .= '
+                        </div>
+                    </div>';
+                }
+
                 $html .= '<div class="works-grid">';
                 foreach ($works as $work) {
                     // 画像パスの自動修正（旧形式のパスに/uploadsを追加）
@@ -373,8 +419,11 @@ class WorksController extends Controller
                     if (strpos($work['category_name'], '造園') !== false) $icon = '🏡';
                     if (strpos($work['category_name'], '管理') !== false) $icon = '🌿';
 
+                    // タグIDをJSON形式で属性に追加（フィルタリング用）
+                    $tagIdsJson = json_encode($work['tag_ids']);
+
                     $html .= '
-                    <div class="work-card">
+                    <div class="work-card" data-tag-ids=\'' . h($tagIdsJson) . '\'>
                         <div class="work-image">';
 
                     if ($imagePath) {
@@ -399,27 +448,47 @@ class WorksController extends Controller
                 $html .= '</div>';
             }
 
-            $html .= '
-            <!-- 実績統計セクション -->
-            <div class="stats-section">
-                <h3 class="stats-title">📊 実績統計</h3>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-number">' . count($works) . '</span>
-                        <div class="stat-label">登録実績数</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">100%</span>
-                        <div class="stat-label">お客様満足度</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">40</span>
-                        <div class="stat-label">年の実績</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+
+    <!-- タグフィルタリングのJavaScript -->
+    <script>
+        document.addEventListener(\'DOMContentLoaded\', function() {
+            const tagButtons = document.querySelectorAll(\'.tag-button\');
+            const workCards = document.querySelectorAll(\'.work-card\');
+
+            tagButtons.forEach(button => {
+                button.addEventListener(\'click\', function() {
+                    const selectedTagId = this.getAttribute(\'data-tag-id\');
+
+                    // すべてのボタンからactiveクラスを削除
+                    tagButtons.forEach(btn => btn.classList.remove(\'active\'));
+
+                    // クリックされたボタンにactiveクラスを追加
+                    this.classList.add(\'active\');
+
+                    // 実績カードをフィルタリング
+                    workCards.forEach(card => {
+                        if (selectedTagId === \'all\') {
+                            // 「すべて」が選択された場合はすべて表示
+                            card.removeAttribute(\'data-hidden\');
+                        } else {
+                            // 特定のタグが選択された場合
+                            const cardTagIds = JSON.parse(card.getAttribute(\'data-tag-ids\') || \'[]\');
+
+                            if (cardTagIds.includes(parseInt(selectedTagId))) {
+                                // タグを持っている実績を表示
+                                card.removeAttribute(\'data-hidden\');
+                            } else {
+                                // タグを持っていない実績を非表示
+                                card.setAttribute(\'data-hidden\', \'true\');
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <!-- フッター -->
     <footer class="footer">
