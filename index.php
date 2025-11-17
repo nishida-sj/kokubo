@@ -33,6 +33,12 @@ try {
         'admin/works/{id}/delete' => 'Admin/WorksController@delete',
         'admin/works/{workId}/delete-image/{imageId}' => 'Admin/WorksController@deleteImage',
         'admin/contacts' => 'Admin/ContactsController@index',
+        'admin/contacts/{id}/send-reply' => 'Admin/ContactsController@sendReply',
+        'admin/contacts/{id}/reply' => 'Admin/ContactsController@reply',
+        'admin/contacts/{id}/mark-read' => 'Admin/ContactsController@markAsRead',
+        'admin/contacts/{id}/mark-unread' => 'Admin/ContactsController@markAsUnread',
+        'admin/contacts/{id}/delete' => 'Admin/ContactsController@delete',
+        'admin/contacts/{id}' => 'Admin/ContactsController@show',
         'admin/settings' => 'Admin/SettingsController@index',
     ]);
     echo "<!-- Debug: Routes defined -->\n";

@@ -83,7 +83,7 @@ class Router
         }
 
         // HTTPメソッドチェック
-        if ($method === 'POST' && !in_array($action, ['send', 'login', 'store', 'update', 'delete', 'deleteImage'])) {
+        if ($method === 'POST' && !in_array($action, ['send', 'login', 'store', 'update', 'delete', 'deleteImage', 'markAsRead', 'markAsUnread', 'sendReply'])) {
             throw new Exception("Method not allowed: {$method}");
         }
 
