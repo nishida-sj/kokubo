@@ -70,25 +70,7 @@ class SubController extends Controller
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
-        }
-
-        .logo-mark {
-            width: 60px;
-            height: 60px;
-            border: 2px solid #2c1810;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 5px;
-            font-size: 28px;
-            font-weight: 700;
-            color: #2c1810;
-        }
-
-        .logo-text {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: #2c1810;
             letter-spacing: 3px;
@@ -154,7 +136,41 @@ class SubController extends Controller
             left: 0;
             width: 100%;
             height: 100%;
-            background: url("/picture/12.jpg") center center / cover no-repeat;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideShow 15s infinite;
+        }
+
+        .hero-slide:nth-child(1) {
+            background-image: url("/picture/12.jpg");
+            animation-delay: 0s;
+        }
+
+        .hero-slide:nth-child(2) {
+            background-image: url("/picture/3.jpg");
+            animation-delay: 5s;
+        }
+
+        .hero-slide:nth-child(3) {
+            background-image: url("/picture/5.jpg");
+            animation-delay: 10s;
+        }
+
+        @keyframes slideShow {
+            0% { opacity: 0; }
+            6.67% { opacity: 1; }
+            33.33% { opacity: 1; }
+            40% { opacity: 0; }
+            100% { opacity: 0; }
         }
 
         .hero-text-wrapper {
@@ -240,36 +256,81 @@ class SubController extends Controller
             letter-spacing: 4px;
         }
 
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 60px;
+            line-height: 1.6;
+        }
+
         /* コンセプトセクション */
         .concept-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 80px;
             align-items: center;
-            margin-bottom: 80px;
+            margin-top: 60px;
         }
 
-        .concept-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        .concept-text {
+            font-size: 16px;
+            line-height: 1.8;
         }
 
         .concept-text h3 {
             font-size: 28px;
-            font-weight: 600;
             color: #2c1810;
             margin-bottom: 24px;
-            letter-spacing: 2px;
+            font-weight: 600;
         }
 
         .concept-text p {
-            font-size: 16px;
-            line-height: 2;
-            color: #4a4a4a;
             margin-bottom: 20px;
+            color: #555;
+        }
+
+        .concept-images {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            gap: 20px;
+        }
+
+        .concept-image-main {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .concept-image-main img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .concept-image-main:hover img {
+            transform: scale(1.05);
+        }
+
+        .concept-image-sub {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .concept-image-sub img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .concept-image-sub img:hover {
+            transform: translateY(-5px);
         }
 
         /* サービスセクション */
@@ -504,8 +565,12 @@ class SubController extends Controller
                 gap: 40px;
             }
 
-            .concept-image {
-                height: 350px;
+            .concept-image-main img {
+                height: 300px;
+            }
+
+            .concept-image-sub img {
+                height: 150px;
             }
 
             .works-grid {
@@ -525,21 +590,17 @@ class SubController extends Controller
         <div class="header-container">
             <div class="header-left">
                 <nav class="nav">
-                    <a href="/">庭を創造する</a>
-                    <a href="/works">お庭づくり</a>
-                    <a href="/works">お庭の管理</a>
+                    <a href="/">ホーム</a>
+                    <a href="/works">施工実績</a>
+                    <a href="/company">会社案内</a>
                 </nav>
             </div>
 
-            <div class="logo-center">
-                <div class="logo-mark">美</div>
-                <a href="/" class="logo-text">' . $companyName . '</a>
-            </div>
+            <a href="/" class="logo-center">' . $companyName . '</a>
 
             <div class="header-right">
                 <nav class="nav">
-                    <a href="/company">会社概要</a>
-                    <a href="/recruit">職人募集</a>
+                    <a href="/recruit">採用情報</a>
                     <a href="/contact">お問い合わせ</a>
                 </nav>
                 <a href="#" class="header-icon">f</a>
@@ -549,12 +610,16 @@ class SubController extends Controller
 
     <!-- メインビジュアル -->
     <section class="hero">
-        <div class="hero-bg"></div>
+        <div class="hero-bg">
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+        </div>
         <div class="hero-text-wrapper">
             <div class="hero-decoration"></div>
             <div class="hero-text">
-                <p class="hero-subtitle">ここを映しだす</p>
-                <h1 class="hero-title">美しい庭</h1>
+                <p class="hero-subtitle">緑豊かな</p>
+                <h1 class="hero-title">美しい庭造</h1>
             </div>
         </div>
     </section>
@@ -562,23 +627,24 @@ class SubController extends Controller
     <!-- コンセプト -->
     <section class="section section-light">
         <div class="container">
-            <h2 class="section-title">Concept</h2>
+            <h2 class="section-title">私たちのコンセプト</h2>
+            <p class="section-subtitle">技術と経験で、お客様の想いを美しい庭園に</p>
 
             <div class="concept-grid">
-                <img src="/picture/3.jpg" alt="和風庭園" class="concept-image">
                 <div class="concept-text">
-                    <h3>どこにもない<br>オンリーワンのものを使う<br>素材へのこだわり</h3>
-                    <p>私たちは単に木を植えるだけでなく、その土地の特性を活かし、四季を通じて美しい景観を演出する空間づくりを心がけています。</p>
-                    <p>お客様の暮らしに寄り添い、緑豊かな環境をお作りします。確かな技術と豊富な経験により、お客様にご満足いただける高品質な造園サービスをご提供いたします。</p>
-                </div>
-            </div>
-
-            <div class="concept-grid" style="direction: rtl;">
-                <img src="/picture/5.jpg" alt="施工風景" class="concept-image">
-                <div class="concept-text" style="direction: ltr;">
-                    <h3>地域に根ざした<br>造園業者として</h3>
+                    <h3>地域に根ざした造園業者として</h3>
                     <p>' . $companyName . 'は、伊勢市を中心とした地域密着の造園業者です。長年培った技術と経験を活かし、お客様一人ひとりのご要望に丁寧にお応えしています。</p>
-                    <p>植栽から造園、お手入れまで、緑に関するあらゆるご要望にお応えいたします。</p>
+                    <p>私たちは単に木を植えるだけでなく、その土地の特性を活かし、四季を通じて美しい景観を演出する空間づくりを心がけています。お客様の暮らしに寄り添い、緑豊かな環境をお作りします。</p>
+                    <p>確かな技術と豊富な経験により、お客様にご満足いただける高品質な造園サービスをご提供いたします。</p>
+                </div>
+                <div class="concept-images">
+                    <div class="concept-image-main">
+                        <img src="/picture/3.jpg" alt="和風庭園の施工例">
+                    </div>
+                    <div class="concept-image-sub">
+                        <img src="/picture/24.jpg" alt="美しい花々">
+                        <img src="/picture/26.jpg" alt="植樹園の風景">
+                    </div>
                 </div>
             </div>
         </div>
