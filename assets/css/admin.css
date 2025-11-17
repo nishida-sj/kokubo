@@ -341,15 +341,17 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.admin-sidebar__logo {
-    height: 40px;
-    margin-bottom: 8px;
+.admin-sidebar__title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
 }
 
-.admin-sidebar__title {
-    font-size: 18px;
-    font-weight: 600;
+.admin-sidebar__subtitle {
+    font-size: 14px;
+    font-weight: 400;
     margin: 0;
+    opacity: 0.8;
 }
 
 .admin-sidebar__nav {

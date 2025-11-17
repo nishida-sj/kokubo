@@ -19,8 +19,8 @@
     <!-- サイドバー -->
     <aside class="admin-sidebar">
         <div class="admin-sidebar__header">
-            <img src="<?= asset_url('img/logo-white.png') ?>" alt="<?= h(APP_NAME) ?>" class="admin-sidebar__logo">
-            <h1 class="admin-sidebar__title">管理画面</h1>
+            <h1 class="admin-sidebar__title">小久保植樹園</h1>
+            <p class="admin-sidebar__subtitle">管理画面</p>
         </div>
 
         <nav class="admin-sidebar__nav">

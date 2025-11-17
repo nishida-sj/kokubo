@@ -107,10 +107,6 @@
     <footer class="footer">
         <div class="footer__container">
             <div class="footer__top">
-                <div class="footer__logo">
-                    <img src="<?= asset_url('img/logo-white.png') ?>" alt="<?= h(APP_NAME) ?>" class="footer__logo-img">
-                </div>
-
                 <div class="footer__info">
                     <div class="footer__company">
                         <h3 class="footer__company-name"><?= h(APP_NAME) ?></h3>
