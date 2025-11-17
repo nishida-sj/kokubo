@@ -148,6 +148,17 @@
                                placeholder="info@kokubo-construction.com">
                     </div>
 
+                    <div class="form-group">
+                        <label for="notification_email" class="form-label">通知メールアドレス</label>
+                        <input type="email"
+                               id="notification_email"
+                               name="notification_email"
+                               value="<?= h($settings['notification_email'] ?? '') ?>"
+                               class="form-input <?= isset($errors['notification_email']) ? 'error' : '' ?>"
+                               placeholder="notifications@example.com">
+                        <div class="form-help">お問い合わせがあった際に通知を受け取るメールアドレスです。空欄の場合は通知されません。</div>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="company_business_hours" class="form-label">営業時間</label>

@@ -11,13 +11,13 @@ class Admin_SettingsController
 
         // 現在の設定を取得
         $settings = [];
-        $settingsData = $db->fetchAll("SELECT setting_key, setting_value FROM site_settings");
+        $settingsData = $db->fetchAll("SELECT `key`, `value` FROM site_settings");
         foreach ($settingsData as $setting) {
-            $settings[$setting['setting_key']] = $setting['setting_value'];
+            $settings[$setting['key']] = $setting['value'];
         }
 
         $data = [
-            'page' => 'admin/settings/index',
+            'page' => 'admin/pages/settings/index',
             'title' => 'サイト設定',
             'settings' => $settings
         ];
@@ -51,6 +51,7 @@ class Admin_SettingsController
                 'company_tel' => trim($_POST['company_tel'] ?? ''),
                 'company_fax' => trim($_POST['company_fax'] ?? ''),
                 'company_email' => trim($_POST['company_email'] ?? ''),
+                'notification_email' => trim($_POST['notification_email'] ?? ''),
                 'company_business_hours' => trim($_POST['company_business_hours'] ?? ''),
                 'company_holiday' => trim($_POST['company_holiday'] ?? ''),
                 'company_established' => trim($_POST['company_established'] ?? ''),
@@ -77,6 +78,7 @@ class Admin_SettingsController
                 'company_tel' => 'required|max:20',
                 'company_fax' => 'max:20',
                 'company_email' => 'required|email|max:100',
+                'notification_email' => 'email|max:100',
                 'company_business_hours' => 'max:100',
                 'company_holiday' => 'max:100',
                 'company_established' => 'max:50',
@@ -101,21 +103,21 @@ class Admin_SettingsController
                     // 設定を更新
                     foreach ($inputData as $key => $value) {
                         $existing = $db->fetch(
-                            "SELECT id FROM site_settings WHERE setting_key = :key",
+                            "SELECT `key` FROM site_settings WHERE `key` = :key",
                             ['key' => $key]
                         );
 
                         if ($existing) {
                             $db->update(
                                 'site_settings',
-                                ['setting_value' => $value],
-                                'setting_key = :key',
+                                ['value' => $value],
+                                '`key` = :key',
                                 ['key' => $key]
                             );
                         } else {
                             $db->insert('site_settings', [
-                                'setting_key' => $key,
-                                'setting_value' => $value
+                                'key' => $key,
+                                'value' => $value
                             ]);
                         }
                     }
@@ -137,7 +139,7 @@ class Admin_SettingsController
 
         // エラー時は設定ページを再表示
         $data = [
-            'page' => 'admin/settings/index',
+            'page' => 'admin/pages/settings/index',
             'title' => 'サイト設定',
             'settings' => $inputData,
             'errors' => $errors

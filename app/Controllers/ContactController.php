@@ -395,6 +395,42 @@ class ContactController extends Controller
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
             ]);
 
+            // 通知メール送信
+            try {
+                $notificationEmailSetting = $db->fetch(
+                    "SELECT `value` FROM site_settings WHERE `key` = :key",
+                    ['key' => 'notification_email']
+                );
+
+                $notificationEmail = $notificationEmailSetting['value'] ?? '';
+
+                if (!empty($notificationEmail)) {
+                    $to = $notificationEmail;
+                    $emailSubject = '【お問い合わせ通知】' . ($subject ?: '件名なし');
+                    $emailBody = "お問い合わせがありました。\n\n";
+                    $emailBody .= "■ お名前\n" . $name . "\n\n";
+                    $emailBody .= "■ メールアドレス\n" . $email . "\n\n";
+                    if (!empty($phone)) {
+                        $emailBody .= "■ 電話番号\n" . $phone . "\n\n";
+                    }
+                    if (!empty($subject)) {
+                        $emailBody .= "■ 件名\n" . $subject . "\n\n";
+                    }
+                    $emailBody .= "■ お問い合わせ内容\n" . $message . "\n\n";
+                    $emailBody .= "--------------------\n";
+                    $emailBody .= "管理画面: " . site_url('admin/contacts') . "\n";
+
+                    $headers = "From: " . $email . "\r\n";
+                    $headers .= "Reply-To: " . $email . "\r\n";
+                    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+                    @mail($to, $emailSubject, $emailBody, $headers);
+                }
+            } catch (Exception $e) {
+                // 通知メール送信失敗してもエラーにしない（ログに記録のみ）
+                error_log('Notification email error: ' . $e->getMessage());
+            }
+
             return '<!DOCTYPE html>
 <html lang="ja">
 <head>
