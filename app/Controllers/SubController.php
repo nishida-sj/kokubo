@@ -17,7 +17,7 @@ class SubController extends Controller
         $db = Db::getInstance();
         $works = $db->fetchAll("
             SELECT w.*, c.name as category_name,
-                   (SELECT image_path FROM work_images WHERE work_id = w.id ORDER BY display_order LIMIT 1) as main_image
+                   (SELECT path FROM work_images WHERE work_id = w.id ORDER BY sort_order LIMIT 1) as main_image
             FROM works w
             LEFT JOIN categories c ON w.category_id = c.id
             WHERE w.is_published = 1
