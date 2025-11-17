@@ -13,6 +13,8 @@ try {
         'sub' => 'SubController@index',
         'works' => 'WorksController@index',
         'works/{slug}' => 'WorksController@show',
+        'company' => 'CompanyController@index',
+        'recruit' => 'RecruitController@index',
         'contact' => 'ContactController@index',
         'contact/send' => 'ContactController@send',
         'sitemap.xml' => 'SitemapController@index',
@@ -36,6 +38,8 @@ try {
         'admin/contacts/{id}' => 'Admin/ContactsController@show',
         'admin/settings' => 'Admin/SettingsController@index',
         'admin/settings/update' => 'Admin/SettingsController@update',
+        'admin/recruit' => 'Admin/RecruitController@index',
+        'admin/recruit/update' => 'Admin/RecruitController@update',
     ]);
 
     // リクエスト処理
