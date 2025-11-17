@@ -43,10 +43,10 @@
                         <input type="text"
                                id="site_title"
                                name="site_title"
-                               value="<?= h($settings['site_title'] ?? APP_NAME) ?>"
+                               value="<?= h($settings['site_title'] ?? '小久保植樹園') ?>"
                                class="form-input <?= isset($errors['site_title']) ? 'error' : '' ?>"
                                required
-                               placeholder="小久保工務店">
+                               placeholder="小久保植樹園">
                         <div class="form-help">ブラウザのタイトルバーに表示されるサイト名です</div>
                     </div>
 
@@ -86,10 +86,10 @@
                             <input type="text"
                                    id="company_name"
                                    name="company_name"
-                                   value="<?= h($settings['company_name'] ?? COMPANY_NAME) ?>"
+                                   value="<?= h($settings['company_name'] ?? '') ?>"
                                    class="form-input <?= isset($errors['company_name']) ? 'error' : '' ?>"
                                    required
-                                   placeholder="小久保工務店">
+                                   placeholder="小久保植樹園">
                         </div>
 
                         <div class="form-group">
@@ -97,7 +97,7 @@
                             <input type="text"
                                    id="company_postal_code"
                                    name="company_postal_code"
-                                   value="<?= h($settings['company_postal_code'] ?? COMPANY_POSTAL_CODE) ?>"
+                                   value="<?= h($settings['company_postal_code'] ?? '') ?>"
                                    class="form-input <?= isset($errors['company_postal_code']) ? 'error' : '' ?>"
                                    placeholder="516-0000">
                         </div>
@@ -108,7 +108,7 @@
                         <input type="text"
                                id="company_address"
                                name="company_address"
-                               value="<?= h($settings['company_address'] ?? COMPANY_ADDRESS) ?>"
+                               value="<?= h($settings['company_address'] ?? '') ?>"
                                class="form-input <?= isset($errors['company_address']) ? 'error' : '' ?>"
                                required
                                placeholder="三重県伊勢市...">
@@ -120,7 +120,7 @@
                             <input type="tel"
                                    id="company_tel"
                                    name="company_tel"
-                                   value="<?= h($settings['company_tel'] ?? COMPANY_TEL) ?>"
+                                   value="<?= h($settings['company_tel'] ?? '') ?>"
                                    class="form-input <?= isset($errors['company_tel']) ? 'error' : '' ?>"
                                    required
                                    placeholder="0596-00-0000">
@@ -142,10 +142,10 @@
                         <input type="email"
                                id="company_email"
                                name="company_email"
-                               value="<?= h($settings['company_email'] ?? COMPANY_EMAIL) ?>"
+                               value="<?= h($settings['company_email'] ?? '') ?>"
                                class="form-input <?= isset($errors['company_email']) ? 'error' : '' ?>"
                                required
-                               placeholder="info@kokubo-construction.com">
+                               placeholder="info@kokubosyokuju.geo.jp">
                     </div>
 
                     <div class="form-group">
