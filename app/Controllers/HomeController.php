@@ -6,7 +6,7 @@ class HomeController extends Controller
     {
         try {
             // データベースから実績を取得
-            $db = Database::getInstance();
+            $db = Db::getInstance();
 
             // おすすめ実績を取得
             $featuredWorks = $db->fetchAll("

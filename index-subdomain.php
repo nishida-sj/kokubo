@@ -13,6 +13,8 @@ try {
         '' => 'HomeController@index',
         'works' => 'WorksController@index',
         'works/{slug}' => 'WorksController@show',
+        'company' => 'CompanyController@index',
+        'recruit' => 'RecruitController@index',
         'contact' => 'ContactController@index',
         'contact/send' => 'ContactController@send',
         'sitemap.xml' => 'SitemapController@index',
