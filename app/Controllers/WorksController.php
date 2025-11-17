@@ -986,11 +986,11 @@ class WorksController extends Controller
                     </div>';
             }
 
-            if ($work['construction_date']) {
+            if (!empty($work['construction_period'])) {
                 $html .= '
                     <div class="meta-item">
-                        <div class="meta-label">施工時期</div>
-                        <div class="meta-value">📅 ' . h(date('Y年n月', strtotime($work['construction_date']))) . '</div>
+                        <div class="meta-label">工期</div>
+                        <div class="meta-value">📅 ' . h($work['construction_period']) . '</div>
                     </div>';
             }
 
@@ -1031,11 +1031,11 @@ class WorksController extends Controller
                             </div>';
             }
 
-            if ($work['construction_date']) {
+            if (!empty($work['construction_period'])) {
                 $html .= '
                             <div class="sidebar-info-item">
                                 <span>📅</span>
-                                <span>' . h(date('Y年n月', strtotime($work['construction_date']))) . '</span>
+                                <span>' . h($work['construction_period']) . '</span>
                             </div>';
             }
 
