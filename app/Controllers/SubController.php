@@ -695,7 +695,16 @@ class SubController extends Controller
             <div class="works-grid">';
 
         foreach ($works as $work) {
-            $imageUrl = $work['main_image'] ? h($work['main_image']) : '/picture/2.jpg';
+            // 画像パスの自動修正
+            $imageUrl = '/picture/2.jpg'; // デフォルト画像
+            if ($work['main_image']) {
+                $imageUrl = $work['main_image'];
+                // /で始まるが/uploads/を含まない場合、/uploadsを追加
+                if (strpos($imageUrl, '/uploads/') === false && strpos($imageUrl, '/') === 0) {
+                    $imageUrl = '/uploads' . $imageUrl;
+                }
+            }
+            $imageUrl = h($imageUrl);
             $title = h($work['title']);
             $category = h($work['category_name'] ?? '');
             $slug = h($work['slug']);
