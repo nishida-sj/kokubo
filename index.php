@@ -15,6 +15,7 @@ try {
     // 完全なルート定義
     $router->define([
         '' => 'HomeController@index',
+        'sub' => 'SubController@index',
         'works' => 'WorksController@index',
         'works/{slug}' => 'WorksController@show',
         'company' => 'CompanyController@index',
