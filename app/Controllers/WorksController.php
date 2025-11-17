@@ -448,6 +448,7 @@ class WorksController extends Controller
                 $html .= '</div>';
             }
 
+            $html .= '
         </div>
     </div>
 
