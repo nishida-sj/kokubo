@@ -47,57 +47,94 @@ class SubController extends Controller
             width: 100%;
             top: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px 40px;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-size: 24px;
+        .header-left {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .logo-mark {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #2c1810;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c1810;
+        }
+
+        .logo-text {
+            font-size: 18px;
             font-weight: 600;
             color: #2c1810;
+            letter-spacing: 3px;
             text-decoration: none;
-            letter-spacing: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 35px;
+            align-items: center;
         }
 
         .nav {
             display: flex;
-            gap: 40px;
+            gap: 35px;
             list-style: none;
         }
 
         .nav a {
-            color: #2c1810;
+            color: #333;
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 400;
             transition: color 0.3s;
-            position: relative;
         }
 
-        .nav a::after {
-            content: "";
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
+        .nav a:hover {
+            color: #8b7355;
+        }
+
+        .header-icon {
+            width: 35px;
+            height: 35px;
+            background: #2c1810;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .header-icon:hover {
             background: #8b7355;
-            transition: width 0.3s;
-        }
-
-        .nav a:hover::after {
-            width: 100%;
         }
 
         /* メインビジュアル */
@@ -106,8 +143,9 @@ class SubController extends Controller
             position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             overflow: hidden;
+            margin-top: 95px;
         }
 
         .hero-bg {
@@ -119,42 +157,60 @@ class SubController extends Controller
             background: url("/picture/12.jpg") center center / cover no-repeat;
         }
 
-        .hero-bg::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5));
-        }
-
-        .hero-content {
+        .hero-text-wrapper {
             position: relative;
             z-index: 2;
-            text-align: right;
-            color: white;
-            padding: 0 60px;
+            background: white;
+            padding: 60px 40px;
+            margin-right: 80px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .hero-title {
+        .hero-decoration {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50% 0 0 0;
+            border-top: 3px solid #2c1810;
+            border-left: 3px solid #2c1810;
+        }
+
+        .hero-decoration::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid #8b7355;
+            border-left: 2px solid #8b7355;
+            border-radius: 50% 0 0 0;
+        }
+
+        .hero-text {
             writing-mode: vertical-rl;
-            text-orientation: upright;
-            font-size: 80px;
-            font-weight: 900;
-            letter-spacing: 20px;
-            margin-bottom: 40px;
-            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
-            line-height: 1.3;
+            text-orientation: mixed;
+            display: flex;
+            gap: 30px;
         }
 
         .hero-subtitle {
-            writing-mode: vertical-rl;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 400;
+            color: #2c1810;
             letter-spacing: 8px;
-            opacity: 0.95;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+            line-height: 1.8;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #2c1810;
+            letter-spacing: 12px;
+            line-height: 1.6;
         }
 
         /* セクション共通 */
@@ -404,14 +460,41 @@ class SubController extends Controller
         }
 
         /* レスポンシブ */
+        @media (max-width: 1024px) {
+            .header-left .nav,
+            .header-right .nav {
+                display: none;
+            }
+
+            .logo-center {
+                position: static;
+                transform: none;
+            }
+
+            .header-icon {
+                margin-left: auto;
+            }
+        }
+
         @media (max-width: 768px) {
+            .hero {
+                height: 70vh;
+                margin-top: 85px;
+            }
+
+            .hero-text-wrapper {
+                margin-right: 30px;
+                padding: 40px 25px;
+            }
+
             .hero-title {
-                font-size: 50px;
-                letter-spacing: 15px;
+                font-size: 36px;
+                letter-spacing: 8px;
             }
 
             .hero-subtitle {
                 font-size: 18px;
+                letter-spacing: 6px;
             }
 
             .concept-grid,
@@ -421,13 +504,17 @@ class SubController extends Controller
                 gap: 40px;
             }
 
+            .concept-image {
+                height: 350px;
+            }
+
             .works-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
             }
 
-            .nav {
-                display: none;
+            .section-title {
+                font-size: 28px;
             }
         }
     </style>
@@ -436,23 +523,39 @@ class SubController extends Controller
     <!-- ヘッダー -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">' . $companyName . '</a>
-            <nav class="nav">
-                <a href="/">ホーム</a>
-                <a href="/works">施工実績</a>
-                <a href="/company">会社案内</a>
-                <a href="/recruit">採用情報</a>
-                <a href="/contact">お問い合わせ</a>
-            </nav>
+            <div class="header-left">
+                <nav class="nav">
+                    <a href="/">庭を創造する</a>
+                    <a href="/works">お庭づくり</a>
+                    <a href="/works">お庭の管理</a>
+                </nav>
+            </div>
+
+            <div class="logo-center">
+                <div class="logo-mark">美</div>
+                <a href="/" class="logo-text">' . $companyName . '</a>
+            </div>
+
+            <div class="header-right">
+                <nav class="nav">
+                    <a href="/company">会社概要</a>
+                    <a href="/recruit">職人募集</a>
+                    <a href="/contact">お問い合わせ</a>
+                </nav>
+                <a href="#" class="header-icon">f</a>
+            </div>
         </div>
     </header>
 
     <!-- メインビジュアル -->
     <section class="hero">
         <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">美しい庭</h1>
-            <p class="hero-subtitle">ここから映えただす</p>
+        <div class="hero-text-wrapper">
+            <div class="hero-decoration"></div>
+            <div class="hero-text">
+                <p class="hero-subtitle">ここを映しだす</p>
+                <h1 class="hero-title">美しい庭</h1>
+            </div>
         </div>
     </section>
 
