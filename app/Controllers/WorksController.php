@@ -517,7 +517,7 @@ class WorksController extends Controller
         try {
             // データベースから実績を取得
             $db = Database::getInstance();
-            $work = $db->fetchOne("
+            $work = $db->fetch("
                 SELECT w.*, c.name as category_name
                 FROM works w
                 LEFT JOIN categories c ON w.category_id = c.id
