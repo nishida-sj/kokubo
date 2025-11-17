@@ -78,6 +78,9 @@ spl_autoload_register(function ($className) {
     }
 });
 
+// Settingsヘルパーを読み込み
+require_once APP_PATH . '/Helpers/Settings.php';
+
 // セッション開始
 if (session_status() === PHP_SESSION_NONE) {
     session_name(SESSION_NAME);

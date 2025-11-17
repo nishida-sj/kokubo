@@ -4,12 +4,21 @@ class ContactController extends Controller
 {
     public function index()
     {
+        // 設定値を取得
+        $companyName = h(setting('company_name', '小久保植樹園'));
+        $companyTel = h(setting('company_tel', '0596-00-0000'));
+        $companyPostalCode = h(setting('company_postal_code', '516-0000'));
+        $companyAddress = h(setting('company_address', '三重県伊勢市'));
+        $companyBusinessHours = h(setting('company_business_hours', '平日 8:00-18:00<br>土曜 8:00-17:00'));
+        $companyHoliday = h(setting('company_holiday', '日曜・祝日'));
+        $siteTitle = h(setting('site_title', '小久保植樹園'));
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お問い合わせ | 小久保植樹園</title>
+    <title>お問い合わせ | ' . $siteTitle . '</title>
 
     <!-- フォント -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -276,7 +285,7 @@ class ContactController extends Controller
     <!-- ヘッダー -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">小久保植樹園</a>
+            <a href="/" class="logo">' . $companyName . '</a>
             <nav class="nav">
                 <a href="/">ホーム</a>
                 <a href="/works">施工実績</a>
@@ -300,11 +309,10 @@ class ContactController extends Controller
                 <div class="info-card">
                     <div class="info-card-icon">☎️</div>
                     <h3 class="info-card-title">お電話でのお問い合わせ</h3>
-                    <div class="info-card-highlight">0596-00-0000</div>
+                    <div class="info-card-highlight">' . $companyTel . '</div>
                     <div class="info-card-content">
-                        営業時間：平日 8:00-18:00<br>
-                        土曜 8:00-17:00<br>
-                        定休日：日曜・祝日
+                        営業時間：' . $companyBusinessHours . '<br>
+                        定休日：' . $companyHoliday . '
                     </div>
                 </div>
             </div>
@@ -349,10 +357,10 @@ class ContactController extends Controller
     <!-- フッター -->
     <footer class="footer">
         <div style="max-width: 800px; margin: 0 auto;">
-            <h3>小久保植樹園</h3>
-            <p>〒516-0000 三重県伊勢市</p>
-            <p>TEL: 0596-00-0000</p>
-            <p style="margin-top: 20px; opacity: 0.8;">© 2024 小久保植樹園. All rights reserved.</p>
+            <h3>' . $companyName . '</h3>
+            <p>〒' . $companyPostalCode . ' ' . $companyAddress . '</p>
+            <p>TEL: ' . $companyTel . '</p>
+            <p style="margin-top: 20px; opacity: 0.8;">© ' . date('Y') . ' ' . $companyName . '. All rights reserved.</p>
         </div>
     </footer>
 </body>
@@ -363,6 +371,9 @@ class ContactController extends Controller
 
     public function send()
     {
+        // 設定値を取得
+        $siteTitle = h(setting('site_title', '小久保植樹園'));
+
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 return $this->index();
@@ -436,7 +447,7 @@ class ContactController extends Controller
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>送信完了 | 小久保植樹園</title>
+    <title>送信完了 | ' . $siteTitle . '</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

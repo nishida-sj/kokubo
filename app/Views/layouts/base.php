@@ -10,9 +10,9 @@
     if (isset($seo) && $seo instanceof Seo): ?>
         <?= $seo->renderMeta() ?>
     <?php else: ?>
-        <title><?= isset($title) ? h($title) . ' | ' . APP_NAME : DEFAULT_META_TITLE ?></title>
-        <meta name="description" content="<?= isset($description) ? h($description) : DEFAULT_META_DESCRIPTION ?>">
-        <meta name="keywords" content="<?= DEFAULT_META_KEYWORDS ?>">
+        <title><?= isset($title) ? h($title) . ' | ' . setting('site_title', APP_NAME) : setting('site_title', DEFAULT_META_TITLE) ?></title>
+        <meta name="description" content="<?= isset($description) ? h($description) : setting('site_description', DEFAULT_META_DESCRIPTION) ?>">
+        <meta name="keywords" content="<?= setting('site_keywords', DEFAULT_META_KEYWORDS) ?>">
     <?php endif; ?>
 
     <!-- Favicon -->
@@ -41,7 +41,7 @@
         <div class="header__container">
             <div class="header__logo">
                 <a href="<?= site_url() ?>">
-                    <span class="header__logo-text"><?= h(APP_NAME) ?></span>
+                    <span class="header__logo-text"><?= h(setting('company_name', APP_NAME)) ?></span>
                 </a>
             </div>
 
@@ -66,9 +66,10 @@
             </nav>
 
             <div class="header__cta">
-                <a href="tel:0596-00-0000" class="header__tel">
+                <?php $tel = setting('company_tel', '0596-00-0000'); ?>
+                <a href="tel:<?= h($tel) ?>" class="header__tel">
                     <span class="header__tel-icon">📞</span>
-                    <span class="header__tel-number">0596-00-0000</span>
+                    <span class="header__tel-number"><?= h($tel) ?></span>
                 </a>
                 <a href="<?= site_url('contact') ?>" class="header__btn btn btn--primary">
                     お見積り依頼
@@ -108,22 +109,27 @@
             <div class="footer__top">
                 <div class="footer__info">
                     <div class="footer__company">
-                        <h3 class="footer__company-name"><?= h(APP_NAME) ?></h3>
+                        <h3 class="footer__company-name"><?= h(setting('company_name', APP_NAME)) ?></h3>
                         <p class="footer__company-address">
-                            〒516-0000<br>
-                            三重県伊勢市○○町○○番地
+                            <?php if (setting('company_postal_code')): ?>
+                                〒<?= h(setting('company_postal_code')) ?><br>
+                            <?php endif; ?>
+                            <?= h(setting('company_address', '')) ?>
                         </p>
                     </div>
 
                     <div class="footer__contact">
                         <div class="footer__tel">
                             <span class="footer__tel-label">TEL</span>
-                            <a href="tel:0596-00-0000" class="footer__tel-number">0596-00-0000</a>
+                            <?php $tel = setting('company_tel', '0596-00-0000'); ?>
+                            <a href="tel:<?= h($tel) ?>" class="footer__tel-number"><?= h($tel) ?></a>
                         </div>
+                        <?php if (setting('company_business_hours')): ?>
                         <div class="footer__hours">
                             <span class="footer__hours-label">営業時間</span>
-                            <span class="footer__hours-text">平日 8:00-18:00 / 土曜 8:00-17:00</span>
+                            <span class="footer__hours-text"><?= h(setting('company_business_hours')) ?></span>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -144,7 +150,7 @@
 
             <div class="footer__bottom">
                 <p class="footer__copyright">
-                    &copy; <?= date('Y') ?> <?= h(APP_NAME) ?>. All rights reserved.
+                    &copy; <?= date('Y') ?> <?= h(setting('company_name', APP_NAME)) ?>. All rights reserved.
                 </p>
             </div>
         </div>
@@ -152,7 +158,8 @@
 
     <!-- Sticky CTA (Mobile) -->
     <div class="sticky-cta" id="stickyCta">
-        <a href="tel:0596-00-0000" class="sticky-cta__tel">
+        <?php $tel = setting('company_tel', '0596-00-0000'); ?>
+        <a href="tel:<?= h($tel) ?>" class="sticky-cta__tel">
             <span class="sticky-cta__icon">📞</span>
             <span class="sticky-cta__text">電話</span>
         </a>
