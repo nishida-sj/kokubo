@@ -59,7 +59,7 @@ class Db
 
     public function insert($table, $data)
     {
-        $columns = implode(',', array_keys($data));
+        $columns = implode(',', array_map(function($col) { return "`{$col}`"; }, array_keys($data)));
         $placeholders = ':' . implode(', :', array_keys($data));
         $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
 
@@ -71,7 +71,7 @@ class Db
     {
         $set = [];
         foreach (array_keys($data) as $column) {
-            $set[] = "{$column} = :{$column}";
+            $set[] = "`{$column}` = :{$column}";
         }
         $setClause = implode(', ', $set);
 
