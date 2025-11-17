@@ -29,14 +29,14 @@ class Admin_ContactsController
         }
 
         if (!empty($search)) {
-            $whereConditions[] = '(name LIKE :search OR email LIKE :search OR company LIKE :search OR subject LIKE :search OR message LIKE :search)';
+            $whereConditions[] = '(name LIKE :search OR email LIKE :search OR subject LIKE :search OR message LIKE :search)';
             $params['search'] = '%' . $search . '%';
         }
 
         $whereClause = implode(' AND ', $whereConditions);
 
         // ソート設定
-        $allowedSorts = ['name', 'email', 'company', 'subject', 'is_read', 'is_replied', 'created_at', 'updated_at'];
+        $allowedSorts = ['name', 'email', 'subject', 'is_read', 'is_replied', 'created_at', 'updated_at'];
         if (!in_array($sort, $allowedSorts)) $sort = 'created_at';
         if (!in_array($order, ['asc', 'desc'])) $order = 'desc';
 

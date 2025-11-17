@@ -21,7 +21,7 @@
                     <input type="text"
                            name="q"
                            value="<?= h($filters['search']) ?>"
-                           placeholder="名前、メール、会社名、件名、内容で検索..."
+                           placeholder="名前、メール、件名、内容で検索..."
                            class="form-input">
                 </div>
 
@@ -43,7 +43,6 @@
                         <option value="created_at" <?= ($filters['sort'] === 'created_at') ? 'selected' : '' ?>>受信日時</option>
                         <option value="name" <?= ($filters['sort'] === 'name') ? 'selected' : '' ?>>名前</option>
                         <option value="email" <?= ($filters['sort'] === 'email') ? 'selected' : '' ?>>メールアドレス</option>
-                        <option value="company" <?= ($filters['sort'] === 'company') ? 'selected' : '' ?>>会社名</option>
                         <option value="subject" <?= ($filters['sort'] === 'subject') ? 'selected' : '' ?>>件名</option>
                     </select>
                 </div>
@@ -118,11 +117,6 @@
                                                 <?= h($contact['name']) ?>
                                             </a>
                                         </h4>
-                                        <?php if (!empty($contact['company'])): ?>
-                                            <div class="contact-info__company">
-                                                🏢 <?= h($contact['company']) ?>
-                                            </div>
-                                        <?php endif; ?>
                                         <div class="contact-info__email">
                                             📧 <?= h($contact['email']) ?>
                                         </div>
@@ -305,7 +299,6 @@
     color: var(--admin-primary);
 }
 
-.contact-info__company,
 .contact-info__email,
 .contact-info__phone {
     font-size: 12px;
@@ -403,7 +396,6 @@
         font-size: 13px;
     }
 
-    .contact-info__company,
     .contact-info__email,
     .contact-info__phone {
         font-size: 11px;

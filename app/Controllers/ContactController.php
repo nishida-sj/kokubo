@@ -316,7 +316,7 @@ class ContactController extends Controller
                     <input type="hidden" name="csrf_token" value="' . csrf_token() . '">
 
                     <div class="form-group">
-                        <label for="name" class="form-label">お名前<span class="required">*</span></label>
+                        <label for="name" class="form-label">お名前（法人の方はお名前と会社名）<span class="required">*</span></label>
                         <input type="text" id="name" name="name" class="form-input" required placeholder="山田 太郎">
                     </div>
 
