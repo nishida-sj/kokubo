@@ -1,4 +1,17 @@
--- タグテーブル（新規作成）
+-- ================================
+-- 既存のテーブルがある場合はこちらを使用
+-- ================================
+
+-- 1. まず、既存のcategoriesテーブルの構造を確認
+-- DESCRIBE categories;
+
+-- 2. display_orderカラムが存在しない場合のみ実行
+-- （既に存在する場合はこのSQLをスキップしてください）
+
+-- categoriesテーブルにdisplay_orderカラムを追加
+-- ALTER TABLE categories ADD COLUMN display_order INT DEFAULT 0 AFTER name;
+
+-- 3. tagsテーブルを作成
 CREATE TABLE IF NOT EXISTS tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -7,12 +20,7 @@ CREATE TABLE IF NOT EXISTS tags (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- カテゴリテーブルに display_order カラムを追加（既にある場合はエラーが出るので無視してください）
-ALTER TABLE categories ADD COLUMN display_order INT DEFAULT 0 AFTER name;
-ALTER TABLE categories ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER display_order;
-ALTER TABLE categories ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at;
-
--- 実績とタグの中間テーブル
+-- 4. work_tagsテーブルを作成
 CREATE TABLE IF NOT EXISTS work_tags (
     work_id INT NOT NULL,
     tag_id INT NOT NULL,
@@ -21,7 +29,7 @@ CREATE TABLE IF NOT EXISTS work_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- デフォルトタグ（既存のタグ）
+-- 5. デフォルトタグを挿入
 INSERT IGNORE INTO tags (name, display_order) VALUES
 ('植樹工事', 1),
 ('造園工事', 2),
@@ -30,7 +38,7 @@ INSERT IGNORE INTO tags (name, display_order) VALUES
 ('公共施設', 5),
 ('商業施設', 6);
 
--- デフォルトカテゴリ（既存のカテゴリ）
+-- 6. デフォルトカテゴリを挿入（既存データがあればスキップされます）
 INSERT IGNORE INTO categories (name, display_order) VALUES
 ('植樹工事', 1),
 ('造園工事', 2),
