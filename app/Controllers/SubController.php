@@ -623,28 +623,24 @@ class SubController extends Controller
 
             .hero-text-wrapper {
                 margin-right: 30px;
-                padding: 40px 25px;
-                width: fit-content;
-                max-width: calc(100vw - 60px);
+                padding: 40px 20px;
+                width: 180px;
             }
 
             .hero-text {
-                gap: 30px;
-                width: fit-content;
+                gap: 25px;
             }
 
             .hero-title {
                 font-size: 36px;
                 letter-spacing: 8px;
                 -webkit-text-size-adjust: 100%;
-                width: fit-content;
             }
 
             .hero-subtitle {
                 font-size: 18px;
                 letter-spacing: 6px;
                 -webkit-text-size-adjust: 100%;
-                width: fit-content;
             }
 
             .concept-grid,
