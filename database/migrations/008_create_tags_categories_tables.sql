@@ -1,7 +1,13 @@
+-- 外部キー制約チェックを一時的に無効化
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- 既存のテーブルを削除（データが存在する場合は注意）
 DROP TABLE IF EXISTS work_tags;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS categories;
+
+-- 外部キー制約チェックを再度有効化
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- タグテーブル
 CREATE TABLE tags (
