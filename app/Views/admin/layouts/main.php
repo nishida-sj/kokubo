@@ -54,6 +54,34 @@
                     </a>
                 </li>
                 <li class="admin-nav__item">
+                    <a href="<?= site_url('admin/tags') ?>"
+                       class="admin-nav__link <?= (isset($page) && strpos($page, 'admin/tags') === 0) ? 'is-active' : '' ?>">
+                        <span class="admin-nav__icon">🏷️</span>
+                        タグ管理
+                    </a>
+                </li>
+                <li class="admin-nav__item">
+                    <a href="<?= site_url('admin/categories') ?>"
+                       class="admin-nav__link <?= (isset($page) && strpos($page, 'admin/categories') === 0) ? 'is-active' : '' ?>">
+                        <span class="admin-nav__icon">📁</span>
+                        カテゴリー管理
+                    </a>
+                </li>
+                <li class="admin-nav__item">
+                    <a href="<?= site_url('admin/company') ?>"
+                       class="admin-nav__link <?= (isset($page) && strpos($page, 'admin/company') === 0) ? 'is-active' : '' ?>">
+                        <span class="admin-nav__icon">🏢</span>
+                        会社案内管理
+                    </a>
+                </li>
+                <li class="admin-nav__item">
+                    <a href="<?= site_url('admin/recruit') ?>"
+                       class="admin-nav__link <?= (isset($page) && strpos($page, 'admin/recruit') === 0) ? 'is-active' : '' ?>">
+                        <span class="admin-nav__icon">🌱</span>
+                        採用情報管理
+                    </a>
+                </li>
+                <li class="admin-nav__item">
                     <a href="<?= site_url('admin/settings') ?>"
                        class="admin-nav__link <?= (isset($page) && strpos($page, 'admin/settings') === 0) ? 'is-active' : '' ?>">
                         <span class="admin-nav__icon">⚙</span>
