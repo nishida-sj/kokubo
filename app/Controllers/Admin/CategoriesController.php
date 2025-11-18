@@ -17,8 +17,22 @@ class CategoriesController extends \Controller
     {
         $db = \Db::getInstance();
 
+        // display_orderカラムの存在を確認
+        $columns = $db->fetchAll("SHOW COLUMNS FROM categories");
+        $hasDisplayOrder = false;
+        foreach ($columns as $column) {
+            if ($column['Field'] === 'display_order') {
+                $hasDisplayOrder = true;
+                break;
+            }
+        }
+
         // カテゴリー一覧を取得
-        $categories = $db->fetchAll("SELECT * FROM categories ORDER BY display_order ASC, name ASC");
+        if ($hasDisplayOrder) {
+            $categories = $db->fetchAll("SELECT * FROM categories ORDER BY display_order ASC, name ASC");
+        } else {
+            $categories = $db->fetchAll("SELECT * FROM categories ORDER BY name ASC");
+        }
 
         $html = '<!DOCTYPE html>
 <html lang="ja">
@@ -74,21 +88,37 @@ class CategoriesController extends \Controller
         } else {
             $html .= '<table>
                 <thead>
-                    <tr>
-                        <th style="width: 80px;">表示順</th>
-                        <th>カテゴリー名</th>
-                        <th style="width: 150px;">作成日</th>
-                        <th style="width: 200px;">操作</th>
+                    <tr>';
+
+            if ($hasDisplayOrder) {
+                $html .= '<th style="width: 80px;">表示順</th>';
+            }
+
+            $html .= '<th>カテゴリー名</th>';
+
+            if ($hasDisplayOrder) {
+                $html .= '<th style="width: 150px;">作成日</th>';
+            }
+
+            $html .= '<th style="width: 200px;">操作</th>
                     </tr>
                 </thead>
                 <tbody>';
 
             foreach ($categories as $category) {
-                $html .= '<tr>
-                    <td>' . h($category['display_order']) . '</td>
-                    <td>' . h($category['name']) . '</td>
-                    <td>' . date('Y/m/d', strtotime($category['created_at'])) . '</td>
-                    <td>
+                $html .= '<tr>';
+
+                if ($hasDisplayOrder) {
+                    $html .= '<td>' . h($category['display_order'] ?? 0) . '</td>';
+                }
+
+                $html .= '<td>' . h($category['name']) . '</td>';
+
+                if ($hasDisplayOrder) {
+                    $html .= '<td>' . date('Y/m/d', strtotime($category['created_at'])) . '</td>';
+                }
+
+                $html .= '<td>
                         <div class="actions">
                             <a href="/admin/categories/' . $category['id'] . '/edit" class="btn btn-edit">編集</a>
                             <form method="POST" action="/admin/categories/' . $category['id'] . '/delete" style="display: inline;" onsubmit="return confirm(\'このカテゴリーを削除してもよろしいですか？\');">
@@ -114,6 +144,18 @@ class CategoriesController extends \Controller
 
     public function create()
     {
+        $db = \Db::getInstance();
+
+        // display_orderカラムの存在を確認
+        $columns = $db->fetchAll("SHOW COLUMNS FROM categories");
+        $hasDisplayOrder = false;
+        foreach ($columns as $column) {
+            if ($column['Field'] === 'display_order') {
+                $hasDisplayOrder = true;
+                break;
+            }
+        }
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -150,14 +192,18 @@ class CategoriesController extends \Controller
                 <div class="form-group">
                     <label for="name">カテゴリー名 *</label>
                     <input type="text" id="name" name="name" required placeholder="例: 植樹工事">
-                </div>
+                </div>';
 
+        if ($hasDisplayOrder) {
+            $html .= '
                 <div class="form-group">
                     <label for="display_order">表示順</label>
                     <input type="number" id="display_order" name="display_order" value="0" min="0">
                     <div class="help-text">数字が小さいほど上に表示されます</div>
-                </div>
+                </div>';
+        }
 
+        $html .= '
                 <div>
                     <button type="submit" class="btn btn-primary">保存</button>
                     <a href="/admin/categories" class="btn btn-secondary">キャンセル</a>
@@ -191,10 +237,27 @@ class CategoriesController extends \Controller
         $db = \Db::getInstance();
 
         try {
-            $db->insert('categories', [
-                'name' => $name,
-                'display_order' => $displayOrder
-            ]);
+            // display_orderカラムの存在を確認
+            $columns = $db->fetchAll("SHOW COLUMNS FROM categories");
+            $hasDisplayOrder = false;
+            foreach ($columns as $column) {
+                if ($column['Field'] === 'display_order') {
+                    $hasDisplayOrder = true;
+                    break;
+                }
+            }
+
+            // データを挿入
+            if ($hasDisplayOrder) {
+                $db->insert('categories', [
+                    'name' => $name,
+                    'display_order' => $displayOrder
+                ]);
+            } else {
+                $db->insert('categories', [
+                    'name' => $name
+                ]);
+            }
 
             $_SESSION['success_message'] = 'カテゴリーを追加しました。';
             redirect('admin/categories');
@@ -211,6 +274,16 @@ class CategoriesController extends \Controller
 
         if (!$category) {
             die('カテゴリーが見つかりません。');
+        }
+
+        // display_orderカラムの存在を確認
+        $columns = $db->fetchAll("SHOW COLUMNS FROM categories");
+        $hasDisplayOrder = false;
+        foreach ($columns as $column) {
+            if ($column['Field'] === 'display_order') {
+                $hasDisplayOrder = true;
+                break;
+            }
         }
 
         $html = '<!DOCTYPE html>
@@ -249,14 +322,18 @@ class CategoriesController extends \Controller
                 <div class="form-group">
                     <label for="name">カテゴリー名 *</label>
                     <input type="text" id="name" name="name" required value="' . h($category['name']) . '">
-                </div>
+                </div>';
 
+        if ($hasDisplayOrder) {
+            $html .= '
                 <div class="form-group">
                     <label for="display_order">表示順</label>
-                    <input type="number" id="display_order" name="display_order" value="' . h($category['display_order']) . '" min="0">
+                    <input type="number" id="display_order" name="display_order" value="' . h($category['display_order'] ?? 0) . '" min="0">
                     <div class="help-text">数字が小さいほど上に表示されます</div>
-                </div>
+                </div>';
+        }
 
+        $html .= '
                 <div>
                     <button type="submit" class="btn btn-primary">更新</button>
                     <a href="/admin/categories" class="btn btn-secondary">キャンセル</a>
@@ -290,10 +367,27 @@ class CategoriesController extends \Controller
         $db = \Db::getInstance();
 
         try {
-            $db->update('categories', [
-                'name' => $name,
-                'display_order' => $displayOrder
-            ], ['id' => $id]);
+            // display_orderカラムの存在を確認
+            $columns = $db->fetchAll("SHOW COLUMNS FROM categories");
+            $hasDisplayOrder = false;
+            foreach ($columns as $column) {
+                if ($column['Field'] === 'display_order') {
+                    $hasDisplayOrder = true;
+                    break;
+                }
+            }
+
+            // データを更新
+            if ($hasDisplayOrder) {
+                $db->update('categories', [
+                    'name' => $name,
+                    'display_order' => $displayOrder
+                ], ['id' => $id]);
+            } else {
+                $db->update('categories', [
+                    'name' => $name
+                ], ['id' => $id]);
+            }
 
             $_SESSION['success_message'] = 'カテゴリーを更新しました。';
             redirect('admin/categories');
