@@ -13,7 +13,7 @@ class RecruitController extends Controller
         }
 
         // デフォルト値
-        $pageTitle = h($s['page_title'] ?? '🌱 採用情報');
+        $pageTitle = h($s['page_title'] ?? '採用情報');
         $pageSubtitle = h($s['page_subtitle'] ?? '緑豊かな環境づくりを一緒に担う仲間を募集しています');
 
         $html = '<!DOCTYPE html>
@@ -619,20 +619,15 @@ class RecruitController extends Controller
 
         // 福利厚生を動的に生成
         $benefits = $s['benefits'] ?? '';
-        $benefitIcons = ['🏥', '📚', '🚗', '🏆', '👨‍👩‍👧‍👦', '🎉', '💰', '🎁'];
         $benefitLines = array_filter(explode("\n", $benefits));
-        $iconIndex = 0;
         foreach ($benefitLines as $line) {
             $parts = explode('|', $line, 2);
             if (count($parts) == 2) {
-                $icon = $benefitIcons[$iconIndex % count($benefitIcons)];
                 $html .= '
                         <div class="benefit-card">
-                            <span class="benefit-icon">' . $icon . '</span>
                             <h3 class="benefit-title">' . h(trim($parts[0])) . '</h3>
                             <p class="benefit-description">' . h(trim($parts[1])) . '</p>
                         </div>';
-                $iconIndex++;
             }
         }
 
@@ -665,7 +660,7 @@ class RecruitController extends Controller
 
             <!-- 応募について -->
             <div class="cta-section">
-                <h2 class="cta-title">' . h($s['cta_title'] ?? '🌿 一緒に働きませんか？') . '</h2>
+                <h2 class="cta-title">' . h($s['cta_title'] ?? '一緒に働きませんか？') . '</h2>
                 <p class="cta-description">' . nl2br(h($s['cta_description'] ?? '')) . '</p>
                 <a href="' . h($s['cta_button_url'] ?? '/contact') . '" class="cta-button">' . h($s['cta_button_text'] ?? '採用に関するお問い合わせ') . '</a>
             </div>
