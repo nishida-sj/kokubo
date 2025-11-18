@@ -623,8 +623,8 @@ class SubController extends Controller
 
             .hero-text-wrapper {
                 margin-right: 30px;
-                padding: 40px 10px;
-                width: 110px;
+                padding: 40px 8px;
+                width: 90px;
             }
 
             .hero-text {
