@@ -446,14 +446,13 @@ class ContactController extends Controller
         <div class="container">
             <!-- ページヘッダー -->
             <div class="page-header">
-                <h1 class="page-title">📞 お問い合わせ</h1>
+                <h1 class="page-title">お問い合わせ</h1>
                 <p class="page-subtitle">お気軽にご相談ください。専門スタッフが丁寧に対応いたします。</p>
             </div>
 
             <!-- お問い合わせ情報カード -->
             <div class="contact-info-cards">
                 <div class="info-card">
-                    <div class="info-card-icon">☎️</div>
                     <h3 class="info-card-title">お電話でのお問い合わせ</h3>
                     <div class="info-card-highlight">' . $companyTel . '</div>
                     <div class="info-card-content">
@@ -465,7 +464,7 @@ class ContactController extends Controller
 
             <!-- お問い合わせフォーム -->
             <div class="form-card">
-                <h2 class="form-title">📝 お問い合わせフォーム</h2>
+                <h2 class="form-title">お問い合わせフォーム</h2>
                 <form method="POST" action="/contact/send">
                     <input type="hidden" name="csrf_token" value="' . csrf_token() . '">
 
