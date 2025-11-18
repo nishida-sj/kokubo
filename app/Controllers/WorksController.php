@@ -503,7 +503,7 @@ class WorksController extends Controller
     <div class="main-content">
         <!-- ページヘッダー -->
         <section class="page-header">
-            <h1 class="page-title">🌿 施工実績</h1>
+            <h1 class="page-title">施工実績</h1>
             <p class="page-subtitle">これまでに手がけた植栽・造園工事の実績をご紹介いたします</p>
         </section>
 

@@ -12,8 +12,9 @@ class RecruitController extends Controller
             $s[$row['key']] = $row['value'];
         }
 
-        // デフォルト値
-        $pageTitle = h($s['page_title'] ?? '採用情報');
+        // デフォルト値（絵文字を削除）
+        $pageTitle = preg_replace('/[\x{1F300}-\x{1F9FF}]/u', '', h($s['page_title'] ?? '採用情報'));
+        $pageTitle = trim($pageTitle);
         $pageSubtitle = h($s['page_subtitle'] ?? '緑豊かな環境づくりを一緒に担う仲間を募集しています');
 
         $html = '<!DOCTYPE html>
@@ -607,6 +608,17 @@ class RecruitController extends Controller
                     </div>';
         }
 
+        // 両方の職種が無効な場合
+        $job1Enabled = ($s['job1_enabled'] ?? '1') == '1';
+        $job2Enabled = ($s['job2_enabled'] ?? '1') == '1';
+
+        if (!$job1Enabled && !$job2Enabled) {
+            $html .= '
+                    <div style="text-align: center; padding: 60px 20px; background: white; border-radius: 12px;">
+                        <p style="font-size: 20px; color: #666; margin: 0;">現在募集はしていません</p>
+                    </div>';
+        }
+
         $html .= '
                 </div>
             </section>
@@ -660,7 +672,7 @@ class RecruitController extends Controller
 
             <!-- 応募について -->
             <div class="cta-section">
-                <h2 class="cta-title">' . h($s['cta_title'] ?? '一緒に働きませんか？') . '</h2>
+                <h2 class="cta-title">' . trim(preg_replace('/[\x{1F300}-\x{1F9FF}]/u', '', h($s['cta_title'] ?? '一緒に働きませんか？'))) . '</h2>
                 <p class="cta-description">' . nl2br(h($s['cta_description'] ?? '')) . '</p>
                 <a href="' . h($s['cta_button_url'] ?? '/contact') . '" class="cta-button">' . h($s['cta_button_text'] ?? '採用に関するお問い合わせ') . '</a>
             </div>

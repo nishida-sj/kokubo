@@ -4,6 +4,12 @@ class CompanyController extends Controller
 {
     public function index()
     {
+        // 設定値を取得
+        $companyName = h(setting('company_name', '小久保植樹園'));
+        $companyTel = h(setting('company_tel', '0596-00-0000'));
+        $companyPostalCode = h(setting('company_postal_code', '516-0000'));
+        $companyAddress = h(setting('company_address', '三重県伊勢市'));
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -476,7 +482,7 @@ class CompanyController extends Controller
     <div class="main-content">
         <!-- ページヘッダー -->
         <section class="page-header">
-            <h1 class="page-title">🏢 会社案内</h1>
+            <h1 class="page-title">会社案内</h1>
             <p class="page-subtitle">伊勢の地で培った信頼と実績をご紹介いたします</p>
         </section>
 
@@ -588,10 +594,10 @@ class CompanyController extends Controller
     <!-- フッター -->
     <footer class="footer">
         <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
-            <h3 style="font-size: 28px; margin-bottom: 20px; color: #fff;">小久保植樹園</h3>
-            <p>〒516-0000 三重県伊勢市</p>
-            <p>TEL: 0596-00-0000</p>
-            <p style="margin-top: 20px; opacity: 0.8;">© 2024 小久保植樹園. All rights reserved.</p>
+            <h3 style="font-size: 28px; margin-bottom: 20px; color: #fff;">' . $companyName . '</h3>
+            <p>〒' . $companyPostalCode . ' ' . $companyAddress . '</p>
+            <p>TEL: ' . $companyTel . '</p>
+            <p style="margin-top: 20px; opacity: 0.8;">© ' . date('Y') . ' ' . $companyName . '. All rights reserved.</p>
         </div>
     </footer>
 
