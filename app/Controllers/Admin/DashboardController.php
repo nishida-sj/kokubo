@@ -89,6 +89,14 @@ class DashboardController extends \Controller
                     🏢 会社案内管理<br>
                     <small>代表挨拶・会社概要編集</small>
                 </a>
+                <a href="/admin/tags" class="menu-item">
+                    🏷️ タグ管理<br>
+                    <small>実績タグの追加・編集</small>
+                </a>
+                <a href="/admin/categories" class="menu-item">
+                    📁 カテゴリー管理<br>
+                    <small>実績カテゴリーの追加・編集</small>
+                </a>
                 <a href="/admin/settings" class="menu-item">
                     ⚙️ サイト設定<br>
                     <small>基本情報・SEO設定</small>

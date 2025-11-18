@@ -46,6 +46,18 @@ try {
         'admin/recruit/update' => 'Admin/RecruitController@update',
         'admin/company' => 'Admin/CompanyController@index',
         'admin/company/update' => 'Admin/CompanyController@update',
+        'admin/tags' => 'Admin/TagsController@index',
+        'admin/tags/create' => 'Admin/TagsController@create',
+        'admin/tags/store' => 'Admin/TagsController@store',
+        'admin/tags/{id}/edit' => 'Admin/TagsController@edit',
+        'admin/tags/{id}/update' => 'Admin/TagsController@update',
+        'admin/tags/{id}/delete' => 'Admin/TagsController@delete',
+        'admin/categories' => 'Admin/CategoriesController@index',
+        'admin/categories/create' => 'Admin/CategoriesController@create',
+        'admin/categories/store' => 'Admin/CategoriesController@store',
+        'admin/categories/{id}/edit' => 'Admin/CategoriesController@edit',
+        'admin/categories/{id}/update' => 'Admin/CategoriesController@update',
+        'admin/categories/{id}/delete' => 'Admin/CategoriesController@delete',
     ]);
     echo "<!-- Debug: Routes defined -->\n";
 
