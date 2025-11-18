@@ -10,6 +10,14 @@ class CompanyController extends Controller
         $companyPostalCode = h(setting('company_postal_code', '516-0000'));
         $companyAddress = h(setting('company_address', '三重県伊勢市'));
 
+        // 会社案内設定を取得
+        $db = Db::getInstance();
+        $companySettingsData = $db->fetchAll("SELECT `key`, `value` FROM company_settings");
+        $cs = [];
+        foreach ($companySettingsData as $row) {
+            $cs[$row['key']] = $row['value'];
+        }
+
         $html = '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -489,20 +497,10 @@ class CompanyController extends Controller
         <div class="container">
             <!-- 代表挨拶 -->
             <section class="section">
-                <h2 class="section-title">代表挨拶</h2>
+                <h2 class="section-title">' . h($cs['greeting_title'] ?? '代表挨拶') . '</h2>
                 <div class="section-content">
                     <div class="greeting-section">
-                        <div class="greeting-text">
-                            <h3>緑豊かな環境づくりを通じて、地域社会に貢献してまいります</h3>
-                            <p>小久保植樹園は、伊勢の地で長年にわたり植樹・造園業に携わってまいりました。私たちは単に木を植えるだけでなく、その土地の特性を活かし、四季を通じて美しい景観を演出する空間づくりを心がけています。</p>
-                            <p>お客様の暮らしに寄り添い、緑豊かな環境をお作りすることで、地域社会の発展に貢献できるよう努めております。確かな技術と豊富な経験により、お客様にご満足いただける高品質なサービスをご提供いたします。</p>
-                            <p>今後とも変わらぬご愛顧を賜りますよう、よろしくお願い申し上げます。</p>
-                        </div>
-                        <div class="president-info">
-                            <div class="president-photo">👨‍🌾</div>
-                            <div class="president-name">小久保 太郎</div>
-                            <div class="president-title">代表取締役</div>
-                        </div>
+                        <div class="greeting-text">' . nl2br(h($cs['greeting_content'] ?? '')) . '</div>
                     </div>
                 </div>
             </section>
@@ -515,37 +513,29 @@ class CompanyController extends Controller
                         <div>
                             <div class="info-item">
                                 <div class="info-label">会社名</div>
-                                <div class="info-value">小久保植樹園</div>
+                                <div class="info-value">' . h($cs['overview_name'] ?? $companyName) . '</div>
                             </div>
                             <div class="info-item">
                                 <div class="info-label">代表者</div>
-                                <div class="info-value">小久保 太郎</div>
+                                <div class="info-value">' . h($cs['overview_representative'] ?? '') . '</div>
                             </div>
                             <div class="info-item">
                                 <div class="info-label">設立</div>
-                                <div class="info-value">1984年</div>
+                                <div class="info-value">' . h($cs['overview_established'] ?? '') . '</div>
                             </div>
                             <div class="info-item">
-                                <div class="info-label">所在地</div>
-                                <div class="info-value">〒516-0000 三重県伊勢市</div>
+                                <div class="info-label">従業員数</div>
+                                <div class="info-value">' . h($cs['overview_employees'] ?? '') . '</div>
                             </div>
                         </div>
                         <div>
                             <div class="info-item">
-                                <div class="info-label">電話番号</div>
-                                <div class="info-value">0596-00-0000</div>
-                            </div>
-                            <div class="info-item">
                                 <div class="info-label">事業内容</div>
-                                <div class="info-value">植栽工事・造園・庭木管理・剪定作業</div>
+                                <div class="info-value">' . nl2br(h($cs['overview_business'] ?? '')) . '</div>
                             </div>
                             <div class="info-item">
-                                <div class="info-label">営業時間</div>
-                                <div class="info-value">平日 8:00-18:00 / 土曜 8:00-17:00</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">定休日</div>
-                                <div class="info-value">日曜・祝日</div>
+                                <div class="info-label">対応エリア</div>
+                                <div class="info-value">' . h($cs['overview_area'] ?? '') . '</div>
                             </div>
                         </div>
                     </div>

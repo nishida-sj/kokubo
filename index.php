@@ -44,6 +44,8 @@ try {
         'admin/settings/update' => 'Admin/SettingsController@update',
         'admin/recruit' => 'Admin/RecruitController@index',
         'admin/recruit/update' => 'Admin/RecruitController@update',
+        'admin/company' => 'Admin/CompanyController@index',
+        'admin/company/update' => 'Admin/CompanyController@update',
     ]);
     echo "<!-- Debug: Routes defined -->\n";
 

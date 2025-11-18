@@ -85,6 +85,10 @@ class DashboardController extends \Controller
                     🌱 採用情報管理<br>
                     <small>募集職種・福利厚生編集</small>
                 </a>
+                <a href="/admin/company" class="menu-item">
+                    🏢 会社案内管理<br>
+                    <small>代表挨拶・会社概要編集</small>
+                </a>
                 <a href="/admin/settings" class="menu-item">
                     ⚙️ サイト設定<br>
                     <small>基本情報・SEO設定</small>
