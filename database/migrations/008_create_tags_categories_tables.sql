@@ -1,5 +1,10 @@
+-- 既存のテーブルを削除（データが存在する場合は注意）
+DROP TABLE IF EXISTS work_tags;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS categories;
+
 -- タグテーブル
-CREATE TABLE IF NOT EXISTS tags (
+CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     display_order INT DEFAULT 0,
@@ -8,7 +13,7 @@ CREATE TABLE IF NOT EXISTS tags (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- カテゴリテーブル
-CREATE TABLE IF NOT EXISTS categories (
+CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     display_order INT DEFAULT 0,
